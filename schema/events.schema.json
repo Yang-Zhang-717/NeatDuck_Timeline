@@ -4,22 +4,24 @@
   "type": "object",
   "required": ["title", "start"],
   "properties": {
-    "id": {"type": "string"},
+    "uid": {"type": "string"},
     "title": {"type": "string"},
     "shortTitle": {"type": "string"},
     "category": {"type": "string"},
     "lane": {"type": "string"},
     "sub": {"type": "string"},
-    "overlay": {"type": ["string", "null"]},
-    "overlayTargetSub": {"type": ["string", "null"]},
     "rawText": {"type": "string"},
     "href": {"type": "string"},
     "start": {"type": "string"},
     "endKnown": {"type": ["string", "null"]},
     "endInferred": {"type": ["string", "null"]},
-    "isLocal": {"type": ["string", "boolean"]},
+    "timeZone": {"type": "string"},
+    "timeZoneLabel": {"type": "string"},
+    "isFixedTimeZone": {"type": ["string", "boolean"]},
+    "source": {"type": "string"},
     "firstSeenAt": {"type": ["string", "null"]},
     "lastSeenAt": {"type": ["string", "null"]},
+    "lastScrapedAt": {"type": ["string", "null"]},
     "status": {"type": "string"}
   }
 }

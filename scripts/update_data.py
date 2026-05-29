@@ -2,7 +2,8 @@
 """
 NeatDuck_Timeline public data updater.
 
-v1.6 fixes:
+v1.0.6 / data v1.7 fixes:
+- Time-zone metadata is exported so browser extension and GitHub scraper agree.
 - Detail-page text fallback for pages whose Starts/Ends widgets say "Calculating...".
 - URL-based identity to remove duplicate rows, especially cards shown in both Happening Now and Upcoming.
 - Extension-compatible lane/sub values so theme events do not disappear from the timeline.
@@ -46,6 +47,7 @@ CSV_COLUMNS = [
     "uid",
     "title", "shortTitle", "category", "lane", "sub",
     "start", "endKnown", "endInferred", "href",
+    "timeZone", "timeZoneLabel", "isFixedTimeZone",
     "source", "firstSeenAt", "lastSeenAt", "lastScrapedAt", "status",
 ]
 CORE_COLUMNS = ["title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href"]
@@ -68,6 +70,32 @@ TZINFOS = {
 }
 
 NAMED_TZ_RE = re.compile(r"\b(?:JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b", re.I)
+TZ_CANONICAL = {
+    "PT": "America/Los_Angeles",
+    "PDT": "America/Los_Angeles",
+    "PST": "America/Los_Angeles",
+    "JST": "Asia/Tokyo",
+    "CEST": "Europe/Copenhagen",
+    "CET": "Europe/Copenhagen",
+    "BST": "Europe/London",
+    "UTC": "UTC",
+    "GMT": "UTC",
+}
+
+
+def timezone_info(value: str) -> Dict[str, object]:
+    text = value or ""
+    m = NAMED_TZ_RE.search(text)
+    if m:
+        label = m.group(0).upper()
+        return {
+            "timeZone": TZ_CANONICAL.get(label, label),
+            "timeZoneLabel": label,
+            "isFixedTimeZone": True,
+        }
+    if re.search(r"\bLocal\s+Time\b", text, re.I):
+        return {"timeZone": "local", "timeZoneLabel": "Local Time", "isFixedTimeZone": False}
+    return {"timeZone": "local", "timeZoneLabel": "Local Time", "isFixedTimeZone": False}
 
 
 DATE_RE = re.compile(
@@ -94,6 +122,9 @@ class EventRecord:
     endKnown: str = ""
     endInferred: str = ""
     href: str = ""
+    timeZone: str = "local"
+    timeZoneLabel: str = "Local Time"
+    isFixedTimeZone: str = ""
     uid: str = ""
     source: str = "leekduck"
     firstSeenAt: str = ""
@@ -366,10 +397,11 @@ def parse_detail_text_dates(raw: str) -> Tuple[Optional[datetime], Optional[date
     return None, None
 
 
-def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime], Optional[datetime]]:
+def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime], Optional[datetime], Dict[str, object]]:
     href = safe_url(href)
+    default_tz = timezone_info("")
     if not href:
-        return None, None
+        return None, None, default_tz
     cached = cache.get(href)
     if cached and (cached.get("start") or cached.get("end")):
         try:
@@ -378,11 +410,18 @@ def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime],
             cached_at = None
         if cached_at and (datetime.now(timezone.utc) - cached_at.astimezone(timezone.utc)) < timedelta(hours=36):
             start, end = from_iso(cached.get("start", "")), from_iso(cached.get("end", ""))
+            tz_meta = {
+                "timeZone": cached.get("timeZone") or "local",
+                "timeZoneLabel": cached.get("timeZoneLabel") or "Local Time",
+                "isFixedTimeZone": bool(cached.get("isFixedTimeZone")),
+            }
             if not start or not end or end >= start:
-                return start, end
+                return start, end, tz_meta
 
     html_text = fetch_html(href)
     soup = BeautifulSoup(html_text, "html.parser")
+    raw_text = soup.get_text("\n")
+    tz_meta = timezone_info(raw_text)
 
     def pick(section_id: str) -> Optional[datetime]:
         sec = soup.select_one(f"#{section_id}")
@@ -397,7 +436,7 @@ def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime],
     start = pick("start-text")
     end = pick("end-text")
     if not start or not end:
-        guessed_start, guessed_end = parse_detail_text_dates(soup.get_text("\n"))
+        guessed_start, guessed_end = parse_detail_text_dates(raw_text)
         start = start or guessed_start
         end = end or guessed_end
     if start and end and end < start:
@@ -407,8 +446,15 @@ def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime],
                 end = fixed
         except ValueError:
             pass
-    cache[href] = {"start": to_iso(start), "end": to_iso(end), "cachedAt": now_iso()}
-    return start, end
+    cache[href] = {
+        "start": to_iso(start),
+        "end": to_iso(end),
+        "timeZone": tz_meta.get("timeZone") or "local",
+        "timeZoneLabel": tz_meta.get("timeZoneLabel") or "Local Time",
+        "isFixedTimeZone": bool(tz_meta.get("isFixedTimeZone")),
+        "cachedAt": now_iso(),
+    }
+    return start, end, tz_meta
 
 
 def probable_cards(soup: BeautifulSoup) -> List:
@@ -516,10 +562,12 @@ def scrape_events() -> Tuple[List[EventRecord], Dict[str, dict]]:
 
         section = detect_section(card)
         start_dt, end_dt = extract_card_dates(card, section)
+        card_tz = timezone_info(card.get_text(" "))
+        detail_tz = card_tz
 
         if detail_fetches < MAX_DETAIL_PAGES:
             try:
-                ds, de = detail_dates(href, cache)
+                ds, de, detail_tz = detail_dates(href, cache)
                 detail_fetches += 1
                 if ds:
                     start_dt = ds
@@ -538,6 +586,9 @@ def scrape_events() -> Tuple[List[EventRecord], Dict[str, dict]]:
             start=to_iso(start_dt),
             endKnown=to_iso(end_dt),
             href=href,
+            timeZone=str(detail_tz.get("timeZone") or card_tz.get("timeZone") or "local"),
+            timeZoneLabel=str(detail_tz.get("timeZoneLabel") or card_tz.get("timeZoneLabel") or "Local Time"),
+            isFixedTimeZone="1" if (detail_tz.get("isFixedTimeZone") or card_tz.get("isFixedTimeZone")) else "",
             source="leekduck",
             lastScrapedAt=now_iso(),
             status="active",
@@ -562,7 +613,7 @@ def dedupe(events: Iterable[EventRecord]) -> List[EventRecord]:
             out[e.uid] = e
             continue
         for k, v in asdict(e).items():
-            if v and k in {"title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href", "lastScrapedAt", "status"}:
+            if v and k in {"title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href", "timeZone", "timeZoneLabel", "isFixedTimeZone", "lastScrapedAt", "status"}:
                 setattr(prev, k, v)
             elif v and not getattr(prev, k, ""):
                 setattr(prev, k, v)
@@ -585,6 +636,8 @@ def read_events(path: Path) -> List[EventRecord]:
             rec.lane, rec.sub = choose_lane_sub(rec.title, rec.category) if not rec.lane or not rec.sub or rec.sub in {"Event", "Update", "Pokémon GO Fest"} else (rec.lane, rec.sub)
             if not rec.shortTitle:
                 rec.shortTitle = short_title(rec.title, rec.category, rec.sub)
+            rec.timeZone = rec.timeZone or "local"
+            rec.timeZoneLabel = rec.timeZoneLabel or ("Fixed Time" if rec.isFixedTimeZone else "Local Time")
             rec.uid = uid_for(rec)
             rows.append(rec)
     return rows
@@ -608,7 +661,7 @@ def merge_library(existing: List[EventRecord], manual: List[EventRecord], fresh:
                 e.status = "archived"
             by_uid[e.uid] = e
             return
-        for field in ["title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href"]:
+        for field in ["title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href", "timeZone", "timeZoneLabel", "isFixedTimeZone"]:
             value = getattr(e, field, "")
             if value:
                 setattr(prev, field, value)
@@ -675,7 +728,7 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
         "updatedAt": latest,
         "totalEvents": len(events),
         "activeEvents": len(fresh),
-        "schema": "events.csv/v1.6-compatible-with-extra-metadata",
+        "schema": "events.csv/v1.7-timezone-compatible",
         "coreColumns": CORE_COLUMNS,
         "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
     }

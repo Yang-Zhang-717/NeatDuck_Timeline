@@ -1,11 +1,11 @@
-# NeatDuck_Timeline public event library
+# NeatDuck_Timeline public event library v1.6
 
 This repository publishes a public, extension-readable event CSV for NeatDuck_Timeline.
 
 Default public CSV URL after enabling GitHub Pages:
 
 ```text
-https://yang-zhang-717.github.io/NeatDuck_Timeline/data/events.csv
+https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv
 ```
 
 ## Files
@@ -28,3 +28,15 @@ The GitHub Action runs twice daily and can also be triggered manually from the A
 ## Legal / etiquette notes
 
 This project should not copy Leek Duck graphics, long descriptions, page layout, or branding. It should only store factual schedule metadata needed for timeline display. Keep attribution and a clear non-affiliation statement in your extension and store listing.
+
+
+## v1.6 reset notes
+
+This reset template starts with an empty `data/events.csv`. The first successful GitHub Action run will scrape current LeekDuck cards, fetch detail pages, and build a fresh library. Existing historical rows from a broken CSV are intentionally not included.
+
+The `.gitignore` excludes `.venv/`, `venv/`, and `__pycache__/`, because generated Python environments and bytecode should not be committed.
+
+
+## v1.6 date logic
+
+The updater now shares the extension policy: detail-page dates override card fallback dates; href-first identity prevents duplicate rows; named zones such as PT/PDT/JST are converted to UTC timestamps; Local Time rows remain floating local timestamps. This keeps GitHub data and the extension from disagreeing about the same event.

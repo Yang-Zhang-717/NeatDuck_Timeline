@@ -1,1 +1,1 @@
-title,shortTitle,category,lane,sub,start,endKnown,endInferred,href
+uid,title,shortTitle,category,lane,sub,start,endKnown,endInferred,href,source,firstSeenAt,lastSeenAt,lastScrapedAt,status

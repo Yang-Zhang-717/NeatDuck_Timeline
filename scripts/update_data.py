@@ -2,15 +2,11 @@
 """
 NeatDuck_Timeline public data updater.
 
-What it does:
-1. Fetches Leek Duck's public events page.
-2. Reads event cards and, when needed, follows individual event pages to collect start/end dates.
-3. Compares the freshly scraped events with data/events.csv and data/events.manual.csv.
-4. Writes an accumulated historical data/events.csv instead of deleting old events.
-
-The output CSV intentionally keeps the core columns expected by the extension:
-title, shortTitle, category, lane, sub, start, endKnown, endInferred, href
-Additional metadata columns are allowed; the extension ignores columns it does not need.
+v1.6 fixes:
+- Detail-page text fallback for pages whose Starts/Ends widgets say "Calculating...".
+- URL-based identity to remove duplicate rows, especially cards shown in both Happening Now and Upcoming.
+- Extension-compatible lane/sub values so theme events do not disappear from the timeline.
+- Stable table order: active/future first, historical rows below.
 """
 from __future__ import annotations
 
@@ -26,11 +22,12 @@ from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
 from dateutil import parser as dateparser
+from dateutil import tz
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -42,7 +39,7 @@ SNAPSHOT_PATH = DATA_DIR / "snapshot-latest.json"
 
 SOURCE_URL = os.environ.get("LEEKDUCK_EVENTS_URL", "https://leekduck.com/events/")
 REQUEST_TIMEOUT = int(os.environ.get("REQUEST_TIMEOUT", "20"))
-MAX_DETAIL_PAGES = int(os.environ.get("MAX_DETAIL_PAGES", "120"))
+MAX_DETAIL_PAGES = int(os.environ.get("MAX_DETAIL_PAGES", "140"))
 DETAIL_SLEEP_SECONDS = float(os.environ.get("DETAIL_SLEEP_SECONDS", "0.20"))
 
 CSV_COLUMNS = [
@@ -57,6 +54,21 @@ UA = (
     "NeatDuck_Timeline/1.0 (+https://github.com/Yang-Zhang-717/NeatDuck_Timeline; "
     "public schedule updater; contact via GitHub issues)"
 )
+
+TZINFOS = {
+    "PT": tz.gettz("America/Los_Angeles"),
+    "PDT": tz.gettz("America/Los_Angeles"),
+    "PST": tz.gettz("America/Los_Angeles"),
+    "JST": tz.gettz("Asia/Tokyo"),
+    "CEST": tz.gettz("Europe/Copenhagen"),
+    "CET": tz.gettz("Europe/Copenhagen"),
+    "BST": tz.gettz("Europe/London"),
+    "UTC": timezone.utc,
+    "GMT": timezone.utc,
+}
+
+NAMED_TZ_RE = re.compile(r"\b(?:JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b", re.I)
+
 
 DATE_RE = re.compile(
     r"(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s+"
@@ -96,6 +108,9 @@ def now_iso() -> str:
 
 def clean_text(value: str) -> str:
     value = html.unescape(value or "")
+    value = value.replace("\u00a0", " ")
+    value = value.replace("–", "-").replace("—", "-")
+    value = value.replace("a.m.", "AM").replace("p.m.", "PM").replace("A.M.", "AM").replace("P.M.", "PM")
     value = NOISE_RE.sub(" ", value)
     value = re.sub(r"\s+", " ", value).strip()
     return value
@@ -108,52 +123,76 @@ def safe_url(href: str, base: str = SOURCE_URL) -> str:
     p = urlparse(url)
     if p.scheme not in {"http", "https"}:
         return ""
-    return url.split("#", 1)[0]
+    # Strip query/fragment so the same detail page is one identity.
+    return urlunparse((p.scheme, p.netloc, p.path.rstrip("/"), "", "", ""))
 
 
-def parse_dt(value: str) -> Optional[datetime]:
-    value = clean_text(value or "")
+def has_named_tz(value: str) -> bool:
+    return bool(NAMED_TZ_RE.search(value or ""))
+
+
+def parse_dt(value: str, fallback_year: Optional[int] = None, inherited_tz: Optional[str] = None) -> Optional[datetime]:
+    original = clean_text(value or "")
+    if not original or original.lower().startswith("calculating"):
+        return None
+
+    is_floating_local = bool(re.search(r"\bLocal\s+Time\b", original, re.I))
+    explicit_tz = (NAMED_TZ_RE.search(original) or None)
+    tz_name = explicit_tz.group(0) if explicit_tz else (inherited_tz if inherited_tz and not is_floating_local else None)
+
+    value = re.sub(r"\bLocal\s+Time\b", "", original, flags=re.I)
+    if tz_name and not explicit_tz:
+        value = f"{value} {tz_name}"
+    value = value.replace(", at", " ").replace(" at ", " ")
+    value = re.sub(r"\s+", " ", value).strip(" .")
     if not value:
         return None
-    value = value.replace("Local Time", "")
-    value = value.replace(", at", " ")
-    value = re.sub(r"\s+", " ", value).strip()
-    # LeekDuck dates usually omit the year on list cards. Assume the current year, and if that
-    # puts the event implausibly far in the past, roll forward one year.
-    default = datetime.now().replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    # dateutil uses default year/month/day for missing parts. Use Jan 1 of fallback/current year.
+    base_year = fallback_year or datetime.now().year
+    default = datetime.now().replace(year=base_year, month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
     try:
-        dt = dateparser.parse(value, fuzzy=True, default=default)
+        dt = dateparser.parse(value, fuzzy=True, default=default, tzinfos=TZINFOS)
     except Exception:
         return None
     if not dt:
         return None
-    # LeekDuck commonly labels event times as "Local Time". Store these as
-    # floating local datetimes, not absolute UTC instants, so each user's browser
-    # can render them in the user's own local timezone. Yes, timezones remain
-    # humanity's most successful practical joke.
-    dt = dt.replace(tzinfo=None)
-    today = datetime.now().replace(tzinfo=None)
-    if dt < today - timedelta(days=180):
-        try:
-            dt = dt.replace(year=dt.year + 1)
-        except ValueError:
-            pass
+    dt = dt.replace(microsecond=0)
+
+    if not tz_name or is_floating_local:
+        dt = dt.replace(tzinfo=None)
+
+    # If the year was omitted and the parsed date is implausibly old, roll forward.
+    if not re.search(r"\b20\d{2}\b", value) and not fallback_year:
+        today = datetime.now(dt.tzinfo).replace(microsecond=0) if dt.tzinfo else datetime.now().replace(tzinfo=None, microsecond=0)
+        if dt < today - timedelta(days=45):
+            try:
+                dt = dt.replace(year=dt.year + 1)
+            except ValueError:
+                pass
     return dt
 
 
 def to_iso(dt: Optional[datetime]) -> str:
     if not dt:
         return ""
-    # Do not append Z here. The extension treats YYYY-MM-DDTHH:mm:ss as local time.
-    return dt.replace(tzinfo=None, microsecond=0).isoformat(timespec="seconds")
+    dt = dt.replace(microsecond=0)
+    if dt.tzinfo:
+        return dt.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    return dt.isoformat(timespec="seconds")
 
 
 def from_iso(value: str) -> Optional[datetime]:
     if not value:
         return None
     try:
-        dt = dateparser.parse(value.replace("Z", "+00:00"))
-        return dt.replace(tzinfo=None) if dt else None
+        dt = dateparser.parse(value.replace("Z", "+00:00"), tzinfos=TZINFOS)
+        if not dt:
+            return None
+        dt = dt.replace(microsecond=0)
+        if dt.tzinfo:
+            return dt.astimezone(timezone.utc).replace(tzinfo=None)
+        return dt
     except Exception:
         return None
 
@@ -180,20 +219,15 @@ def infer_end(title: str, category: str, sub: str, start_iso: str) -> str:
 
 def choose_lane_sub(title: str, category: str) -> Tuple[str, str]:
     hay = f"{category} {title}".lower()
-    cat = clean_text(category)
-    if "mega" in hay and "raid" in hay:
-        return "raids", "Mega Raid Battles"
-    if "shadow" in hay and "raid" in hay:
-        return "raids", "Shadow Raid Battles"
-    if "raid hour" in hay:
-        return "weekly", "Raid Hour"
-    if "raid" in hay:
-        return "raids", "5-Star Raid Battles"
     if "max monday" in hay or "dynamax" in hay or "gigantamax" in hay:
         return "weekly", "Max Mondays"
     if "spotlight" in hay:
         return "weekly", "Pokémon Spotlight Hour"
-    if "battle league" in hay or "gbl" in hay:
+    if "raid hour" in hay:
+        return "weekly", "Raid Hour"
+    if "pokestop showcase" in hay or "pokéstop showcase" in hay:
+        return "weekly", "PokéStop Showcase"
+    if "go battle league" in hay or re.search(r"\bgbl\b", hay):
         return "gbl", "GO Battle League"
     if "go pass" in hay:
         return "go-pass", "GO Pass"
@@ -201,26 +235,34 @@ def choose_lane_sub(title: str, category: str) -> Tuple[str, str]:
         return "season", "Season"
     if "community day" in hay:
         return "community", "Community Day"
-    if "go fest" in hay:
-        return "city", "Pokémon GO Fest"
-    if "safari" in hay:
+    if "city safari" in hay:
         return "city", "City Safari"
-    return "theme", cat or "Event"
+    if "shadow" in hay and "raid" in hay:
+        return "raids", "Shadow Raid Battles"
+    if "mega" in hay and "raid" in hay:
+        return "raids", "Mega Raid Battles"
+    if "raid" in hay:
+        return "raids", "5-Star Raid Battles"
+    if "go fest" in hay or "go tour" in hay or "wild area" in hay:
+        return "theme", "Theme Main"
+    return "theme", "Theme Event A"
 
 
 def pokemonish_title_part(title: str) -> str:
-    text = title
+    text = clean_text(title)
     patterns = [
-        r"(.+?)\s+in\s+(?:Mega|5-star|Shadow)\s+Raids?",
+        r"(.+?)\s+in\s+(?:Mega|5-star|5-Star|Shadow)\s+Raids?",
+        r"(.+?)\s+in\s+5-star\s+Raid\s+Battles?",
         r"(?:Dynamax|Gigantamax)\s+(.+?)\s+during\s+Max\s+Monday",
         r"(.+?)\s+Raid\s+Hour",
+        r"(.+?)\s+Spotlight\s+Hour",
         r"(.+?)\s+Community\s+Day",
     ]
     for pat in patterns:
         m = re.search(pat, text, re.I)
         if m:
             return clean_text(m.group(1))
-    return clean_text(text)
+    return text
 
 
 def short_title(title: str, category: str, sub: str) -> str:
@@ -228,14 +270,10 @@ def short_title(title: str, category: str, sub: str) -> str:
     sub_l = (sub or "").lower()
     if "max monday" in sub_l:
         name = pokemonish_title_part(title)
-        if name.lower().startswith("max "):
-            return name
-        return f"Max {name}"
+        return name if name.lower().startswith("max ") else f"Max {name}"
     if "mega raid" in sub_l:
         name = pokemonish_title_part(title)
-        if re.match(r"^(Mega|超级|超級)\b", name, re.I):
-            return name
-        return f"Mega {name}"
+        return name if re.match(r"^(Mega|超级|超級)\b", name, re.I) else f"Mega {name}"
     if "raid" in sub_l:
         return pokemonish_title_part(title)
     if "battle league" in sub_l:
@@ -244,12 +282,11 @@ def short_title(title: str, category: str, sub: str) -> str:
 
 
 def uid_for(e: EventRecord) -> str:
-    key = "|".join([
-        clean_text(e.title).lower(),
-        clean_text(e.category).lower(),
-        e.start[:10] if e.start else "",
-        safe_url(e.href),
-    ])
+    href = safe_url(e.href)
+    if href:
+        key = "href:" + href.lower()
+    else:
+        key = "|".join([clean_text(e.title).lower(), clean_text(e.category).lower(), e.start[:10] if e.start else ""])
     return hashlib.sha1(key.encode("utf-8")).hexdigest()[:16]
 
 
@@ -261,6 +298,7 @@ def load_cache() -> Dict[str, dict]:
 
 
 def save_cache(cache: Dict[str, dict]) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
 
 
@@ -270,13 +308,79 @@ def fetch_html(url: str) -> str:
     return r.text
 
 
+def inherited_tz(*parts: str) -> Optional[str]:
+    m = NAMED_TZ_RE.search(" ".join(p or "" for p in parts))
+    return m.group(0) if m else None
+
+
+def year_of(*parts: str) -> Optional[int]:
+    m = re.search(r"\b(20\d{2})\b", " ".join(p or "" for p in parts))
+    return int(m.group(1)) if m else None
+
+
+def parse_detail_text_dates(raw: str) -> Tuple[Optional[datetime], Optional[datetime]]:
+    text = clean_text(raw)
+    if not text:
+        return None, None
+
+    # "Dates: May 29-June 1, 2026 Time: 10:00 AM - 8:00 PM JST"
+    # This must run before the generic "from ... to ..." matcher, or bonus-hour text can steal the event range.
+    m = re.search(
+        r"Dates:\s*([A-Za-z]+\s+\d{1,2})\s*-\s*([A-Za-z]+\s+\d{1,2}),?\s*(20\d{2})"
+        r"(?:\s+Time:\s*(\d{1,2}:\d{2}\s*(?:AM|PM))\s*-\s*(\d{1,2}:\d{2}\s*(?:AM|PM))\s*(JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)?)?",
+        text,
+        re.I,
+    )
+    if m:
+        y = int(m.group(3))
+        tz_name = m.group(6) or None
+        start_phrase = f"{m.group(1)}, {y} {m.group(4) or '12:00 AM'}"
+        end_phrase = f"{m.group(2)}, {y} {m.group(5) or '11:59 PM'}"
+        start = parse_dt(start_phrase, y, tz_name)
+        end = parse_dt(end_phrase, y, tz_name)
+        if start or end:
+            return start, end
+
+    # "will run from March 24, 2026, at 1:00 PM to March 31, 2026, at 1:00 PM PT"
+    m = re.search(r"(?:will\s+run\s+)?from\s+(.+?)\s+to\s+(.+?)(?:\.| Trainers\b|$)", text, re.I)
+    if m:
+        has_real_date = re.search(r"\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b", m.group(1) + " " + m.group(2), re.I)
+        if has_real_date:
+            tz_name = inherited_tz(m.group(1), m.group(2))
+            y = year_of(m.group(1), m.group(2))
+            start = parse_dt(m.group(1), y, tz_name)
+            end = parse_dt(m.group(2), y or (start.year if start else None), tz_name)
+            if start or end:
+                return start, end
+
+    # "on Saturday, May 30, at 6:00 PM PDT until Sunday, May 31, at 6:00 PM PDT"
+    m = re.search(r"\bon\s+(.+?)\s+until\s+(.+?)(?:\.|$)", text, re.I)
+    if m:
+        tz_name = inherited_tz(m.group(1), m.group(2))
+        y = year_of(text)
+        start = parse_dt(m.group(1), y, tz_name)
+        end = parse_dt(m.group(2), y or (start.year if start else None), tz_name)
+        if start or end:
+            return start, end
+
+    return None, None
+
+
 def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime], Optional[datetime]]:
     href = safe_url(href)
     if not href:
         return None, None
     cached = cache.get(href)
     if cached and (cached.get("start") or cached.get("end")):
-        return from_iso(cached.get("start", "")), from_iso(cached.get("end", ""))
+        try:
+            cached_at = dateparser.parse(cached.get("cachedAt", ""))
+        except Exception:
+            cached_at = None
+        if cached_at and (datetime.now(timezone.utc) - cached_at.astimezone(timezone.utc)) < timedelta(hours=36):
+            start, end = from_iso(cached.get("start", "")), from_iso(cached.get("end", ""))
+            if not start or not end or end >= start:
+                return start, end
+
     html_text = fetch_html(href)
     soup = BeautifulSoup(html_text, "html.parser")
 
@@ -286,46 +390,46 @@ def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime],
             return None
         date_el = sec.select_one("span[data-event-page-date], span[data-event-page-data]")
         time_el = sec.select_one("span[data-event-page-time]")
-        date_txt = ""
-        time_txt = ""
-        if date_el:
-            date_txt = date_el.get("data-event-page-date") or date_el.get("data-event-page-data") or date_el.get_text(" ")
-        if time_el:
-            time_txt = time_el.get("data-event-page-time") or time_el.get_text(" ")
+        date_txt = date_el.get("data-event-page-date") or date_el.get("data-event-page-data") or date_el.get_text(" ") if date_el else ""
+        time_txt = time_el.get("data-event-page-time") or time_el.get_text(" ") if time_el else ""
         return parse_dt(f"{date_txt} {time_txt}")
 
     start = pick("start-text")
     end = pick("end-text")
+    if not start or not end:
+        guessed_start, guessed_end = parse_detail_text_dates(soup.get_text("\n"))
+        start = start or guessed_start
+        end = end or guessed_end
+    if start and end and end < start:
+        try:
+            fixed = end.replace(year=start.year + 1)
+            if fixed > start:
+                end = fixed
+        except ValueError:
+            pass
     cache[href] = {"start": to_iso(start), "end": to_iso(end), "cachedAt": now_iso()}
     return start, end
 
 
 def probable_cards(soup: BeautifulSoup) -> List:
-    selectors = [
-        "span.event-header-item-wrapper",
-        "article",
-        ".event-card",
-        ".events-list .event",
-        "a[href*='/events/']",
-    ]
+    selectors = ["span.event-header-item-wrapper", "article", ".event-card", ".events-list .event", "a[href*='/events/']"]
     seen = set()
     cards = []
     for sel in selectors:
         for node in soup.select(sel):
-            key = id(node)
-            if key in seen:
-                continue
-            seen.add(key)
-            text = clean_text(node.get_text(" "))
             href_el = node if node.name == "a" else node.select_one("a[href]")
             href = safe_url(href_el.get("href") if href_el else "")
             if not href or href.rstrip("/") == SOURCE_URL.rstrip("/"):
                 continue
             if "/events/" not in urlparse(href).path:
                 continue
-            if len(text) < 8:
+            key = href + "|" + clean_text(node.get_text(" "))[:80]
+            if key in seen:
                 continue
-            cards.append(node)
+            seen.add(key)
+            text = clean_text(node.get_text(" "))
+            if len(text) >= 8:
+                cards.append(node)
     return cards
 
 
@@ -334,14 +438,11 @@ def extract_title_category(card) -> Tuple[str, str]:
     title = clean_text(title_el.get_text(" ") if title_el else "")
     cat_el = card.select_one("p.badge,.badge,.label,.category,.event-type,.event-item-wrapper > p,p") if hasattr(card, "select_one") else None
     category = clean_text(cat_el.get_text(" ") if cat_el else "")
-
     text = clean_text(card.get_text(" "))
     if not title:
-        # Common LeekDuck card text repeats the category first, e.g. "Raid Hour Raid Hour Tapu Fini Raid Hour ...".
         m = DATE_RE.search(text)
         before_date = text[:m.start()].strip() if m else text
         tokens = before_date.split()
-        # If first few words repeat, remove the repeated category-ish prefix.
         if len(tokens) >= 4 and tokens[0:2] == tokens[2:4]:
             category = category or " ".join(tokens[0:2])
             title = " ".join(tokens[4:])
@@ -362,32 +463,35 @@ def extract_card_dates(card, section_hint: str = "") -> Tuple[Optional[datetime]
     if hasattr(card, "select_one"):
         time_el = card.select_one("h5,time,[data-event-start-date],p[data-event-list-date]")
         if time_el:
-            start = parse_dt(time_el.get("data-event-start-date-check") or time_el.get("data-event-start-date") or time_el.get("datetime") or time_el.get("data-event-list-date") or "")
-            end = parse_dt(time_el.get("data-event-end-date") or "")
+            raw = time_el.get("data-event-start-date-check") or time_el.get("data-event-start-date") or time_el.get("datetime") or time_el.get("data-event-list-date") or ""
+            card_date = parse_dt(raw)
+            explicit_end = parse_dt(time_el.get("data-event-end-date") or "")
+            if section_hint == "happening":
+                end = explicit_end or card_date
+            else:
+                start = card_date
+                end = explicit_end
     text = clean_text(card.get_text(" "))
     date_match = DATE_RE.search(text)
     if date_match:
         dt = parse_dt(date_match.group(0))
-        if dt and not start and section_hint == "upcoming":
-            start = dt
-        elif dt and not end and section_hint == "happening":
+        if section_hint == "happening" and not end:
             end = dt
-        elif dt and not start:
+        elif not start:
             start = dt
     return start, end
 
 
 def detect_section(card) -> str:
-    # Walk backward through siblings/parents looking for the visible section heading.
     node = card
-    for _ in range(6):
-        prev = node.find_previous(["h1", "h2"])
+    for _ in range(7):
+        prev = node.find_previous(["h1", "h2", "h3", "h4", "h5"])
         if not prev:
             break
         txt = clean_text(prev.get_text(" ")).lower()
-        if "upcoming" in txt:
+        if "upcoming" in txt or "starts" in txt:
             return "upcoming"
-        if "happening" in txt or "live now" in txt:
+        if "happening" in txt or "live now" in txt or "ends" in txt:
             return "happening"
         node = prev
     return ""
@@ -413,13 +517,13 @@ def scrape_events() -> Tuple[List[EventRecord], Dict[str, dict]]:
         section = detect_section(card)
         start_dt, end_dt = extract_card_dates(card, section)
 
-        if (not start_dt or not end_dt) and detail_fetches < MAX_DETAIL_PAGES:
+        if detail_fetches < MAX_DETAIL_PAGES:
             try:
                 ds, de = detail_dates(href, cache)
                 detail_fetches += 1
-                if not start_dt and ds:
+                if ds:
                     start_dt = ds
-                if not end_dt and de:
+                if de:
                     end_dt = de
                 time.sleep(DETAIL_SLEEP_SECONDS)
             except Exception as exc:
@@ -458,9 +562,9 @@ def dedupe(events: Iterable[EventRecord]) -> List[EventRecord]:
             out[e.uid] = e
             continue
         for k, v in asdict(e).items():
-            if v and not getattr(prev, k, ""):
+            if v and k in {"title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href", "lastScrapedAt", "status"}:
                 setattr(prev, k, v)
-            elif v and k in {"title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href", "lastScrapedAt", "status"}:
+            elif v and not getattr(prev, k, ""):
                 setattr(prev, k, v)
     return list(out.values())
 
@@ -478,12 +582,10 @@ def read_events(path: Path) -> List[EventRecord]:
             rec = EventRecord(**data)
             if not rec.title and not rec.href:
                 continue
-            if not rec.lane or not rec.sub:
-                rec.lane, rec.sub = choose_lane_sub(rec.title, rec.category)
+            rec.lane, rec.sub = choose_lane_sub(rec.title, rec.category) if not rec.lane or not rec.sub or rec.sub in {"Event", "Update", "Pokémon GO Fest"} else (rec.lane, rec.sub)
             if not rec.shortTitle:
                 rec.shortTitle = short_title(rec.title, rec.category, rec.sub)
-            if not rec.uid:
-                rec.uid = uid_for(rec)
+            rec.uid = uid_for(rec)
             rows.append(rec)
     return rows
 
@@ -520,7 +622,6 @@ def merge_library(existing: List[EventRecord], manual: List[EventRecord], fresh:
             prev.status = e.status or "archived"
 
     for e in existing:
-        # Anything not encountered in the fresh scrape remains in the CSV as historical data.
         if not e.status or e.status == "active":
             e.status = "archived"
         put(e, active=False)
@@ -528,20 +629,11 @@ def merge_library(existing: List[EventRecord], manual: List[EventRecord], fresh:
         e.source = "manual"
         e.status = e.status or "manual"
         put(e, active=False, manual_source=True)
-    fresh_uids = set()
     for e in fresh:
-        fresh_uids.add(e.uid)
         put(e, active=True)
 
     records = list(by_uid.values())
-
-    # CSV/table ordering policy:
-    # 1. currently active or future events first, nearest start time first;
-    # 2. ended historical events next, newest old event first;
-    # 3. undated rows last.
-    # This makes the public table useful as both a current feed and a long-term archive,
-    # because apparently humans prefer not spelunking through 800 ancient rows to find tomorrow.
-    now_local = datetime.now().replace(tzinfo=None, microsecond=0)
+    now_local = datetime.now(timezone.utc).replace(tzinfo=None, microsecond=0)
 
     def event_start(e: EventRecord) -> Optional[datetime]:
         return from_iso(e.start)
@@ -550,18 +642,14 @@ def merge_library(existing: List[EventRecord], manual: List[EventRecord], fresh:
         return from_iso(e.endKnown) or from_iso(e.endInferred) or event_start(e)
 
     def seconds(dt: Optional[datetime], fallback: float = 0.0) -> float:
-        if not dt:
-            return fallback
-        return dt.timestamp()
+        return dt.timestamp() if dt else fallback
 
     def table_sort_key(e: EventRecord):
         start_dt = event_start(e)
         end_dt = event_end(e)
         if start_dt or end_dt:
-            # Future/current bucket. Sort by soonest upcoming start.
             if (end_dt and end_dt >= now_local) or (start_dt and start_dt >= now_local):
                 return (0, seconds(start_dt or end_dt, 10**15), e.lane or "zz", e.sub or "zz", e.title.lower())
-            # Historical bucket. Sort newest old events above older old events.
             return (1, -seconds(start_dt or end_dt, 0), e.lane or "zz", e.sub or "zz", e.title.lower())
         return (2, 10**15, e.lane or "zz", e.sub or "zz", e.title.lower())
 
@@ -587,9 +675,9 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
         "updatedAt": latest,
         "totalEvents": len(events),
         "activeEvents": len(fresh),
-        "schema": "events.csv/v1-compatible-with-extra-metadata",
+        "schema": "events.csv/v1.6-compatible-with-extra-metadata",
         "coreColumns": CORE_COLUMNS,
-        "extensionDefaultUrl": "https://yang-zhang-717.github.io/NeatDuck_Timeline/data/events.csv",
+        "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
     }
     MANIFEST_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     SNAPSHOT_PATH.write_text(json.dumps([asdict(e) for e in fresh], ensure_ascii=False, indent=2), encoding="utf-8")

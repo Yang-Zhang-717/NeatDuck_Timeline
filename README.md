@@ -1,24 +1,30 @@
-# NeatDuck_Timeline public data
+# NeatDuck_Timeline public event library
 
-Public CSV data for NeatDuck_Timeline.
+This repository publishes a public, extension-readable event CSV for NeatDuck_Timeline.
 
-## Files
-
-- `data/events.csv`: extension-readable event database.
-- `data/events.manual.csv`: optional hand-maintained source CSV.
-- `data/manifest.json`: update metadata.
-- `assets/pokemon.json`: Pokémon name lookup seed.
-- `scripts/update_data.py`: validates, dedupes, and republishes `events.csv`.
-- `.github/workflows/update-data.yml`: scheduled update twice daily, plus manual run.
-
-## Public URL after GitHub Pages is enabled
+Default public CSV URL after enabling GitHub Pages:
 
 ```text
 https://yang-zhang-717.github.io/NeatDuck_Timeline/data/events.csv
 ```
 
-The extension defaults to that URL. Keep this repo public unless you move the URL into extension settings.
+## Files
 
-## Safer maintenance model
+```text
+data/events.csv              Accumulated historical library used by the extension
+data/events.manual.csv       Optional manually maintained rows; merged into events.csv
+data/manifest.json           Metadata for clients
+data/snapshot-latest.json    Current scrape snapshot only, mostly for debugging
+data/detail_cache.json       Cached detail-page dates to reduce repeated page requests
+scripts/update_data.py       Fetch, parse, compare, merge, and write data
+.github/workflows/update-data.yml
+requirements.txt
+```
 
-Do not put a GitHub personal access token inside a browser extension. The extension should read public data only. Updates should happen through GitHub, GitHub Actions, or your own backend.
+## How updates work
+
+The GitHub Action runs twice daily and can also be triggered manually from the Actions tab. It fetches Leek Duck's public events page, parses the current/upcoming event cards, compares them with the existing `data/events.csv`, and writes a merged historical CSV. Old rows are not deleted; if they are not seen in the latest scrape, they remain as archived history. The CSV is sorted for table reading: active/future rows first, nearest upcoming first; historical rows below, newest old rows first.
+
+## Legal / etiquette notes
+
+This project should not copy Leek Duck graphics, long descriptions, page layout, or branding. It should only store factual schedule metadata needed for timeline display. Keep attribution and a clear non-affiliation statement in your extension and store listing.

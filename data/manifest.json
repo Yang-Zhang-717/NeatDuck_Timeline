@@ -1,7 +1,20 @@
 {
-  "project": "NeatDuck_Timeline",
-  "version": 1,
-  "events_csv": "data/events.csv",
-  "row_count": 2,
-  "updated_at": "2026-05-29T04:22:38.961020+00:00"
+  "name": "NeatDuck_Timeline public event library",
+  "source": "https://leekduck.com/events/",
+  "updatedAt": "2026-05-29T04:46:27Z",
+  "totalEvents": 95,
+  "activeEvents": 95,
+  "schema": "events.csv/v1-compatible-with-extra-metadata",
+  "coreColumns": [
+    "title",
+    "shortTitle",
+    "category",
+    "lane",
+    "sub",
+    "start",
+    "endKnown",
+    "endInferred",
+    "href"
+  ],
+  "extensionDefaultUrl": "https://yang-zhang-717.github.io/NeatDuck_Timeline/data/events.csv"
 }

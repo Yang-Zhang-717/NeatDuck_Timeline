@@ -1,3 +1,1 @@
 title,shortTitle,category,lane,sub,start,endKnown,endInferred,href
-Test Event One,Test One,event,Events,Test,2026-06-01T10:00:00Z,2026-06-01T12:00:00Z,,https://example.com/test-one
-Test Event Two,Test Two,raid,Raid Events,Test,2026-06-02T18:00:00Z,2026-06-02T19:00:00Z,,https://example.com/test-two

@@ -1,17 +1,28 @@
 name: Update public event data
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "data/**"
+      - "requirements.txt"
+      - ".github/workflows/update-data.yml"
   schedule:
+    # Twice daily, in UTC. GitHub Actions cron schedules use UTC.
     - cron: "0 0,12 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
-jobs:
-  update-data:
-    runs-on: ubuntu-latest
+concurrency:
+  group: update-public-event-data
+  cancel-in-progress: false
 
+jobs:
+  update:
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -21,18 +32,20 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Update public event data
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Scrape and merge event data
         run: python scripts/update_data.py
 
-      - name: Commit updated data
+      - name: Commit updated data if changed
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/events.csv data/manifest.json
-
-          if git diff --cached --quiet; then
-            echo "No data changes to commit."
-          else
+          if [[ -n "$(git status --porcelain data/ scripts/ requirements.txt .github/workflows/update-data.yml)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/events.csv data/manifest.json data/snapshot-latest.json data/detail_cache.json
             git commit -m "Update public event data"
             git push
+          else
+            echo "No data changes. The ducks remain orderly. Suspicious, but acceptable."
           fi

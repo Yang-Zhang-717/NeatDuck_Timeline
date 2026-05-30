@@ -1,138 +1,249 @@
-# NeatDuck Timeline / NeatDuck 时间轴
+# NeatDuck Timeline v1.0.7
 
-A GitHub-backed data repository and Chrome extension source tree for a compact Pokémon GO event timeline. It includes:
+NeatDuck Timeline is a Chrome extension and GitHub-backed data repo for Pokémon GO event planning. It started as a timeline. It has now, because apparently one timeline was not enough for civilization, become a four-tab planning panel:
 
-- public event CSV data used by the extension;
-- a Python scraper/merger for Leek Duck event pages;
-- the Chrome extension source under `extension/`;
-- Pokémon reference data for type matchups, Pokédex, and Max/Gigantamax pages.
+1. **Activity Calendar**
+2. **属性克制 / Type Matchup**
+3. **宝可梦图鉴 / Pokédex**
+4. **极巨化 / Dynamax & Gigantamax**
 
-一个基于 GitHub 数据源的 Pokémon GO 活动时间轴项目。仓库包含：
+The tabs are top-level and independent. Switching to Type Matchup, Pokédex, or Dynamax hides the calendar SVG, the left legend, and calendar-only controls. Wheel and click handlers are guarded so a non-calendar tab should not suddenly teleport you back to the timeline.
 
-- 供插件读取的公开活动 CSV；
-- 用于抓取和合并 Leek Duck 活动页的 Python 脚本；
-- `extension/` 目录中的 Chrome 插件源码；
-- 属性克制、图鉴、极巨化/超极巨化信息页所需的 Pokémon 参考数据。
+## What changed in v1.0.7
 
-## What changed in v1.0.7 / v1.0.7 更新
+### Layout and tabs
 
-- The extension now prefers GitHub data first. Page scraping happens only when the user clicks **Data Update / 数据更新**.
-- Events now carry `timeZone`, `timeZoneLabel`, and `isFixedTimeZone`, so the Python scraper and browser extension render fixed-time-zone activities consistently.
-- Added a display time-zone selector covering UTC-12 through UTC+14, shown as one representative city per offset.
-- Fixed-time-zone events keep `timeZone`, `timeZoneLabel`, and `isFixedTimeZone`; Local Time events remain local to the selected/browser zone.
-- One toggle switches linear timeline ↔ month view; `Today` / `This Week` / `This Month` only changes the visible range.
-- Default view is the current week in linear timeline mode, with hover popups kept for 600 ms.
-- Month view now follows the same lane order as the linear timeline.
-- Top-level tabs are now Activity Calendar / 属性克制 / 宝可梦图鉴 / 极巨化.
-- Type matchup supports click-ordered dual defender selection; Pokédex supports full view, generation filter, and Chinese search; Max info has filled CP gaps and Max/G-Max power notes.
-
-中文概括：优先用 GitHub 数据；手动点击才重新爬网页；顶层四 tab；默认本周直线时间轴；悬停窗口 600 ms；时区从 UTC-12 到 UTC+14；时间轴/月视图合并成一个切换；今天/本周/本月只改范围；月视图按直线时间轴顺序排；属性克制支持最多两个防御属性；图鉴支持世代筛选和中文搜索；极巨化补了 CP 和技能威力说明。
-
-## Repository layout / 仓库结构
+- Moved the plugin frame to a centered layout relative to the page.
+- Promoted Activity Calendar, Type Matchup, Pokédex, and Dynamax into true top-level tabs.
+- Split the toolbar into:
+  - **left/calendar-only controls**: Today, This Week, This Month, Timeline/Month toggle, Data Update.
+  - **right/common controls**: language, time zone, settings, export, ICS, email log, clear selection, standalone page, cloud update.
+- Default opening view is now **linear timeline + this week**.
+- Default tooltip hover persistence is now **600 ms**.
+- Mouse wheel hides the hover tooltip and only zooms the calendar when the Activity Calendar tab is active.
+- Shading now starts at the event's visible start position instead of beginning after the base event block.
+- SVG rect widths are clamped before rendering to avoid errors like:
 
 ```text
-.
-├── data/
-│   ├── events.csv              # public event library / 活动库
-│   ├── events.manual.csv       # optional manual overrides / 手动补充
-│   ├── manifest.json           # data manifest / 数据元信息
-│   └── pokemon.csv             # compact Pokémon table / 精简图鉴表
-├── assets/
-│   ├── pokemon.json            # existing Pokémon asset / 旧版图鉴资源
-│   └── pokemon_extra.json      # type chart + Pokédex + Max info / 新信息页数据
-├── extension/                  # unpacked Chrome extension source / 插件源码
-├── dist/                       # packaged extension zip / 插件压缩包
-├── scripts/update_data.py      # scraper + CSV merger / 抓取与合并脚本
-├── schema/events.schema.json   # event row schema / 活动行结构
-└── .github/workflows/          # scheduled data refresh / 定时更新
+Error: <rect> attribute width: A negative value is not valid.
 ```
 
-## Install the extension / 安装插件
+### Activity Calendar
 
-### Download packaged zip / 下载打包版
+The linear timeline and month view are now one calendar tab. The **Timeline / Month** button toggles layout. The **Today / This Week / This Month** buttons only change the date range; they no longer switch the view mode.
 
-The repo includes `dist/NeatDuck_Timeline_v1.0.7_extension.zip`. Download and unzip it, then load the extracted folder in Chrome. Keeping the zip in `dist/` is useful because normal humans do not enjoy rebuilding extensions just to click a calendar.
+The month view uses the same lane/category ordering as the linear timeline, so events no longer reorder into a tiny calendar goblin mess.
 
-中文：仓库内已包含 `dist/NeatDuck_Timeline_v1.0.7_extension.zip`。下载、解压，然后在 Chrome 里加载解压后的文件夹即可。
+### Time zones
 
+The display time-zone selector now covers offsets from UTC−12 through UTC+14, represented by a popular city for each offset:
 
-1. Open `chrome://extensions`.
-2. Enable **Developer mode**.
-3. Choose **Load unpacked**.
-4. Select the `extension/` directory.
-5. Open `https://leekduck.com/events/`, or click the extension icon to open the standalone timeline.
+- UTC−12 Baker Island
+- UTC−11 Pago Pago
+- UTC−10 Honolulu
+- UTC−09 Anchorage
+- UTC−08 Los Angeles
+- UTC−07 Denver
+- UTC−06 Chicago
+- UTC−05 New York
+- UTC−04 Halifax
+- UTC−03 São Paulo
+- UTC−02 South Georgia
+- UTC−01 Azores
+- UTC±00 London / UTC
+- UTC+01 Paris
+- UTC+02 Athens
+- UTC+03 Moscow
+- UTC+03:30 Tehran
+- UTC+04 Dubai
+- UTC+04:30 Kabul
+- UTC+05 Karachi
+- UTC+05:30 Delhi
+- UTC+05:45 Kathmandu
+- UTC+06 Dhaka
+- UTC+06:30 Yangon
+- UTC+07 Bangkok
+- UTC+08 Beijing
+- UTC+08:45 Eucla
+- UTC+09 Tokyo
+- UTC+09:30 Adelaide
+- UTC+10 Sydney
+- UTC+10:30 Lord Howe
+- UTC+11 Nouméa
+- UTC+12 Auckland
+- UTC+12:45 Chatham
+- UTC+13 Nukuʻalofa
+- UTC+14 Kiritimati
 
-中文：打开 `chrome://extensions`，开启开发者模式，选择“加载已解压的扩展程序”，选中 `extension/` 目录。
+The extension and GitHub updater both preserve `timeZone`, `timeZoneLabel`, and `isFixedTimeZone`. Events explicitly marked with a fixed zone such as JST, PT/PDT/PST, ET/EDT/EST, CT/CDT/CST, MT/MDT/MST, CEST/CET, BST, UTC/GMT, or UTC offsets are stored as fixed-time events. Local Time events remain floating local-time events.
 
-## Update event data locally / 本地更新活动数据
+## Tab usage
+
+### 1. Activity Calendar
+
+Use this tab to inspect LeekDuck event timelines.
+
+Controls:
+
+- **Today**: show the current local day in the selected display time zone.
+- **This Week**: show Monday through next Monday.
+- **This Month**: show the current calendar month.
+- **Timeline / Month**: toggle linear timeline and month grid without changing the date range.
+- **Data Update**: rescan the LeekDuck page DOM.
+- **Cloud Update**: fetch the repo-hosted `data/events.csv`.
+- **Time Zone**: change the display zone while preserving event semantics.
+- **Export Events CSV / Export ICS / Email Log**: export selected events; if nothing is selected, exports visible events.
+
+### 2. 属性克制 / Type Matchup
+
+This tab uses Pokémon GO type multipliers.
+
+- Click an attacking row or cell to set the attacking type.
+- Click defender type headers or chips to select up to two defender types.
+- Duplicate defender types are blocked.
+- Attack view and defense view share the same defender-type combo.
+- Defense groups are compactly displayed as:
+  - 超级有效 / Super effective
+  - 有效 / Effective
+  - 一般 / Neutral
+  - 无效 / Resisted
+  - 超级无效 / Double resisted
+
+### 3. 宝可梦图鉴 / Pokédex
+
+The Pokédex supports full-table browsing, Chinese search, generation filters, and category filters.
+
+Filters:
+
+- All
+- Mega-capable
+- Dynamax-capable
+- Gigantamax-capable
+- Legendary
+- Mythical
+- Generation 1 through 9, with corresponding main game versions shown in the selector.
+
+Generation mapping included:
+
+| Generation | Region | Main versions shown |
+|---:|---|---|
+| 1 | Kanto / 关都 | Red / Green / Blue / Yellow |
+| 2 | Johto / 城都 | Gold / Silver / Crystal |
+| 3 | Hoenn / 丰缘 | Ruby / Sapphire / Emerald, FireRed / LeafGreen |
+| 4 | Sinnoh / 神奥 | Diamond / Pearl / Platinum, HeartGold / SoulSilver |
+| 5 | Unova / 合众 | Black / White, Black 2 / White 2 |
+| 6 | Kalos / 卡洛斯 | X / Y, Omega Ruby / Alpha Sapphire |
+| 7 | Alola / 阿罗拉 | Sun / Moon, Ultra Sun / Ultra Moon, Let’s Go |
+| 8 | Galar / 伽勒尔 | Sword / Shield, Brilliant Diamond / Shining Pearl, Legends: Arceus |
+| 9 | Paldea / 帕底亚 | Scarlet / Violet |
+
+### CP / IV calculation
+
+For a selected Pokémon, the side card calculates CP from GO base stats, IV, level, and CPM:
+
+```text
+CP = floor((BaseAttack + AttackIV) × sqrt(BaseDefense + DefenseIV) × sqrt(BaseStamina + StaminaIV) × CPM² / 10)
+```
+
+Minimum CP is 10.
+
+The card also shows level-adjusted effective stats:
+
+```text
+Effective Attack  = (BaseAttack + AttackIV) × CPM
+Effective Defense = (BaseDefense + DefenseIV) × CPM
+Effective HP      = floor((BaseStamina + StaminaIV) × CPM)
+```
+
+The triangular rose chart visualizes Attack IV, Defense IV, and HP IV relative to the selected Pokémon's GO stats.
+
+GO stats are derived from main-series base stats using the common Pokémon GO stat conversion model used by public calculators:
+
+```text
+SpeedMod  = 1 + (Speed - 75) / 500
+GO Attack = round(2 × round(7/8 × max(Atk, SpA) + 1/8 × min(Atk, SpA)) × SpeedMod)
+GO Defense = round(2 × (5/8 × max(Def, SpD) + 3/8 × min(Def, SpD)) × SpeedMod)
+GO Stamina = floor(1.75 × HP + 50)
+```
+
+Known public CP values in the Dynamax table are explicitly filled, and remaining missing CP values are generated from the GO-stat conversion and CPM table. This avoids blank Lv40/Lv50 cells while still making it clear what is calculated rather than scraped from Niantic internals.
+
+### 4. 极巨化 / Dynamax & Gigantamax
+
+The Dynamax tab now has complete Lv40 and Lv50 CP fields for the bundled table.
+
+Move-power reference used in the tab:
+
+```text
+Dynamax Max Attack Lv1 / Lv2 / Lv3 = 250 / 300 / 350
+Gigantamax G-Max Lv1 / Lv2 / Lv3 = 350 / 400 / 450
+```
+
+The old column name `平` has been renamed in the UI to a readable score label:
+
+```text
+Table score = GO Attack × Move Power / 1000
+```
+
+For a level/IV-adjusted estimate:
+
+```text
+Adjusted score = (GO Attack + Attack IV) × CPM × Move Power / 100
+```
+
+## GitHub data updater
+
+Run:
 
 ```bash
-cd ~/00_self_defined/1_gits/NeatDuck_Timeline
-python3 -m venv .venv
-source .venv/bin/activate
 python -m pip install -r requirements.txt
 python scripts/update_data.py
-git status
 ```
 
-The script merges fresh public scrape results with existing history and optional `data/events.manual.csv`. Existing rows are not thrown into the void just because a site temporarily hides them, which is apparently a thing websites like to do for sport.
+The updater:
 
-脚本会把新抓取结果、历史数据和可选的 `data/events.manual.csv` 合并。旧活动不会因为网页临时隐藏就立刻丢失。
+- reads the LeekDuck events page;
+- prefers event detail pages when available;
+- exports fixed-time-zone metadata;
+- cleans duplicated titles such as `Mega Mega`;
+- merges manual rows from `data/events.manual.csv`;
+- writes:
+  - `data/events.csv`
+  - `data/manifest.json`
+  - `data/snapshot-latest.json`
+  - `extension/data/events.csv`
 
-## Reset this GitHub repo from the delivered zip / 用交付压缩包重置仓库
+## Chrome extension installation
 
-Assuming the delivered reset package is saved at `~/Downloads/NeatDuck_Timeline_github_repo_reset_v1.0.7.zip`:
+1. Download or unzip the extension package.
+2. Open Chrome and go to:
 
-```bash
-mkdir -p ~/00_self_defined/1_gits
-cd ~/00_self_defined/1_gits
-
-# Clone once. Replace the URL if your remote is different.
-git clone git@github.com:Yang-Zhang-717/NeatDuck_Timeline.git NeatDuck_Timeline
-cd ~/00_self_defined/1_gits/NeatDuck_Timeline
-
-git status
-
-# Remove tracked/untracked files, then unpack the reset package into this repo.
-# Check the path before pressing Enter, because rm -rf is not a toy, despite humanity's long-running experiment.
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-unzip ~/Downloads/NeatDuck_Timeline_github_repo_reset_v1.0.7.zip -d .
-
-# Sanity checks
-python3 -m py_compile scripts/update_data.py
-python3 -m json.tool data/manifest.json >/dev/null
-python3 -m json.tool assets/pokemon_extra.json >/dev/null
-
-git status
-git add -A
-git commit -m "Reset NeatDuck Timeline v1.0.7"
-git push origin main
+```text
+chrome://extensions
 ```
 
-HTTPS remote alternative:
+3. Enable **Developer mode**.
+4. Click **Load unpacked**.
+5. Select the `extension/` folder.
+6. Open:
 
-```bash
-git clone https://github.com/Yang-Zhang-717/NeatDuck_Timeline.git NeatDuck_Timeline
+```text
+https://leekduck.com/events/
 ```
 
-## GitHub Actions / 自动更新
+The panel appears above the event page content.
 
-The workflow `.github/workflows/update-data.yml` runs twice daily and can also be triggered manually from GitHub Actions. It commits updated `data/events.csv`, `data/manifest.json`, `data/snapshot-latest.json`, and `data/detail_cache.json` when changes exist.
+## Repo structure
 
-GitHub Actions 会每天两次自动运行，也可以手动触发。若数据有变化，它会自动提交更新后的数据文件。
+```text
+extension/              Chrome extension source
+extension/assets/       Pokémon reference data
+extension/data/         packaged fallback event CSV
+scripts/update_data.py  GitHub/CI event updater
+data/events.csv         public event library
+assets/pokemon_extra.json enriched Pokédex/type/max data
+```
 
-## Data notes / 数据说明
+## Notes
 
-- Main event data is in `data/events.csv`.
-- Time-zone fields:
-  - `timeZone`: canonical IANA zone or `local`.
-  - `timeZoneLabel`: original label such as `JST`, `PDT`, `PT`, or `Local Time`.
-  - `isFixedTimeZone`: `1` for fixed-zone events, blank otherwise.
-- Pokémon reference data is generated from the uploaded `Pokemon.xlsx` plus public PokéAPI CSV/reference data.
-- Type matchup uses Pokémon GO-style single-type multipliers: `1.6`, `1`, `0.625`, `0.390625`; dual defending types multiply the two single-type results.
-
-## Disclaimer / 声明
-
-This project is not affiliated with, endorsed by, or sponsored by Leek Duck, Niantic, Nintendo, The Pokémon Company, or Game Freak.
-
-本项目与 Leek Duck、Niantic、Nintendo、The Pokémon Company、Game Freak 均无官方关联、认可或赞助关系。
+This project uses public web data and bundled reference tables. Pokémon GO live data can change. When Niantic changes move powers, CPM values, forms, event text, or Max mechanics again, because apparently stability would be too generous, rerun the updater and refresh the static data.

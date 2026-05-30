@@ -37,6 +37,7 @@ EVENTS_PATH = DATA_DIR / "events.csv"
 MANUAL_PATH = DATA_DIR / "events.manual.csv"
 MANIFEST_PATH = DATA_DIR / "manifest.json"
 SNAPSHOT_PATH = DATA_DIR / "snapshot-latest.json"
+EXTENSION_DATA_DIR = ROOT / "extension" / "data"
 
 SOURCE_URL = os.environ.get("LEEKDUCK_EVENTS_URL", "https://leekduck.com/events/")
 REQUEST_TIMEOUT = int(os.environ.get("REQUEST_TIMEOUT", "20"))
@@ -69,11 +70,21 @@ TZINFOS = {
     "GMT": timezone.utc,
 }
 
-NAMED_TZ_RE = re.compile(r"\b(?:JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b", re.I)
+NAMED_TZ_RE = re.compile(r"\b(?:JST|PDT|PST|PT|EDT|EST|ET|CDT|CST|CT|MDT|MST|MT|CEST|CET|BST|UTC|GMT)\b", re.I)
+UTC_OFFSET_RE = re.compile(r"\b(?:UTC|GMT)\s*([+-])\s*(\d{1,2})(?::?(\d{2}))?\b", re.I)
 TZ_CANONICAL = {
     "PT": "America/Los_Angeles",
     "PDT": "America/Los_Angeles",
     "PST": "America/Los_Angeles",
+    "ET": "America/New_York",
+    "EDT": "America/New_York",
+    "EST": "America/New_York",
+    "CT": "America/Chicago",
+    "CDT": "America/Chicago",
+    "CST": "America/Chicago",
+    "MT": "America/Denver",
+    "MDT": "America/Denver",
+    "MST": "America/Denver",
     "JST": "Asia/Tokyo",
     "CEST": "Europe/Copenhagen",
     "CET": "Europe/Copenhagen",
@@ -85,6 +96,14 @@ TZ_CANONICAL = {
 
 def timezone_info(value: str) -> Dict[str, object]:
     text = value or ""
+    off = UTC_OFFSET_RE.search(text)
+    if off:
+        sign = off.group(1)
+        hh = int(off.group(2))
+        mm = int(off.group(3) or 0)
+        if 0 <= hh <= 14 and 0 <= mm < 60:
+            label = f"UTC{sign}{hh:02d}:{mm:02d}"
+            return {"timeZone": label, "timeZoneLabel": label, "isFixedTimeZone": True}
     m = NAMED_TZ_RE.search(text)
     if m:
         label = m.group(0).upper()
@@ -143,6 +162,8 @@ def clean_text(value: str) -> str:
     value = value.replace("–", "-").replace("—", "-")
     value = value.replace("a.m.", "AM").replace("p.m.", "PM").replace("A.M.", "AM").replace("P.M.", "PM")
     value = NOISE_RE.sub(" ", value)
+    value = re.sub(r"\bMega\s+Mega\b", "Mega", value, flags=re.I)
+    value = re.sub(r"\bMax\s+Max\b", "Max", value, flags=re.I)
     value = re.sub(r"\s+", " ", value).strip()
     return value
 
@@ -303,8 +324,10 @@ def short_title(title: str, category: str, sub: str) -> str:
         name = pokemonish_title_part(title)
         return name if name.lower().startswith("max ") else f"Max {name}"
     if "mega raid" in sub_l:
-        name = pokemonish_title_part(title)
-        return name if re.match(r"^(Mega|超级|超級)\b", name, re.I) else f"Mega {name}"
+        name = clean_text(pokemonish_title_part(title))
+        if re.match(r"^(Mega|超级|超級)\b", name, re.I):
+            return clean_text(name)
+        return clean_text(f"Mega {name}")
     if "raid" in sub_l:
         return pokemonish_title_part(title)
     if "battle league" in sub_l:
@@ -431,7 +454,9 @@ def detail_dates(href: str, cache: Dict[str, dict]) -> Tuple[Optional[datetime],
         time_el = sec.select_one("span[data-event-page-time]")
         date_txt = date_el.get("data-event-page-date") or date_el.get("data-event-page-data") or date_el.get_text(" ") if date_el else ""
         time_txt = time_el.get("data-event-page-time") or time_el.get_text(" ") if time_el else ""
-        return parse_dt(f"{date_txt} {time_txt}")
+        tz_hint = timezone_info(f"{date_txt} {time_txt} {raw_text}")
+        label = tz_hint.get("timeZoneLabel") if tz_hint.get("isFixedTimeZone") else None
+        return parse_dt(f"{date_txt} {time_txt}", inherited_tz=str(label) if label else None)
 
     start = pick("start-text")
     end = pick("end-text")
@@ -557,7 +582,8 @@ def scrape_events() -> Tuple[List[EventRecord], Dict[str, dict]]:
         if not href:
             continue
         title, category = extract_title_category(card)
-        if not title or re.search(r"^(events?|live now|upcoming|all)$", title, re.I):
+        title = clean_text(title)
+        if not title or re.search(r"^(events?|live now|upcoming|all|mega)$", title, re.I):
             continue
 
         section = detect_section(card)
@@ -736,6 +762,15 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
     SNAPSHOT_PATH.write_text(json.dumps([asdict(e) for e in fresh], ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+
+
+def sync_extension_data() -> None:
+    """Keep packaged extension fallback data in lockstep with the repo data files."""
+    EXTENSION_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    for src in [EVENTS_PATH, DATA_DIR / "pokemon.csv"]:
+        if src.exists():
+            (EXTENSION_DATA_DIR / src.name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+
 def main() -> int:
     print(f"Fetching {SOURCE_URL}")
     fresh, _cache = scrape_events()
@@ -744,6 +779,7 @@ def main() -> int:
     merged = merge_library(existing, manual, fresh)
     write_events(EVENTS_PATH, merged)
     write_manifest(merged, fresh)
+    sync_extension_data()
     print(f"Fresh events: {len(fresh)}")
     print(f"Historical library total: {len(merged)}")
     return 0

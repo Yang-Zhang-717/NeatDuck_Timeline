@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NeatDuck_Timeline v1.0",
+  "name": "NeatDuck_Timeline v1.0.7",
   "version": "1.0.7",
-  "description": "A compact, configurable timeline and Pokémon reference panel for Pokémon GO event planning with GitHub-backed public data.",
+  "description": "A tabbed Pokémon GO planning extension with timeline/month calendar, type matchup, Pokédex CP/IV tools, and Dynamax/Gigantamax reference data.",
   "icons": {
     "128": "icon128.png"
   },

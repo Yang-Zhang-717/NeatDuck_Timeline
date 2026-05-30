@@ -1,13 +1,14 @@
 // == standalone.js v1.0.7 ==
 (function(){
   const C = LDT_Core.CONST;
-  let state={ lang:LDT_Core.DEFAULT_LANG, events:[], colors:{...LDT_Core.DEFAULT_COLORS}, settings:LDT_Core.normalizeSettings({}), rangeStart:null, rangeEnd:null, viewMode:"linear", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
+  let state={ lang:LDT_Core.DEFAULT_LANG, events:[], colors:{...LDT_Core.DEFAULT_COLORS}, settings:LDT_Core.normalizeSettings({}), rangeStart:null, rangeEnd:null, viewMode:"linear", activeTab:"calendar", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
 
 
   function applyI18n(){
     const dict=LDT_Core.I18N[state.lang] || LDT_Core.I18N.en || {};
     document.querySelectorAll("[data-i18n]").forEach(el=>{ const k=el.getAttribute("data-i18n"); el.textContent=dict[k]||k; });
     updateTimeZoneSelect();
+    const langSel=document.getElementById("ld-lang-select"); if(langSel) langSel.value=state.lang;
     if(window.ND_Info) window.ND_Info.refreshLabels();
   }
   function timeZoneOptionsHTML(selected){
@@ -23,19 +24,44 @@
     updateTimeZoneSelect(); updateViewMode();
   }
   function ensureTopbarTimeZoneSelect(){
-    let sel=document.getElementById("ld-tz-select");
-    if(!sel){
-      const row=document.querySelector("#ld-topbar .nd-calendar-controls") || document.querySelector("#ld-topbar .row:last-child"); if(!row) return;
-      const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
-      wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
-      row.insertBefore(wrap, row.firstChild);
-      sel=wrap.querySelector("select");
-    }
-    if(sel && !sel.options.length) sel.innerHTML=timeZoneOptionsHTML(state.displayTimeZone);
-    if(sel && !sel.__ndTzBound){ sel.addEventListener("change",()=>setDisplayTimeZone(sel.value)); sel.__ndTzBound=true; }
+    const existing=document.getElementById("ld-tz-select");
+    if(existing){ existing.innerHTML=timeZoneOptionsHTML(state.displayTimeZone); if(!existing.__ldtBound){ existing.addEventListener("change",()=>setDisplayTimeZone(existing.value)); existing.__ldtBound=true; } return; }
+    const row=document.querySelector("#ld-topbar .row:last-child"); if(!row) return;
+    const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
+    wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
+    row.insertBefore(wrap, row.firstChild);
+    const sel=wrap.querySelector("select"); sel.addEventListener("change",()=>setDisplayTimeZone(sel.value));
   }
   function eventDisplayStart(e){ return LDT_Core.dateForDisplayZone(e && e.start, e, state.displayTimeZone); }
   function eventDisplayEnd(e){ return LDT_Core.dateForDisplayZone(e && (e.endKnown || e.endInferred), e, state.displayTimeZone); }
+
+  function displayNow(){ return LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone) || new Date(); }
+  function refreshViewLabel(){
+    const pill=document.getElementById("ld-current-view"); if(!pill) return;
+    const key=state.viewMode === "month" ? "currentViewMonth" : "currentViewLinear";
+    pill.setAttribute("data-i18n", key);
+    pill.textContent=LDT_Core.t(state.lang, key);
+  }
+  function applyActiveTabUI(){
+    const wrap=document.getElementById("ld-timeline-wrapper"); if(!wrap) return;
+    wrap.setAttribute("data-active-tab", state.activeTab || "calendar");
+    wrap.classList.toggle("nd-non-calendar", state.activeTab !== "calendar");
+    document.querySelectorAll("[data-main-tab]").forEach(btn=>{
+      const on=btn.getAttribute("data-main-tab") === state.activeTab;
+      btn.classList.toggle("active", on);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    refreshViewLabel();
+  }
+  function setTodayRange(render=true){ const d=LDT_Core.beginOfDay(displayNow()); state.rangeStart=+d; state.rangeEnd=+LDT_Core.addDays(d,1); if(render) updateViewMode(); }
+  function setWeekRange(render=true){ const d=LDT_Core.mondayOfWeek(displayNow()); state.rangeStart=+d; state.rangeEnd=+LDT_Core.addDays(d,7); if(render) updateViewMode(); }
+  function setMonthRange(render=true){ const d=LDT_Core.monthStart(displayNow()); state.rangeStart=+d; state.rangeEnd=+LDT_Core.nextMonthStart(d); if(render) updateViewMode(); }
+  function setActiveTab(tab){
+    state.activeTab = tab || "calendar";
+    applyActiveTabUI();
+    if(state.activeTab === "calendar") updateViewMode();
+    else if(window.ND_Info) window.ND_Info.show(state.activeTab);
+  }
 
   function laneLayout(){
     let y=C.TIMELINE_TOP_PAD || 58; const map={};
@@ -108,8 +134,8 @@
   function renderBackground(svg, rangeStart, rangeEnd){
     const monthBg=svg.querySelector("#ld-month-bgs"); const weekendBg=svg.querySelector("#ld-weekend-bgs"); monthBg.innerHTML=""; weekendBg.innerHTML="";
     const useMonth = LDT_Core.isRangeOverNdays(rangeStart, rangeEnd, 90); const xScale=t=>((t-rangeStart)/(rangeEnd-rangeStart))*C.TL_W; if(!isFinite(xScale(rangeStart))) return;
-    if (useMonth){ let t=LDT_Core.monthStart(new Date(rangeStart)); let odd=t.getMonth()%2===1; while(+t<rangeEnd){ const next=LDT_Core.nextMonthStart(t); const x=xScale(+t); const w=xScale(+next)-x; if(isFinite(x)&&isFinite(w)){ const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",0); r.setAttribute("width",w); r.setAttribute("height",(C.HEIGHT-C.TOPBAR_H)); r.setAttribute("class","ld-month-bg"); r.setAttribute("fill-opacity", odd?"0.18":"0.045"); monthBg.appendChild(r);} t=next; odd=!odd; } }
-    else { let t=LDT_Core.beginOfDay(new Date(rangeStart)); while(+t<rangeEnd){ if(LDT_Core.isWeekend(t)){ const dayEnd=LDT_Core.endOfDay(t); const x=xScale(Math.max(+t,rangeStart)); const w=xScale(Math.min(+dayEnd,rangeEnd))-x; if(isFinite(x)&&isFinite(w)){ const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",0); r.setAttribute("width",w); r.setAttribute("height",(C.HEIGHT-C.TOPBAR_H)); r.setAttribute("class","ld-weekend-bg"); r.setAttribute("fill-opacity","0.075"); weekendBg.appendChild(r);} } t=LDT_Core.addDays(t,1);} }
+    if (useMonth){ let t=LDT_Core.monthStart(new Date(rangeStart)); let odd=t.getMonth()%2===1; while(+t<rangeEnd){ const next=LDT_Core.nextMonthStart(t); const x=xScale(+t); const w=xScale(+next)-x; if(isFinite(x)&&isFinite(w)&&w>0){ const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",0); r.setAttribute("width",w); r.setAttribute("height",(C.HEIGHT-78)); r.setAttribute("class","ld-month-bg"); r.setAttribute("fill-opacity", odd?"0.18":"0.045"); monthBg.appendChild(r);} t=next; odd=!odd; } }
+    else { let t=LDT_Core.beginOfDay(new Date(rangeStart)); while(+t<rangeEnd){ if(LDT_Core.isWeekend(t)){ const dayEnd=LDT_Core.endOfDay(t); const x=xScale(Math.max(+t,rangeStart)); const w=xScale(Math.min(+dayEnd,rangeEnd))-x; if(isFinite(x)&&isFinite(w)&&w>0){ const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",0); r.setAttribute("width",w); r.setAttribute("height",(C.HEIGHT-78)); r.setAttribute("class","ld-weekend-bg"); r.setAttribute("fill-opacity","0.075"); weekendBg.appendChild(r);} } t=LDT_Core.addDays(t,1);} }
   }
 
 
@@ -159,10 +185,10 @@
   function renderRulers(svg, rangeStart, rangeEnd){
     const top=svg.querySelector("#ld-ruler-top"); const bottom=svg.querySelector("#ld-ruler-bottom"); top.innerHTML=""; bottom.innerHTML="";
     const rule=chooseTickStep(rangeStart, rangeEnd); const pts=buildTicks(rule, rangeStart, rangeEnd); const xScale=t=>((t-rangeStart)/(rangeEnd-rangeStart))*C.TL_W; if(!isFinite(xScale(rangeStart))) return;
-    const mk=(group,y)=>{ const gg=document.createElementNS("http://www.w3.org/2000/svg","g"); gg.setAttribute("class","ld-grid"); group.appendChild(gg); pts.forEach(d=>{ const x=xScale(+d); if(!isFinite(x)) return; const l=document.createElementNS("http://www.w3.org/2000/svg","line"); l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",y); l.setAttribute("y2",(C.HEIGHT-C.TOPBAR_H)-C.BOTTOM_RULER_H); gg.appendChild(l); const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",y-6); t.textContent=fmtTick(rule,d); group.appendChild(t); }); };
+    const mk=(group,y)=>{ const gg=document.createElementNS("http://www.w3.org/2000/svg","g"); gg.setAttribute("class","ld-grid"); group.appendChild(gg); pts.forEach(d=>{ const x=xScale(+d); if(!isFinite(x)) return; const l=document.createElementNS("http://www.w3.org/2000/svg","line"); l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",y); l.setAttribute("y2",(C.HEIGHT-78)-C.BOTTOM_RULER_H); gg.appendChild(l); const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",y-6); t.textContent=fmtTick(rule,d); group.appendChild(t); }); };
     mk(top,C.TIMELINE_TOP_PAD || C.TOP_RULER_H);
     const gg=document.createElementNS("http://www.w3.org/2000/svg","g"); gg.setAttribute("class","ld-grid"); bottom.appendChild(gg);
-    pts.forEach(d=>{ const x=xScale(+d); if(!isFinite(x)) return; const l=document.createElementNS("http://www.w3.org/2000/svg","line"); l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",C.TIMELINE_TOP_PAD || 0); l.setAttribute("y2",(C.HEIGHT-C.TOPBAR_H)-C.BOTTOM_RULER_H); gg.appendChild(l); const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",(C.HEIGHT-C.TOPBAR_H)-6); t.textContent=fmtTick(rule,d); bottom.appendChild(t); });
+    pts.forEach(d=>{ const x=xScale(+d); if(!isFinite(x)) return; const l=document.createElementNS("http://www.w3.org/2000/svg","line"); l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",C.TIMELINE_TOP_PAD || 0); l.setAttribute("y2",(C.HEIGHT-78)-C.BOTTOM_RULER_H); gg.appendChild(l); const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",(C.HEIGHT-78)-6); t.textContent=fmtTick(rule,d); bottom.appendChild(t); });
   }
 
 
@@ -171,8 +197,7 @@
     document.documentElement.style.setProperty("--nd-outer-margin-x", state.settings.outerMarginX + "px");
     document.documentElement.style.setProperty("--nd-item-font-size", state.settings.fontSize + "px");
     document.documentElement.style.setProperty("--nd-item-font-weight", state.settings.fontWeight);
-    const wrap=document.getElementById("ld-timeline-wrapper");
-    if(wrap) wrap.style.marginLeft = wrap.style.marginRight = state.settings.outerMarginX + "px";
+    // Wrapper centering is CSS-owned; settings keep inner rendering compact without dragging the whole plugin off-center.
   }
   function approxTextWidth(text){
     const fs=(state.settings && state.settings.fontSize)||11; let n=0;
@@ -220,7 +245,7 @@
       ${row("labelPaddingX","settingsLabelPaddingX","number",'min="0" max="24" step="1"')}
       ${row("itemBorderWidth","settingsItemBorderWidth","number",'min="0" max="6" step="0.5"')}
       ${row("itemRadius","settingsItemRadius","number",'min="0" max="16" step="1"')}
-      ${row("hoverPersistMs","settingsHoverPersistMs","number",'min="100" max="12000" step="100"')}
+      ${row("hoverPersistMs","settingsHoverPersistMs","number",'min="300" max="12000" step="100"')}
       ${row("fontSize","settingsFontSize","number",'min="8" max="20" step="1"')}
       ${row("fontWeight","settingsFontWeight","number",'min="300" max="900" step="100"')}
       ${row("minShortEventWidth","settingsMinShortEventWidth","number",'min="4" max="120" step="1"')}
@@ -297,9 +322,10 @@
         let labelBoxEnd=visibleBaseEnd, shade=null;
         if(desiredW>Math.max(0,visibleBaseEnd-visibleStart) && cfg.shadeMaxWidth>0){
           labelBoxEnd=Math.min(nextLimit, visibleStart+Math.min(desiredW,(visibleBaseEnd-visibleStart)+cfg.shadeMaxWidth));
-          if(labelBoxEnd>visibleBaseEnd+1){
+          const shadeX=visibleStart, shadeW=Math.max(0, labelBoxEnd-shadeX);
+          if(shadeW>1){
             shade=document.createElementNS("http://www.w3.org/2000/svg","rect");
-            shade.setAttribute("x",visibleStart); shade.setAttribute("y",y); shade.setAttribute("width",labelBoxEnd-visibleStart); shade.setAttribute("height",C.ITEM_H); shade.setAttribute("rx",cfg.itemRadius); shade.setAttribute("ry",cfg.itemRadius); shade.setAttribute("fill",fill); shade.setAttribute("fill-opacity","0.50"); shade.setAttribute("class","ld-item-shade"); g.appendChild(shade);
+            shade.setAttribute("x",shadeX); shade.setAttribute("y",y); shade.setAttribute("width",shadeW); shade.setAttribute("height",C.ITEM_H); shade.setAttribute("rx",cfg.itemRadius); shade.setAttribute("ry",cfg.itemRadius); shade.setAttribute("fill",fill); shade.setAttribute("fill-opacity","0.34"); shade.setAttribute("class","ld-item-shade"); g.appendChild(shade);
           }
         }
         const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
@@ -356,13 +382,11 @@
         const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000));
         segs.push({e:x.e,a,b,s:+x.s});
       });
-      const rankMap={}; let rank=0;
-      LDT_Core.LANES_SPEC.forEach(lane=>{ (lane.sub||[lane.key]).forEach(sub=>{ rankMap[`${lane.key}::${sub}`]=rank++; }); });
-      segs.sort((a,b)=>(rankMap[`${a.e.lane}::${a.e.sub}`]??999)-(rankMap[`${b.e.lane}::${b.e.sub}`]??999) || a.a-b.a || a.s-b.s);
-      const usedRanks=Array.from(new Set(segs.map(seg=>rankMap[`${seg.e.lane}::${seg.e.sub}`]??999))).sort((a,b)=>a-b);
-      const compactRank={}; usedRanks.forEach((r,i)=>compactRank[r]=i);
-      segs.forEach(seg=>{ seg.lane=compactRank[rankMap[`${seg.e.lane}::${seg.e.sub}`]??999] || 0; });
-      row.style.minHeight=Math.max(132, 34+usedRanks.length*24)+"px";
+      const laneRank=Object.create(null); LDT_Core.LANES_SPEC.forEach((lane,i)=>{ if(lane.sub && lane.sub.length) lane.sub.forEach((sub,j)=>laneRank[`${lane.key}::${sub}`]=i*100+j); else laneRank[`${lane.key}::${lane.key}`]=i*100; });
+      segs.sort((a,b)=>(laneRank[`${a.e.lane}::${a.e.sub}`]??9999)-(laneRank[`${b.e.lane}::${b.e.sub}`]??9999) || a.a-b.a || a.s-b.s);
+      const lanes=[];
+      segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
+      row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
       segs.forEach(seg=>{
         const ev=seg.e, fill=state.colors[ev.sub]||state.colors[ev.category]||state.colors[ev.lane]||"lightsteelblue";
         const div=document.createElement("div"); div.className="nd-month-event"+(ev.isFixedTimeZone?" fixed-tz":"")+(state.selectedIds&&state.selectedIds.has(ev.id)?" selected":"");
@@ -377,31 +401,27 @@
   }
 
   function updateViewMode(){
+    applyActiveTabUI();
+    if(state.activeTab !== "calendar") return;
     if(window.ND_Info) window.ND_Info.hide();
-    const svg=document.getElementById("ld-timeline-svg"); const mg=document.getElementById("ld-monthgrid");
+    const svg=document.getElementById("ld-timeline-svg"); const mg=document.getElementById("ld-monthgrid"); const ext=document.getElementById("ld-extenders");
+    if(ext) ext.style.display="block";
     if(state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); } else renderMonthGrid();
   }
 
-  function setRangePreset(kind){
-    const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone) || new Date();
-    if(kind==="today"){
-      const start=LDT_Core.beginOfDay(nowD); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,1);
-    } else if(kind==="month"){
-      const start=LDT_Core.monthStart(nowD); state.rangeStart=+start; state.rangeEnd=+LDT_Core.nextMonthStart(start);
-    } else {
-      const start=LDT_Core.mondayOfWeek(nowD); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,7);
-    }
+  function fitRangeToEvents(){
+    const has=state.events.filter(e=>e.start && (e.endKnown||e.endInferred));
+    if(has.length){ const starts=has.map(e=>eventDisplayStart(e)).filter(Boolean).map(d=>+d); const ends=has.map(e=>eventDisplayEnd(e)).filter(Boolean).map(d=>+d); const min=Math.min(...starts); const max=Math.max(...ends); state.rangeStart=+LDT_Core.addDays(min,-2); state.rangeEnd=+LDT_Core.addDays(max,5); }
+    else { const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5); }
   }
-
-  function fitRangeToEvents(){ setRangePreset("week"); }
 
   function attachInteractions(){
     const stage=document.getElementById("ld-right"); if(!stage || stage.__ldtBound) return; stage.__ldtBound=true;
     let dragging=false,lastX=0;
-    stage.addEventListener("mousedown", ev=>{ if(state.viewMode!=="linear" || ev.button!==0) return; dragging=true; lastX=ev.clientX; stage.style.cursor="grabbing"; ev.preventDefault(); });
+    stage.addEventListener("mousedown", ev=>{ if(state.activeTab!=="calendar" || state.viewMode!=="linear" || ev.button!==0) return; dragging=true; lastX=ev.clientX; stage.style.cursor="grabbing"; ev.preventDefault(); });
     window.addEventListener("mouseup", ()=>{ dragging=false; stage.style.cursor=""; });
-    window.addEventListener("mousemove", ev=>{ if(!dragging || state.viewMode!=="linear") return; const dx=ev.clientX-lastX; lastX=ev.clientX; const span=state.rangeEnd-state.rangeStart; const delta=(dx/C.TL_W)*span; state.rangeStart-=delta; state.rangeEnd-=delta; updateViewMode(); });
-    stage.addEventListener("wheel", ev=>{ if(state.viewMode!=="linear") return; ev.preventDefault(); const rect=stage.getBoundingClientRect(); const x=Math.max(0, Math.min(C.TL_W, (ev.clientX-rect.left)*(C.TL_W/Math.max(1,rect.width)))); const span=state.rangeEnd-state.rangeStart; const center=state.rangeStart+(x/C.TL_W)*span; const factor=ev.deltaY<0?0.82:1.22; const newSpan=Math.max(6*3600000, Math.min(240*86400000, span*factor)); const ratio=x/C.TL_W; state.rangeStart=center-ratio*newSpan; state.rangeEnd=state.rangeStart+newSpan; updateViewMode(); }, {passive:false});
+    window.addEventListener("mousemove", ev=>{ if(!dragging || state.activeTab!=="calendar" || state.viewMode!=="linear") return; const dx=ev.clientX-lastX; lastX=ev.clientX; const span=state.rangeEnd-state.rangeStart; const delta=(dx/C.TL_W)*span; state.rangeStart-=delta; state.rangeEnd-=delta; updateViewMode(); });
+    stage.addEventListener("wheel", ev=>{ if(state.activeTab!=="calendar" || state.viewMode!=="linear") return; ev.preventDefault(); const rect=stage.getBoundingClientRect(); const x=Math.max(0, Math.min(C.TL_W, (ev.clientX-rect.left)*(C.TL_W/Math.max(1,rect.width)))); const span=state.rangeEnd-state.rangeStart; const center=state.rangeStart+(x/C.TL_W)*span; const factor=ev.deltaY<0?0.82:1.22; const newSpan=Math.max(6*3600000, Math.min(240*86400000, span*factor)); const ratio=x/C.TL_W; state.rangeStart=center-ratio*newSpan; state.rangeEnd=state.rangeStart+newSpan; updateViewMode(); }, {passive:false});
   }
 
   function showStandaloneMessage(message){
@@ -444,7 +464,7 @@
     }
     state.events = (st.events && st.events.length) ? LDT_Core.dedupeEvents(st.events) : (csv ? LDT_Core.dedupeEvents(LDT_Core.csvToEvents(csv)) : []);
     LDT_Core.assignThemeRows(state.events);
-    if(!preserveRange || !state.rangeStart || !state.rangeEnd) fitRangeToEvents();
+    if(!preserveRange || !state.rangeStart || !state.rangeEnd) setWeekRange(false);
     updateViewMode();
     if(!state.events.length){
       showStandaloneMessage(LDT_Core.t(state.lang, "noCachedEvents"));
@@ -467,9 +487,13 @@
   async function init(){
     attachStorageListener();
     ensureTopbarTimeZoneSelect();
-    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang, showCalendar:()=>updateViewMode()});
+    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang});
     await refreshRemoteData(false);
     await loadAndRenderFromStorage({preserveRange:false});
+    state.viewMode="linear"; state.activeTab="calendar"; applyActiveTabUI(); updateViewMode();
+    document.querySelectorAll("[data-main-tab]").forEach(btn=>{ if(!btn.__ldtBound){ btn.addEventListener("click",()=>setActiveTab(btn.getAttribute("data-main-tab"))); btn.__ldtBound=true; } });
+    const langSel=document.getElementById("ld-lang-select");
+    if(langSel){ langSel.value=state.lang; if(!langSel.__ldtBound){ langSel.addEventListener("change", async ()=>{ state.lang=langSel.value; await LDT_Core.saveState({ld_lang:state.lang}); applyI18n(); updateViewMode(); }); langSel.__ldtBound=true; } }
     const exportBtn = document.querySelector('[data-act="export-events-csv"]');
     if(exportBtn && !exportBtn.__ldtBound) exportBtn.addEventListener("click", ()=>{
       const text=LDT_Core.eventsToCSV(state.events); const url=URL.createObjectURL(new Blob([text],{type:"text/csv;charset=utf-8"})); const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
@@ -494,16 +518,16 @@
     if(mask && !mask.__ndBound){ mask.addEventListener("click",()=>{ document.querySelectorAll(".ld-modal").forEach(m=>m.style.display="none"); mask.style.display="none"; }); mask.__ndBound=true; }
     document.querySelectorAll("[data-close='settings']").forEach(b=>{ if(!b.__ndBound){ b.addEventListener("click",()=>{ document.getElementById("ld-settings-modal").style.display="none"; document.getElementById("ld-mask").style.display="none"; }); b.__ndBound=true; } });
     const todayBtn = document.querySelector('[data-act="today"]');
-    if(todayBtn && !todayBtn.__ldtBound) todayBtn.addEventListener("click", ()=>{ setRangePreset("today"); updateViewMode(); });
+    if(todayBtn && !todayBtn.__ldtBound) todayBtn.addEventListener("click", ()=>setTodayRange(true));
     if(todayBtn) todayBtn.__ldtBound = true;
     const weekBtn = document.querySelector('[data-act="reset-week"]');
-    if(weekBtn && !weekBtn.__ldtBound) weekBtn.addEventListener("click", ()=>{ setRangePreset("week"); updateViewMode(); });
+    if(weekBtn && !weekBtn.__ldtBound) weekBtn.addEventListener("click", ()=>setWeekRange(true));
     if(weekBtn) weekBtn.__ldtBound = true;
     const monthBtn = document.querySelector('[data-act="reset-month"]');
-    if(monthBtn && !monthBtn.__ldtBound) monthBtn.addEventListener("click", ()=>{ setRangePreset("month"); updateViewMode(); });
+    if(monthBtn && !monthBtn.__ldtBound) monthBtn.addEventListener("click", ()=>setMonthRange(true));
     if(monthBtn) monthBtn.__ldtBound = true;
-    const toggleBtn = document.querySelector('[data-act="toggle-view"]');
-    if(toggleBtn && !toggleBtn.__ldtBound) toggleBtn.addEventListener("click", ()=>{ state.viewMode = state.viewMode==="linear" ? "month" : "linear"; updateViewMode(); });
+    const toggleBtn = document.querySelector('[data-act="toggle-calendar-view"]');
+    if(toggleBtn && !toggleBtn.__ldtBound) toggleBtn.addEventListener("click", ()=>{ state.viewMode=state.viewMode==="linear"?"month":"linear"; updateViewMode(); });
     if(toggleBtn) toggleBtn.__ldtBound = true;
     attachInteractions();
   }

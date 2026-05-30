@@ -1,0 +1,10 @@
+{
+  "sourceWorkbook": "Pokemon.xlsx uploaded by user",
+  "typeChartSource": "Pokémon GO type chart; multipliers use GO values; dual types multiply",
+  "maxAvailabilitySource": "PokemonDB Dynamax/Gigantamax Pokémon GO availability list, merged with Pokemon.xlsx rows",
+  "generatedRows": {
+    "pokedex": 1215,
+    "max": 147,
+    "types": 18
+  }
+}

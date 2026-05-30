@@ -47,5 +47,5 @@ jobs:
             git commit -m "Update public event data"
             git push
           else
-            echo "No data changes. The ducks remain orderly. Suspicious, but acceptable."
+            echo "No data changes."
           fi

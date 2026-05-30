@@ -13,65 +13,6 @@
   };
 
   Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv";
-  Core.DEFAULT_DISPLAY_TIME_ZONE = "local";
-  Core.TIME_ZONE_OPTIONS = [
-    {value:"local", label:"Browser / Local"},
-    {value:"UTC", label:"UTC"},
-    {value:"America/Los_Angeles", label:"PT / America/Los_Angeles"},
-    {value:"Asia/Tokyo", label:"JST / Asia/Tokyo"},
-    {value:"Europe/Copenhagen", label:"CET/CEST / Europe/Copenhagen"},
-    {value:"Europe/London", label:"GMT/BST / Europe/London"}
-  ];
-  Core.namedZoneToIANA = function(z){
-    const t=String(z||"").toUpperCase();
-    if(t==="JST") return "Asia/Tokyo";
-    if(t==="PT"||t==="PDT"||t==="PST") return "America/Los_Angeles";
-    if(t==="CEST"||t==="CET") return "Europe/Copenhagen";
-    if(t==="BST") return "Europe/London";
-    if(t==="UTC"||t==="GMT") return "UTC";
-    if(/^[-+]?\d/.test(t)) return "UTC";
-    return "";
-  };
-  Core.normalizeDisplayTimeZone = function(value){
-    const v=String(value||Core.DEFAULT_DISPLAY_TIME_ZONE).trim();
-    if(!v || v==="local") return "local";
-    if(Core.TIME_ZONE_OPTIONS.some(x=>x.value===v)) return v;
-    try{ new Intl.DateTimeFormat("en-US", {timeZone:v}).format(new Date()); return v; }
-    catch(_){ return "local"; }
-  };
-  Core.detectTimeZone = function(text){
-    const s=String(text||"");
-    if(/\bLocal\s+Time\b/i.test(s)) return {timeZone:"local", label:"Local Time", fixed:false};
-    const m=s.match(/\b(JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b/i);
-    if(m){ const label=m[1].toUpperCase(); return {timeZone:Core.namedZoneToIANA(label)||label, label, fixed:true}; }
-    return {timeZone:"local", label:"Local Time", fixed:false};
-  };
-  Core._partsInTimeZone = function(date, timeZone){
-    const d=Core.parseLocalDateString(date); if(!d) return null;
-    const tz=Core.normalizeDisplayTimeZone(timeZone);
-    if(tz==="local") return {year:d.getFullYear(), month:d.getMonth()+1, day:d.getDate(), hour:d.getHours(), minute:d.getMinutes(), second:d.getSeconds()};
-    const fmt=new Intl.DateTimeFormat("en-CA", {timeZone:tz, year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hourCycle:"h23"});
-    const out={};
-    fmt.formatToParts(d).forEach(p=>{ if(p.type!=="literal") out[p.type]=Number(p.value); });
-    return {year:out.year, month:out.month, day:out.day, hour:out.hour||0, minute:out.minute||0, second:out.second||0};
-  };
-  Core.dateForDisplayZone = function(date, event, displayTimeZone){
-    const d=Core.parseLocalDateString(date); if(!d) return null;
-    const tz=Core.normalizeDisplayTimeZone(displayTimeZone);
-    if(tz==="local") return d;
-    const fixed=!!(event && (event.isFixedTimeZone || (event.timeZone && event.timeZone!=="local" && event.timeZone!=="Local Time")));
-    if(!fixed) return d;
-    const p=Core._partsInTimeZone(d, tz); if(!p) return d;
-    return new Date(p.year, p.month-1, p.day, p.hour, p.minute, p.second, d.getMilliseconds());
-  };
-  Core.fmtInTimeZone = function(date, displayTimeZone){
-    const d=Core.parseLocalDateString(date); if(!d) return "";
-    const tz=Core.normalizeDisplayTimeZone(displayTimeZone);
-    if(tz==="local") return Core.fmt(d);
-    const p=Core._partsInTimeZone(d, tz); if(!p) return Core.fmt(d);
-    const pad=n=>String(n).padStart(2,"0");
-    return `${p.year}-${pad(p.month)}-${pad(p.day)} ${pad(p.hour)}:${pad(p.minute)}`;
-  };
   Core.normalizeRemoteUrl = function(input){
     try{
       const raw = String(input || Core.DEFAULT_REMOTE_URL).trim();
@@ -85,9 +26,9 @@
     }catch(_){ return Core.DEFAULT_REMOTE_URL; }
   };
   Core.DEFAULT_SETTINGS = {
-    outerMarginX: 4,
+    outerMarginX: 0,
     labelPaddingX: 6,
-    itemBorderWidth: 1,
+    itemBorderWidth: 1.25,
     itemRadius: 4,
     hoverPersistMs: 2400,
     fontSize: 11,
@@ -135,9 +76,9 @@
 
   /* i18n */
   Core.I18N = {
-    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
-    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
-    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
+    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection"},
+    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择"},
+    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取"}
   };
   Core.DEFAULT_LANG = "zh-CN";
 
@@ -151,6 +92,26 @@
   Object.assign(Core.I18N["zh-TW"], {
     settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 CSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
   });
+
+  Object.assign(Core.I18N.en, {
+    tabTimeline:"Activity Timeline", tabTypes:"Type Matchups", tabPokedex:"Pokédex", tabMax:"Dynamax/Gigantamax",
+    toggleView:"Toggle View", timezone:"Time Zone", fixedTimeZone:"Fixed time zone", localTime:"Local Time",
+    attackView:"Attack view", defenseView:"Defense view", selected:"Selected", strongestInto:"Best targets", weakestTo:"Weakest to", multiplier:"Multiplier",
+    search:"Search", typeHint:"Click row headers for attack type and column headers for defender type. Up to two selections are kept in click order."
+  });
+  Object.assign(Core.I18N["zh-CN"], {
+    tabTimeline:"活动 Timeline", tabTypes:"属性克制", tabPokedex:"Pokémon 图鉴", tabMax:"极巨化",
+    toggleView:"切换视图", timezone:"时区", fixedTimeZone:"固定时区", localTime:"当地时间",
+    attackView:"攻击视角", defenseView:"防守视角", selected:"已选择", strongestInto:"最有效目标", weakestTo:"最怕的攻击", multiplier:"倍率",
+    search:"搜索", typeHint:"点击行标题选择攻击属性，点击列标题选择被攻击属性。最多保留两个，按点击顺序计算。"
+  });
+  Object.assign(Core.I18N["zh-TW"], {
+    tabTimeline:"活動 Timeline", tabTypes:"屬性克制", tabPokedex:"Pokémon 圖鑑", tabMax:"極巨化",
+    toggleView:"切換視圖", timezone:"時區", fixedTimeZone:"固定時區", localTime:"當地時間",
+    attackView:"攻擊視角", defenseView:"防守視角", selected:"已選擇", strongestInto:"最有效目標", weakestTo:"最怕的攻擊", multiplier:"倍率",
+    search:"搜尋", typeHint:"點擊列標題選擇攻擊屬性，點擊欄標題選擇被攻擊屬性。最多保留兩個，依點擊順序計算。"
+  });
+
   Core.t = function(lang, key){ const dict = Core.I18N[lang] || Core.I18N.en; return dict[key] || Core.I18N.en[key] || key; };
 
 
@@ -463,7 +424,7 @@
     s.fontSize = Math.max(8, Math.min(20, s.fontSize));
     s.fontWeight = Math.max(300, Math.min(900, s.fontWeight));
     s.minShortEventWidth = Math.max(4, Math.min(120, s.minShortEventWidth));
-    s.shadeMaxWidth = Math.max(0, Math.min(720, s.shadeMaxWidth));
+    s.shadeMaxWidth = Math.max(0, Math.min(420, s.shadeMaxWidth));
     s.shadeGap = Math.max(0, Math.min(20, s.shadeGap));
     s.labelOutline = !!s.labelOutline;
     return s;
@@ -712,7 +673,6 @@
       if(!end)   end   = parseByIds("#end-text span[data-event-page-date], #end-text span[data-event-page-data]", "#end-text span[data-event-page-time]");
 
       const raw = (doc.body && doc.body.textContent || "").replace(/\u00a0/g, " ");
-      const tzInfo = Core.detectTimeZone(raw);
       const lines = raw.split(/[\r\n]+/).map(x=>Core._normalizeDatePhrase(x)).filter(Boolean);
       function nextAfter(label){
         const re = new RegExp("^" + label + "\\s*:?(?:\\s+(.*))?$", "i");
@@ -745,23 +705,20 @@
         const fixed = new Date(end); fixed.setFullYear(start.getFullYear()+1);
         if (fixed > start) end = fixed;
       }
-      return { start, end, timeZone:tzInfo.timeZone, timeZoneLabel:tzInfo.label, isFixedTimeZone:tzInfo.fixed };
+      return { start, end };
     }catch(_){ return { start:null, end:null }; }
   };
 
   /* CSV <-> events */
   Core.eventsToCSV = function(events){
-    const header = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone"].join(",");
-    const rows = (events || []).map(e => [
+    const header = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href"].join(",");
+    const rows = events.map(e => [
       JSON.stringify(e.title||""), JSON.stringify(e.shortTitle||""), JSON.stringify(e.category||""),
       JSON.stringify(e.lane||""), JSON.stringify(e.sub||""),
       JSON.stringify(e.start? new Date(e.start).toISOString():""),
       JSON.stringify(e.endKnown? new Date(e.endKnown).toISOString():""),
       JSON.stringify(e.endInferred? new Date(e.endInferred).toISOString():""),
-      JSON.stringify(e.href||""),
-      JSON.stringify(e.timeZone||"local"),
-      JSON.stringify(e.timeZoneLabel||"Local Time"),
-      JSON.stringify(e.isFixedTimeZone?"1":"")
+      JSON.stringify(e.href||"")
     ].join(","));
     return [header].concat(rows).join("\n");
   };
@@ -820,10 +777,7 @@
           start: parseDateField(cols,"start"),
           endKnown: parseDateField(cols,"endKnown"),
           endInferred: parseDateField(cols,"endInferred"),
-          href: Core._safeJsonField(cols[idx["href"]], ""),
-          timeZone: Object.prototype.hasOwnProperty.call(idx,"timeZone") ? Core._safeJsonField(cols[idx["timeZone"]], "local") : "local",
-          timeZoneLabel: Object.prototype.hasOwnProperty.call(idx,"timeZoneLabel") ? Core._safeJsonField(cols[idx["timeZoneLabel"]], "Local Time") : "Local Time",
-          isFixedTimeZone: Object.prototype.hasOwnProperty.call(idx,"isFixedTimeZone") ? !!String(Core._safeJsonField(cols[idx["isFixedTimeZone"]], "")).trim() : false
+          href: Core._safeJsonField(cols[idx["href"]], "")
         };
         if (!e.title && !e.href) continue;
         const normalized = Core.normalizeLegacyEvent(e);
@@ -916,10 +870,7 @@
         isLocal: e.isLocal !== false,
         firstSeenAt: e.firstSeenAt || e.createdAt || null,
         lastSeenAt: e.lastSeenAt || e.updatedAt || null,
-        status: e.status || "saved",
-        timeZone: e.timeZone || e.tz || "local",
-        timeZoneLabel: e.timeZoneLabel || e.tzLabel || (e.isFixedTimeZone ? (e.timeZone || "Fixed TZ") : "Local Time"),
-        isFixedTimeZone: !!(e.isFixedTimeZone || (e.timeZone && e.timeZone !== "local" && e.timeZone !== "Local Time"))
+        status: e.status || "saved"
       };
       let mapped = null;
       if (e.categoryKey){
@@ -1060,13 +1011,13 @@
 
   Core.loadState = () => new Promise(res => {
     if (typeof chrome === "undefined" || !chrome.storage || !chrome.storage.local){
-      res({ lang:Core.DEFAULT_LANG, colors:{...Core.DEFAULT_COLORS}, events:[], eventsCsv:"", eventsCache:{}, detailsCache:{}, dict:{}, namesCsv:"", eventsFingerprint:"", settings:Core.normalizeSettings({}), remoteUrl:Core.DEFAULT_REMOTE_URL, remoteEnabled:true, displayTimeZone:Core.DEFAULT_DISPLAY_TIME_ZONE });
+      res({ lang:Core.DEFAULT_LANG, colors:{...Core.DEFAULT_COLORS}, events:[], eventsCsv:"", eventsCache:{}, detailsCache:{}, dict:{}, namesCsv:"", eventsFingerprint:"", settings:Core.normalizeSettings({}), remoteUrl:Core.DEFAULT_REMOTE_URL, remoteEnabled:true, displayTimeZone:"local" });
       return;
     }
     const keys = [
       "ld_lang","ld_colors","ld_events_csv_text","ld_events_history_csv_text","ld_events_cache","ld_events_history_cache","ld_details_cache","ld_dict_custom","ld_names_csv_text",
       "ldt_lang","ldt_palette","ldt_events","ldt_saved_at","ld_events_fingerprint","ld_events_live_ids","ld_last_scan_at",
-      "ld_settings","ld_remote_url","ld_remote_enabled","ld_remote_events_csv_text","ld_remote_last_fetch_at","ld_remote_last_error","ld_display_timezone"
+      "ld_settings","ld_display_timezone","ld_remote_url","ld_remote_enabled","ld_remote_events_csv_text","ld_remote_last_fetch_at","ld_remote_last_error"
     ];
     try{
       chrome.storage.local.get(keys, (data)=>{
@@ -1095,20 +1046,20 @@
             liveIds:Array.isArray(data.ld_events_live_ids) ? data.ld_events_live_ids : [],
             lastScanAt:data.ld_last_scan_at||data.ldt_saved_at||0,
             settings:Core.normalizeSettings(data.ld_settings),
+            displayTimeZone:data.ld_display_timezone || "local",
             remoteUrl:Core.normalizeRemoteUrl(data.ld_remote_url),
             remoteEnabled:data.ld_remote_enabled !== false,
             remoteLastFetchAt:data.ld_remote_last_fetch_at || 0,
-            remoteLastError:data.ld_remote_last_error || "",
-            displayTimeZone:Core.normalizeDisplayTimeZone(data.ld_display_timezone)
+            remoteLastError:data.ld_remote_last_error || ""
           });
         }catch(err){
           console.error("LDT: loadState normalization failed; falling back to empty state", err);
-          res({ lang:Core.DEFAULT_LANG, colors:{...Core.DEFAULT_COLORS}, events:[], eventsCsv:"", eventsCache:{}, detailsCache:{}, dict:{}, namesCsv:"", eventsFingerprint:"", settings:Core.normalizeSettings({}), remoteUrl:Core.DEFAULT_REMOTE_URL, remoteEnabled:true, displayTimeZone:Core.DEFAULT_DISPLAY_TIME_ZONE });
+          res({ lang:Core.DEFAULT_LANG, colors:{...Core.DEFAULT_COLORS}, events:[], eventsCsv:"", eventsCache:{}, detailsCache:{}, dict:{}, namesCsv:"", eventsFingerprint:"", settings:Core.normalizeSettings({}), remoteUrl:Core.DEFAULT_REMOTE_URL, remoteEnabled:true, displayTimeZone:"local" });
         }
       });
     }catch(err){
       console.error("LDT: storage unavailable", err);
-      res({ lang:Core.DEFAULT_LANG, colors:{...Core.DEFAULT_COLORS}, events:[], eventsCsv:"", eventsCache:{}, detailsCache:{}, dict:{}, namesCsv:"", eventsFingerprint:"", settings:Core.normalizeSettings({}), remoteUrl:Core.DEFAULT_REMOTE_URL, remoteEnabled:true, displayTimeZone:Core.DEFAULT_DISPLAY_TIME_ZONE });
+      res({ lang:Core.DEFAULT_LANG, colors:{...Core.DEFAULT_COLORS}, events:[], eventsCsv:"", eventsCache:{}, detailsCache:{}, dict:{}, namesCsv:"", eventsFingerprint:"", settings:Core.normalizeSettings({}), remoteUrl:Core.DEFAULT_REMOTE_URL, remoteEnabled:true, displayTimeZone:"local" });
     }
   });
 
@@ -1218,6 +1169,364 @@
     }
     return { known: null, inferred };
   };
+
+
+  /* v1.1 shared display-timezone, CSV, and info-page helpers */
+  Core.DISPLAY_TIME_ZONES = [
+    {id:"local", label:"Local / 浏览器"},
+    {id:"UTC", label:"UTC"},
+    {id:"America/Los_Angeles", label:"PT / Los Angeles"},
+    {id:"Asia/Tokyo", label:"JST / Tokyo"},
+    {id:"Asia/Shanghai", label:"CST / Shanghai"},
+    {id:"Europe/Copenhagen", label:"CET/CEST / Copenhagen"},
+    {id:"Europe/London", label:"GMT/BST / London"}
+  ];
+
+  Core._parseBoolish = function(value, fallback){
+    if (value == null || value === "") return fallback;
+    const s = String(value).trim().toLowerCase();
+    if (["false","0","no","fixed","absolute"].includes(s)) return false;
+    if (["true","1","yes","local","floating"].includes(s)) return true;
+    return fallback;
+  };
+
+  Core.isFixedTimeEvent = function(e){
+    if (!e) return false;
+    if (e.isLocal === false) return true;
+    if (typeof e.isLocal === "string" && Core._parseBoolish(e.isLocal, true) === false) return true;
+    const tz = String(e.timeZone || e.fixedTimeZone || "").trim();
+    if (tz && !/local/i.test(tz)) return true;
+    if ((e.sub || "") === "GO Battle League" && /(?:Z|[+\-]\d{2}:?\d{2})$/i.test(String(e.start || ""))) return true;
+    return false;
+  };
+
+  Core._dateInDisplayZone = function(date, timeZone){
+    if (!(date instanceof Date) || isNaN(+date)) return null;
+    if (!timeZone || timeZone === "local") return new Date(+date);
+    try{
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone, year:"numeric", month:"2-digit", day:"2-digit",
+        hour:"2-digit", minute:"2-digit", second:"2-digit", hourCycle:"h23"
+      }).formatToParts(date).reduce((acc,p)=>{ if(p.type !== "literal") acc[p.type] = p.value; return acc; }, {});
+      return new Date(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second, 0);
+    }catch(_){
+      return new Date(+date);
+    }
+  };
+
+  Core.eventDisplayDate = function(e, field, displayTimeZone){
+    if (!e) return null;
+    const value = e[field] || (field === "end" ? (e.endKnown || e.endInferred) : null);
+    const d = Core.parseLocalDateString(value);
+    if (!d) return null;
+    return Core.isFixedTimeEvent(e) ? Core._dateInDisplayZone(d, displayTimeZone || "local") : d;
+  };
+  Core.eventStartMs = function(e, displayTimeZone){ const d = Core.eventDisplayDate(e, "start", displayTimeZone); return d ? +d : NaN; };
+  Core.eventEndMs = function(e, displayTimeZone){ const d = Core.eventDisplayDate(e, "endKnown", displayTimeZone) || Core.eventDisplayDate(e, "endInferred", displayTimeZone); return d ? +d : NaN; };
+  Core.formatEventRange = function(e, displayTimeZone){
+    const a = Core.eventDisplayDate(e, "start", displayTimeZone);
+    const b = Core.eventDisplayDate(e, "endKnown", displayTimeZone) || Core.eventDisplayDate(e, "endInferred", displayTimeZone);
+    const suffix = Core.isFixedTimeEvent(e) ? ` [${displayTimeZone && displayTimeZone !== "local" ? displayTimeZone : (e.timeZone || "fixed")}]` : " [Local]";
+    return `${Core.fmt(a)} → ${Core.fmt(b)}${suffix}`;
+  };
+
+  Core.eventsToCSV = function(events){
+    const header = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","isLocal","timeZone","href"].join(",");
+    const rows = Core.dedupeEvents(events || []).map(e => [
+      JSON.stringify(e.title||""), JSON.stringify(e.shortTitle||""), JSON.stringify(e.category||""),
+      JSON.stringify(e.lane||""), JSON.stringify(e.sub||""),
+      JSON.stringify(e.start? Core.toISODate(e.start):""),
+      JSON.stringify(e.endKnown? Core.toISODate(e.endKnown):""),
+      JSON.stringify(e.endInferred? Core.toISODate(e.endInferred):""),
+      JSON.stringify(Core.isFixedTimeEvent(e) ? "false" : "true"),
+      JSON.stringify(e.timeZone || (Core.isFixedTimeEvent(e) ? "fixed" : "Local Time")),
+      JSON.stringify(e.href||"")
+    ].join(","));
+    return [header].concat(rows).join("\n");
+  };
+
+  Core.csvToEvents = function(text){
+    if (!text) return [];
+    const lines = String(text).split(/\r?\n/).filter(x=>x.trim().length>0);
+    if (lines.length<=1) return [];
+    const header = Core._splitCsvLine(lines[0]).map(h => String(h).replace(/(^"|"$)/g,""));
+    const idx = {}; header.forEach((h,i)=> idx[h] = i);
+    const required = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href"];
+    if (!required.every(k => Object.prototype.hasOwnProperty.call(idx,k))){
+      console.warn("LDT: CSV header not recognized; ignoring imported cache.");
+      return [];
+    }
+    const getRaw = (cols,key)=> Object.prototype.hasOwnProperty.call(idx,key) ? cols[idx[key]] : "";
+    const getVal = (cols,key,fallback="")=> Core._safeJsonField(getRaw(cols,key), fallback);
+    const parseDateField = (cols,key)=> Core.parseLocalDateString(getVal(cols,key,""));
+    const fixedByRaw = (cols)=>{
+      const raw = [getVal(cols,"start",""), getVal(cols,"endKnown",""), getVal(cols,"endInferred","")].join(" ");
+      return /(?:Z|[+\-]\d{2}:?\d{2})\s*$/i.test(raw);
+    };
+    const events=[];
+    for (let i=1;i<lines.length;i++){
+      try{
+        const cols = Core._splitCsvLine(lines[i]);
+        const isLocalRaw = getVal(cols,"isLocal","");
+        const tz = getVal(cols,"timeZone","");
+        const isLocal = Core._parseBoolish(isLocalRaw, !(tz && !/local/i.test(tz)) && !fixedByRaw(cols));
+        const e = {
+          title: getVal(cols,"title",""),
+          shortTitle: getVal(cols,"shortTitle",""),
+          category: getVal(cols,"category",""),
+          lane: getVal(cols,"lane",""),
+          sub: getVal(cols,"sub",""),
+          start: parseDateField(cols,"start"),
+          endKnown: parseDateField(cols,"endKnown"),
+          endInferred: parseDateField(cols,"endInferred"),
+          href: getVal(cols,"href",""),
+          isLocal,
+          timeZone: tz || (isLocal ? "Local Time" : "fixed")
+        };
+        if (!e.title && !e.href) continue;
+        const normalized = Core.normalizeLegacyEvent(e);
+        if (normalized) events.push(normalized);
+      }catch(err){
+        console.warn("LDT: skipped bad CSV row", i+1, err);
+      }
+    }
+    return events;
+  };
+
+  const _ndNormalizeLegacyEvent = Core.normalizeLegacyEvent;
+  Core.normalizeLegacyEvent = function(e){
+    const out = _ndNormalizeLegacyEvent(e);
+    if (!out) return null;
+    const fixedHint = e && (e.isLocal === false || Core._parseBoolish(e.isLocal, true) === false);
+    out.isLocal = fixedHint ? false : (e && e.isLocal !== false);
+    out.timeZone = (e && (e.timeZone || e.fixedTimeZone)) || (out.isLocal === false ? "fixed" : "Local Time");
+    return out;
+  };
+
+  Core.serializeEvent = function(e){
+    const n = Core.normalizeLegacyEvent(e);
+    if (!n) return null;
+    return {
+      id: n.id,
+      title: n.title || "",
+      shortTitle: n.shortTitle || "",
+      category: n.category || "",
+      lane: n.lane || "",
+      sub: n.sub || "",
+      overlay: n.overlay || null,
+      overlayTargetSub: n.overlayTargetSub || null,
+      rawText: n.rawText || "",
+      href: Core.normalizeHref(n.href || ""),
+      start: Core.toISODate(n.start),
+      endKnown: Core.toISODate(n.endKnown),
+      endInferred: Core.toISODate(n.endInferred),
+      isLocal: n.isLocal !== false,
+      timeZone: n.timeZone || (n.isLocal === false ? "fixed" : "Local Time"),
+      firstSeenAt: n.firstSeenAt || null,
+      lastSeenAt: n.lastSeenAt || null,
+      status: n.status || "saved"
+    };
+  };
+
+  Core._mergeEventRecord = function(prev, next){
+    if (!prev) return next;
+    if (!next) return prev;
+    const out = {...prev};
+    for (const k of ["title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status","timeZone"]){
+      if (next[k] != null && next[k] !== "") out[k] = next[k];
+    }
+    for (const k of ["start","endKnown","endInferred"]){
+      if (next[k]) out[k] = next[k];
+    }
+    out.isLocal = (prev.isLocal === false || next.isLocal === false) ? false : true;
+    out.firstSeenAt = prev.firstSeenAt || next.firstSeenAt || null;
+    out.lastSeenAt = next.lastSeenAt || prev.lastSeenAt || null;
+    out.id = Core.makeEventId(out) || next.id || prev.id;
+    return out;
+  };
+
+  Core.parseTableCSV = function(text){
+    const lines = String(text || "").split(/\r?\n/).filter(x=>x.trim().length);
+    if (!lines.length) return [];
+    const header = Core._splitCsvLine(lines[0]).map(x=>String(x).replace(/^"|"$/g,""));
+    return lines.slice(1).map(line=>{
+      const cols = Core._splitCsvLine(line).map(x=>{
+        try { return JSON.parse(x); } catch(_){ return String(x).replace(/^"|"$/g,"").replace(/""/g,'"'); }
+      });
+      const row = {};
+      header.forEach((h,i)=> row[h] = cols[i] == null ? "" : cols[i]);
+      return row;
+    });
+  };
+
+  Core.initInfoPages = function(opts){
+    opts = opts || {};
+    const state = opts.state || {};
+    const updateViewMode = opts.updateViewMode || function(){};
+    const getDataUrl = opts.getDataUrl || (path => (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.getURL ? chrome.runtime.getURL(path) : path));
+    const wrap = document.getElementById("ld-timeline-wrapper");
+    if (!wrap || wrap.__ndInfoInit) return;
+    wrap.__ndInfoInit = true;
+    let panel = document.getElementById("nd-info-panel");
+    if (!panel){
+      panel = document.createElement("div");
+      panel.id = "nd-info-panel";
+      wrap.appendChild(panel);
+    }
+    const cache = {};
+    async function fetchRows(path){
+      if (cache[path]) return cache[path];
+      const res = await fetch(getDataUrl(path), {cache:"no-store"});
+      const txt = await res.text();
+      cache[path] = Core.parseTableCSV(txt);
+      return cache[path];
+    }
+    const labelType = (en)=> {
+      const row = (cache["data/type_names.csv"] || []).find(r=>r.type_en===en);
+      if (!row) return en;
+      return state.lang === "en" ? en : (state.lang === "zh-TW" ? row.zh_tw : row.zh_cn);
+    };
+    function setActive(tab){
+      wrap.querySelectorAll("[data-nd-tab]").forEach(b=>b.classList.toggle("active", b.getAttribute("data-nd-tab")===tab));
+      const infoMode = tab !== "timeline";
+      wrap.classList.toggle("nd-info-mode", infoMode);
+      panel.style.display = infoMode ? "block" : "none";
+      const left = document.getElementById("ld-left"), right = document.getElementById("ld-right");
+      if (left) left.style.display = infoMode ? "none" : "";
+      if (right) right.style.display = infoMode ? "none" : "";
+      if (!infoMode) { updateViewMode(); return; }
+      if (tab === "types") renderTypes();
+      if (tab === "pokedex") renderPokedex();
+      if (tab === "max") renderMax();
+    }
+    wrap.querySelectorAll("[data-nd-tab]").forEach(btn=>{
+      if (btn.__ndTabBound) return;
+      btn.__ndTabBound = true;
+      btn.addEventListener("click", ()=>setActive(btn.getAttribute("data-nd-tab")));
+    });
+
+    async function renderTypes(){
+      panel.innerHTML = `<div class="nd-loading">Loading...</div>`;
+      const [chart, names] = await Promise.all([fetchRows("data/type_chart.csv"), fetchRows("data/type_names.csv")]);
+      cache["data/type_names.csv"] = names;
+      const typeIds = names.map(r=>r.type_en);
+      let selectedAtk = [];
+      let selectedDef = [];
+      function mult(attack, defenders){
+        const row = chart.find(r=>r.attack_en===attack);
+        if (!row) return 1;
+        return defenders.reduce((acc,d)=>acc*Number(row[d] || 1), 1);
+      }
+      function pushSel(arr, v){
+        const idx = arr.indexOf(v);
+        if (idx >= 0) arr.splice(idx,1);
+        else { arr.push(v); while(arr.length > 2) arr.shift(); }
+      }
+      function draw(){
+        const head = typeIds.map(t=>`<th class="nd-type-col ${selectedDef.includes(t)?"sel":""}" data-def="${Core.escapeHTML(t)}">${Core.escapeHTML(labelType(t))}</th>`).join("");
+        const body = chart.map(row=>{
+          const cells = typeIds.map(t=>{
+            const v = Number(row[t] || 1);
+            const cls = v>1 ? "good" : (v<1 ? "bad" : "neutral");
+            return `<td class="${cls} ${selectedDef.includes(t)?"sel":""}">${v.toFixed(3)}</td>`;
+          }).join("");
+          return `<tr><th class="nd-type-row ${selectedAtk.includes(row.attack_en)?"sel":""}" data-atk="${Core.escapeHTML(row.attack_en)}">${Core.escapeHTML(labelType(row.attack_en))}</th>${cells}</tr>`;
+        }).join("");
+        const atkLabel = selectedAtk.map(labelType).join(" / ") || "∅";
+        const defLabel = selectedDef.map(labelType).join(" / ") || "∅";
+        const combos = [];
+        for (let i=0;i<typeIds.length;i++){
+          combos.push([typeIds[i]]);
+          for (let j=i+1;j<typeIds.length;j++) combos.push([typeIds[i], typeIds[j]]);
+        }
+        let attackSummary = "";
+        const attacks = selectedAtk.length ? selectedAtk : [];
+        for (const a of attacks){
+          const scored = combos.map(ds=>({ds, m:mult(a, ds)})).sort((x,y)=>y.m-x.m);
+          const max = scored[0] ? scored[0].m : 1;
+          const best = scored.filter(x=>Math.abs(x.m-max)<1e-9).slice(0,16).map(x=>`${x.ds.map(labelType).join("/")}: ${x.m.toFixed(3)}`).join("<br>");
+          const chosen = selectedDef.length ? `<div class="nd-result-line"><b>${Core.escapeHTML(labelType(a))} → ${Core.escapeHTML(defLabel)}</b>: ${mult(a, selectedDef).toFixed(3)}</div>` : "";
+          attackSummary += `<section><h4>${Core.escapeHTML(labelType(a))}</h4>${chosen}<div class="nd-small">${Core.escapeHTML(Core.t(state.lang,"strongestInto"))}</div><div>${best}</div></section>`;
+        }
+        let defenseSummary = "";
+        if (selectedDef.length){
+          const rows = typeIds.map(a=>({a, m:mult(a, selectedDef)})).sort((x,y)=>y.m-x.m || labelType(x.a).localeCompare(labelType(y.a)));
+          defenseSummary = `<section><h4>${Core.escapeHTML(Core.t(state.lang,"weakestTo"))}: ${Core.escapeHTML(defLabel)}</h4>` +
+            rows.map(x=>`<div class="nd-result-line ${x.m>1?"good":(x.m<1?"bad":"")}">${Core.escapeHTML(labelType(x.a))}: ${x.m.toFixed(3)}</div>`).join("") + `</section>`;
+        }
+        panel.innerHTML = `<div class="nd-info-layout nd-types-layout">
+          <div>
+            <p class="nd-hint">${Core.escapeHTML(Core.t(state.lang,"typeHint"))}</p>
+            <div class="nd-table-scroll"><table class="nd-type-table"><thead><tr><th>攻\\防</th>${head}</tr></thead><tbody>${body}</tbody></table></div>
+          </div>
+          <aside class="nd-side-card">
+            <h3>${Core.escapeHTML(Core.t(state.lang,"selected"))}</h3>
+            <div>${Core.escapeHTML(Core.t(state.lang,"attackView"))}: <b>${Core.escapeHTML(atkLabel)}</b></div>
+            <div>${Core.escapeHTML(Core.t(state.lang,"defenseView"))}: <b>${Core.escapeHTML(defLabel)}</b></div>
+            ${attackSummary || `<p class="nd-muted">请选择一个攻击属性。</p>`}
+            ${defenseSummary}
+          </aside>
+        </div>`;
+        panel.querySelectorAll("[data-atk]").forEach(el=>el.addEventListener("click",()=>{ pushSel(selectedAtk, el.getAttribute("data-atk")); draw(); }));
+        panel.querySelectorAll("[data-def]").forEach(el=>el.addEventListener("click",()=>{ pushSel(selectedDef, el.getAttribute("data-def")); draw(); }));
+      }
+      draw();
+    }
+
+    function tableFromRows(rows, columns, opts){
+      opts = opts || {};
+      const head = columns.map(c=>`<th>${Core.escapeHTML(c.label)}</th>`).join("");
+      const body = rows.map(r=>{
+        const cells = columns.map(c=>{
+          const v = r[c.key] == null ? "" : String(r[c.key]);
+          return `<td class="${v.trim()? "" : "nd-empty"}">${Core.escapeHTML(v)}</td>`;
+        }).join("");
+        return `<tr>${cells}</tr>`;
+      }).join("");
+      return `<div class="nd-table-scroll"><table class="nd-data-table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }
+
+    async function renderPokedex(){
+      panel.innerHTML = `<div class="nd-loading">Loading...</div>`;
+      const rows = await fetchRows("data/pokedex.csv");
+      const columns = [
+        {key:"Number",label:"#"}, {key:"Name",label:"English"}, {key:"简中",label:"简中"}, {key:"繁中",label:"繁中"}, {key:"日文",label:"日本語"},
+        {key:"Form",label:"Form"}, {key:"Type 1",label:"Type 1"}, {key:"Type 2",label:"Type 2"},
+        {key:"HP",label:"HP"}, {key:"Attack",label:"Atk"}, {key:"Defense",label:"Def"}, {key:"Sp.Attack",label:"SpA"}, {key:"Sp.Defense",label:"SpD"}, {key:"Speed",label:"Spe"}
+      ];
+      panel.innerHTML = `<div class="nd-info-header"><input id="nd-pokedex-search" class="nd-search" placeholder="${Core.escapeHTML(Core.t(state.lang,"search"))} / Search"></div><div id="nd-pokedex-table"></div>`;
+      const box = panel.querySelector("#nd-pokedex-search"), target = panel.querySelector("#nd-pokedex-table");
+      function draw(){
+        const q = (box.value || "").trim().toLowerCase();
+        const filtered = q ? rows.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q))) : rows;
+        target.innerHTML = tableFromRows(filtered.slice(0, 500), columns) + `<div class="nd-muted">${filtered.length} rows${filtered.length>500 ? "，仅显示前 500 行" : ""}</div>`;
+      }
+      box.addEventListener("input", draw);
+      draw();
+    }
+
+    async function renderMax(){
+      panel.innerHTML = `<div class="nd-loading">Loading...</div>`;
+      const rows = await fetchRows("data/max.csv");
+      const columns = [
+        {key:"Max_Form",label:"Max Form"}, {key:"名称",label:"名称"}, {key:"Name_EN",label:"English"},
+        {key:"LV40 CP",label:"LV40 CP"}, {key:"LV50 CP",label:"LV50 CP"}, {key:"坦度",label:"坦度"},
+        {key:"属性1",label:"属性1"}, {key:"属性2",label:"属性2"}, {key:"0.5s 小招",label:"0.5s 小招"}, {key:"攻击",label:"Attack"},
+        {key:"极巨技能1",label:"Max Move 1"}, {key:"平1",label:"Avg 1"}, {key:"极巨技能2",label:"Max Move 2"}, {key:"平2",label:"Avg 2"},
+        {key:"超极巨技能",label:"G-Max Move"}, {key:"平G",label:"Avg G"}, {key:"Source_Status",label:"Source"}
+      ];
+      panel.innerHTML = `<div class="nd-info-header"><input id="nd-max-search" class="nd-search" placeholder="${Core.escapeHTML(Core.t(state.lang,"search"))} / Search"></div><div id="nd-max-table"></div>`;
+      const box = panel.querySelector("#nd-max-search"), target = panel.querySelector("#nd-max-table");
+      function draw(){
+        const q = (box.value || "").trim().toLowerCase();
+        const filtered = q ? rows.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q))) : rows;
+        target.innerHTML = tableFromRows(filtered, columns) + `<div class="nd-muted">${filtered.length} rows</div>`;
+      }
+      box.addEventListener("input", draw);
+      draw();
+    }
+  };
+
 
   // Public hook so other scripts can use
   window.LDT_Core = Core;

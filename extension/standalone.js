@@ -1,36 +1,13 @@
 // == standalone.js v1.0.5 ==
 (function(){
   const C = LDT_Core.CONST;
-  let state={ lang:LDT_Core.DEFAULT_LANG, events:[], colors:{...LDT_Core.DEFAULT_COLORS}, settings:LDT_Core.normalizeSettings({}), rangeStart:null, rangeEnd:null, viewMode:"linear", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
+  let state={ lang:LDT_Core.DEFAULT_LANG, events:[], colors:{...LDT_Core.DEFAULT_COLORS}, settings:LDT_Core.normalizeSettings({}), rangeStart:null, rangeEnd:null, viewMode:"linear", displayTimeZone:"local", pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
 
 
   function applyI18n(){
     const dict=LDT_Core.I18N[state.lang] || LDT_Core.I18N.en || {};
     document.querySelectorAll("[data-i18n]").forEach(el=>{ const k=el.getAttribute("data-i18n"); el.textContent=dict[k]||k; });
-    updateTimeZoneSelect();
-    if(window.ND_Info) window.ND_Info.refreshLabels();
   }
-  function timeZoneOptionsHTML(selected){
-    return LDT_Core.TIME_ZONE_OPTIONS.map(o=>`<option value="${LDT_Core.escapeHTML(o.value)}" ${selected===o.value?"selected":""}>${LDT_Core.escapeHTML(o.label)}</option>`).join("");
-  }
-  function updateTimeZoneSelect(){
-    const sel=document.getElementById("ld-tz-select");
-    if(sel) sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone);
-  }
-  async function setDisplayTimeZone(value){
-    state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(value);
-    await LDT_Core.saveState({ld_display_timezone:state.displayTimeZone});
-    updateTimeZoneSelect(); updateViewMode();
-  }
-  function ensureTopbarTimeZoneSelect(){
-    const row=document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
-    const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
-    wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
-    row.insertBefore(wrap, row.firstChild);
-    const sel=wrap.querySelector("select"); sel.addEventListener("change",()=>setDisplayTimeZone(sel.value));
-  }
-  function eventDisplayStart(e){ return LDT_Core.dateForDisplayZone(e && e.start, e, state.displayTimeZone); }
-  function eventDisplayEnd(e){ return LDT_Core.dateForDisplayZone(e && (e.endKnown || e.endInferred), e, state.displayTimeZone); }
 
   function laneLayout(){
     let y=C.TIMELINE_TOP_PAD || 58; const map={};
@@ -112,7 +89,7 @@
     const g=svg.querySelector("#ld-period-blocks"); if(!g) return; g.innerHTML="";
     const topPad=C.TIMELINE_TOP_PAD || 58, monthH=C.PERIOD_MONTH_H || 20, weekH=C.PERIOD_WEEK_H || 18;
     const xScale=t=>((t-rangeStart)/(rangeEnd-rangeStart))*C.TL_W; if(!isFinite(xScale(rangeStart))) return;
-    const mkText=(x,y,text,cls,anchor)=>{ const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x); t.setAttribute("y",y); t.setAttribute("class",cls||"ld-period-label"); if(anchor) t.setAttribute("text-anchor",anchor); t.textContent=text; g.appendChild(t); };
+    const mkText=(x,y,text,cls,anchor="start")=>{ const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x); t.setAttribute("y",y); t.setAttribute("class",cls||"ld-period-label"); t.setAttribute("text-anchor",anchor); t.textContent=text; g.appendChild(t); };
     let mi=0;
     for(let t=LDT_Core.monthStart(new Date(rangeStart)); +t<rangeEnd; t=LDT_Core.nextMonthStart(t), mi++){
       const next=LDT_Core.nextMonthStart(t), x=Math.max(0,xScale(+t)), w=Math.min(C.TL_W,xScale(+next))-x;
@@ -120,24 +97,13 @@
       const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",0); r.setAttribute("width",w); r.setAttribute("height",monthH); r.setAttribute("class","ld-period-month-block"); r.setAttribute("fill-opacity", mi%2 ? "0.10" : "0.18"); g.appendChild(r);
       if(w>42) mkText(x+5,14,`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}`,"ld-period-label ld-period-month-label");
     }
-    const spanDays=(rangeEnd-rangeStart)/86400000;
-    if(spanDays<=45){
-      const letters=["S","M","T","W","T","F","S"];
-      for(let t=LDT_Core.beginOfDay(new Date(rangeStart)); +t<rangeEnd; t=LDT_Core.addDays(t,1)){
-        const next=LDT_Core.addDays(t,1), x=Math.max(0,xScale(+t)), w=Math.min(C.TL_W,xScale(+next))-x;
-        if(!isFinite(x)||!isFinite(w)||w<=1) continue;
-        const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",monthH+1); r.setAttribute("width",w); r.setAttribute("height",weekH); r.setAttribute("class","ld-period-day-block"); g.appendChild(r);
-        if(w>18) mkText(x+w/2,monthH+14,letters[t.getDay()],"ld-period-label ld-period-week-label","middle");
-        if(t.getDay()===1){ const l=document.createElementNS("http://www.w3.org/2000/svg","line"); l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",monthH+1); l.setAttribute("y2",topPad-2); l.setAttribute("class","ld-period-week-divider"); g.appendChild(l); }
-      }
-    } else {
-      let wi=0;
-      for(let t=LDT_Core.mondayOfWeek(new Date(rangeStart)); +t<rangeEnd; t=LDT_Core.addDays(t,7), wi++){
-        const next=LDT_Core.addDays(t,7), x=Math.max(0,xScale(+t)), w=Math.min(C.TL_W,xScale(+next))-x;
-        if(!isFinite(x)||!isFinite(w)||w<=1) continue;
-        const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",monthH+1); r.setAttribute("width",w); r.setAttribute("height",weekH); r.setAttribute("class","ld-period-week-block"); r.setAttribute("fill-opacity", wi%2 ? "0.12" : "0.06"); g.appendChild(r);
-        if(w>34) mkText(x+5,monthH+14,`W${String(getISOWeek(t)).padStart(2,"0")}`,"ld-period-label ld-period-week-label");
-      }
+    let wi=0; const spanDays=(rangeEnd-rangeStart)/86400000;
+    for(let t=LDT_Core.mondayOfWeek(new Date(rangeStart)); +t<rangeEnd; t=LDT_Core.addDays(t,7), wi++){
+      const next=LDT_Core.addDays(t,7), x=Math.max(0,xScale(+t)), w=Math.min(C.TL_W,xScale(+next))-x;
+      if(!isFinite(x)||!isFinite(w)||w<=1) continue;
+      const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); r.setAttribute("x",x); r.setAttribute("y",monthH+1); r.setAttribute("width",w); r.setAttribute("height",weekH); r.setAttribute("class","ld-period-week-block"); r.setAttribute("fill-opacity", wi%2 ? "0.12" : "0.06"); g.appendChild(r);
+      if(spanDays<=45 && w>84){ ["M","T","W","T","F","S","S"].forEach((lab,i)=>mkText(x+(i+0.5)*w/7,monthH+14,lab,"ld-period-label ld-period-week-label","middle")); }
+      else if(w>34){ mkText(x+5,monthH+14,`W${String(getISOWeek(t)).padStart(2,"0")}`,"ld-period-label ld-period-week-label"); }
     }
     const base=document.createElementNS("http://www.w3.org/2000/svg","line"); base.setAttribute("x1",0); base.setAttribute("x2",C.TL_W); base.setAttribute("y1",topPad-2); base.setAttribute("y2",topPad-2); base.setAttribute("class","ld-period-baseline"); g.appendChild(base);
     function getISOWeek(date){ const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())); const day=d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-day); const y0=new Date(Date.UTC(d.getUTCFullYear(),0,1)); return Math.ceil((((d-y0)/86400000)+1)/7); }
@@ -169,6 +135,20 @@
     const wrap=document.getElementById("ld-timeline-wrapper");
     if(wrap) wrap.style.marginLeft = wrap.style.marginRight = state.settings.outerMarginX + "px";
   }
+
+  function populateTimeZoneSelect(){
+    const sel=document.getElementById("ld-timezone-select");
+    if(!sel) return;
+    if(!sel.childElementCount){
+      LDT_Core.DISPLAY_TIME_ZONES.forEach(z=>{ const opt=document.createElement("option"); opt.value=z.id; opt.textContent=z.label; sel.appendChild(opt); });
+    }
+    sel.value=state.displayTimeZone || "local";
+  }
+  function syncViewToggleButton(){
+    const btn=document.querySelector('[data-act="toggle-view"] span');
+    if(btn) btn.textContent = state.viewMode === "linear" ? LDT_Core.t(state.lang,"switchMonthGrid") : LDT_Core.t(state.lang,"switchLinear");
+  }
+
   function approxTextWidth(text){
     const fs=(state.settings && state.settings.fontSize)||11; let n=0;
     for(const ch of String(text||"")) n += /[\u2E80-\u9FFF\uAC00-\uD7AF]/.test(ch) ? fs : fs*0.56;
@@ -222,7 +202,6 @@
       ${row("shadeMaxWidth","settingsShadeMaxWidth","number",'min="0" max="420" step="5"')}
       ${row("shadeGap","settingsShadeGap","number",'min="0" max="20" step="1"')}
       <tr><td>${LDT_Core.escapeHTML(t("settingsLabelOutline"))}</td><td><label><input data-setting="labelOutline" type="checkbox" ${cfg.labelOutline?"checked":""}> ${LDT_Core.escapeHTML(t("settingsEnable"))}</label></td></tr>
-      <tr><td>${LDT_Core.escapeHTML(t("timeZone"))}</td><td><select data-setting="displayTimeZone" style="width:100%">${timeZoneOptionsHTML(state.displayTimeZone)}</select></td></tr>
       <tr><td>${LDT_Core.escapeHTML(t("settingsRemoteUrl"))}</td><td><input data-setting="remoteUrl" type="url" value="${LDT_Core.escapeHTML(state.remoteUrl || LDT_Core.DEFAULT_REMOTE_URL)}" style="width:100%"></td></tr>
     </tbody></table><p style="font-size:12px;color:#667085;margin:8px 0 0">${LDT_Core.escapeHTML(t("settingsHint"))}</p>`;
     mask.style.display="block"; modal.style.display="block";
@@ -230,14 +209,12 @@
       const next={};
       body.querySelectorAll("[data-setting]").forEach(input=>{
         const key=input.getAttribute("data-setting");
-        if(key==="remoteUrl" || key==="displayTimeZone") return;
+        if(key==="remoteUrl") return;
         next[key]=input.type==="checkbox" ? input.checked : Number(input.value);
       });
       state.settings=LDT_Core.normalizeSettings(next);
       state.remoteUrl=LDT_Core.normalizeRemoteUrl((body.querySelector('[data-setting="remoteUrl"]')||{}).value || LDT_Core.DEFAULT_REMOTE_URL);
-      state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone((body.querySelector('[data-setting="displayTimeZone"]')||{}).value || state.displayTimeZone);
-      await LDT_Core.saveState({ld_settings:state.settings, ld_remote_url:state.remoteUrl, ld_display_timezone:state.displayTimeZone});
-      updateTimeZoneSelect();
+      await LDT_Core.saveState({ld_settings:state.settings, ld_remote_url:state.remoteUrl});
       applyRenderSettings(); updateViewMode();
     };
     const saveBtn=modal.querySelector('[data-save="settings"]'); if(saveBtn) saveBtn.onclick=save;
@@ -271,35 +248,29 @@
     const xScale=t=>((t-rangeStart)/(rangeEnd-rangeStart))*C.TL_W; if(!isFinite(xScale(rangeStart))) return;
     const cfg=LDT_Core.normalizeSettings(state.settings), pad=cfg.labelPaddingX, minW=cfg.minShortEventWidth;
     const map={};
-    events.forEach(e=>{ const end=e.endKnown||e.endInferred; if(!e.start||!end) return; const key=`${e.lane}::${e.sub}`; (map[key]=map[key]||[]).push(e); });
-    Object.values(map).forEach(a=>a.sort((x,y)=>x.start-y.start));
+    events.forEach(e=>{ const sMs=LDT_Core.eventStartMs(e,state.displayTimeZone), eMs=LDT_Core.eventEndMs(e,state.displayTimeZone); if(!isFinite(sMs)||!isFinite(eMs)) return; const key=`${e.lane}::${e.sub}`; (map[key]=map[key]||[]).push(e); });
+    Object.values(map).forEach(a=>a.sort((x,y)=>LDT_Core.eventStartMs(x,state.displayTimeZone)-LDT_Core.eventStartMs(y,state.displayTimeZone)));
     for(const key of Object.keys(map)){
       const arr=map[key];
       for(let i=0;i<arr.length;i++){
-        const e=arr[i], end=e.endKnown||e.endInferred; if(!e.start||!end) continue;
-        const ds=eventDisplayStart(e), de=eventDisplayEnd(e); if(!ds||!de) continue;
-        const x1=xScale(+ds), x2=xScale(+de); if(!isFinite(x1)||!isFinite(x2)) continue;
+        const e=arr[i], sMs=LDT_Core.eventStartMs(e,state.displayTimeZone), eMs=LDT_Core.eventEndMs(e,state.displayTimeZone); if(!isFinite(sMs)||!isFinite(eMs)) continue;
+        const x1=xScale(sMs), x2=xScale(eMs); if(!isFinite(x1)||!isFinite(x2)) continue;
         const y=layout.ymap[`${e.lane}::${e.sub}`] || layout.ymap[`${e.lane}::${e.lane}`]; if(y==null) continue;
-        const actualW=Math.max(0,x2-x1);
+        const actualW=Math.max(0,x2-x1), fixed=LDT_Core.isFixedTimeEvent(e);
         const isShort=["Max Mondays","Raid Hour","Pokémon Spotlight Hour"].includes(e.sub) || (actualW>0 && actualW<minW);
         const blockW=Math.max(isShort?minW:2, actualW);
         const fill=colors[e.sub]||colors[e.category]||colors[e.lane]||"lightsteelblue";
-        const next=arr[i+1], nds=next&&next.start?eventDisplayStart(next):null, nextX=nds?xScale(+nds):Infinity;
+        const next=arr[i+1], nextStart=next?LDT_Core.eventStartMs(next,state.displayTimeZone):NaN, nextX=isFinite(nextStart)?xScale(nextStart):Infinity;
         const nextLimit=Math.min(C.TL_W, isFinite(nextX)?nextX-cfg.shadeGap:C.TL_W);
         const rawTitle=LDT_Core.localizeEventTitle(e, state.lang, state.pokemonDB).trim();
-        const desiredW=approxTextWidth(rawTitle)+pad*2;
-        const baseEnd=Math.max(x2,x1+blockW), visibleStart=Math.max(0,x1), visibleBaseEnd=Math.min(C.TL_W,baseEnd);
+        const desiredW=approxTextWidth(rawTitle)+pad*2, baseEnd=Math.max(x2,x1+blockW), visibleStart=Math.max(0,x1), visibleBaseEnd=Math.min(C.TL_W,baseEnd);
         let labelBoxEnd=visibleBaseEnd, shade=null;
         if(desiredW>Math.max(0,visibleBaseEnd-visibleStart) && cfg.shadeMaxWidth>0){
           labelBoxEnd=Math.min(nextLimit, visibleStart+Math.min(desiredW,(visibleBaseEnd-visibleStart)+cfg.shadeMaxWidth));
-          if(labelBoxEnd>visibleBaseEnd+1){
-            shade=document.createElementNS("http://www.w3.org/2000/svg","rect");
-            shade.setAttribute("x",visibleBaseEnd); shade.setAttribute("y",y); shade.setAttribute("width",labelBoxEnd-visibleBaseEnd); shade.setAttribute("height",C.ITEM_H); shade.setAttribute("rx",cfg.itemRadius); shade.setAttribute("ry",cfg.itemRadius); shade.setAttribute("fill",fill); shade.setAttribute("fill-opacity","0.50"); shade.setAttribute("class","ld-item-shade"); g.appendChild(shade);
-          }
+          if(labelBoxEnd>visibleBaseEnd+1){ shade=document.createElementNS("http://www.w3.org/2000/svg","rect"); shade.setAttribute("x",visibleBaseEnd); shade.setAttribute("y",y); shade.setAttribute("width",labelBoxEnd-visibleBaseEnd); shade.setAttribute("height",C.ITEM_H); shade.setAttribute("rx",cfg.itemRadius); shade.setAttribute("ry",cfg.itemRadius); shade.setAttribute("fill",fill); shade.setAttribute("fill-opacity","0.50"); shade.setAttribute("class","ld-item-shade"); g.appendChild(shade); }
         }
         const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
-        r.setAttribute("x",x1); r.setAttribute("y",y); r.setAttribute("width",blockW); r.setAttribute("height",C.ITEM_H); r.setAttribute("rx",cfg.itemRadius); r.setAttribute("ry",cfg.itemRadius); r.setAttribute("fill",fill); r.setAttribute("stroke-width",cfg.itemBorderWidth); r.setAttribute("class","ld-item"+(!e.endKnown?" inferred":"")+(e.isFixedTimeZone?" fixed-tz":"")+(state.selectedIds && state.selectedIds.has(e.id)?" selected":"")); g.appendChild(r);
-        const titleEl=document.createElementNS("http://www.w3.org/2000/svg","title"); titleEl.textContent=`${rawTitle}\n${LDT_Core.fmtInTimeZone(e.start,state.displayTimeZone)} → ${LDT_Core.fmtInTimeZone(end,state.displayTimeZone)}${e.isFixedTimeZone?` (${e.timeZoneLabel||e.timeZone})`:""}`; r.appendChild(titleEl);
+        r.setAttribute("x",x1); r.setAttribute("y",y); r.setAttribute("width",blockW); r.setAttribute("height",C.ITEM_H); r.setAttribute("rx",cfg.itemRadius); r.setAttribute("ry",cfg.itemRadius); r.setAttribute("fill",fill); r.setAttribute("stroke-width",fixed?Math.max(cfg.itemBorderWidth+1,2.25):cfg.itemBorderWidth); r.setAttribute("class","ld-item"+(fixed?" fixed-tz":"")+(!e.endKnown?" inferred":"")+(state.selectedIds && state.selectedIds.has(e.id)?" selected":"")); g.appendChild(r);
         const visX1=Math.max(0,x1), visX2=Math.min(C.TL_W,Math.max(labelBoxEnd,visibleBaseEnd)), visW=Math.max(0,visX2-visX1);
         if(visW>6){
           const makeText=()=>{ const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",visX1+pad); t.setAttribute("y",y+C.ITEM_H/2+Math.round(cfg.fontSize*0.36)); t.setAttribute("font-size",cfg.fontSize); t.setAttribute("font-weight",cfg.fontWeight); return t; };
@@ -309,7 +280,7 @@
           if(!cfg.labelOutline) text.setAttribute("fill", LDT_Core.contrastTextColor(fill));
           text.addEventListener("click",ev=>{ev.stopPropagation(); toggleSelect(e.id);});
         }
-        [r,shade].filter(Boolean).forEach(node=>{ node.addEventListener("click",ev=>{ev.stopPropagation(); toggleSelect(e.id);}); node.addEventListener("mouseenter",()=>node.setAttribute("stroke-width",Math.max(cfg.itemBorderWidth,2))); node.addEventListener("mouseleave",()=>node.setAttribute("stroke-width",cfg.itemBorderWidth)); });
+        [r,shade].filter(Boolean).forEach(node=>{ node.addEventListener("click",ev=>{ev.stopPropagation(); toggleSelect(e.id);}); node.addEventListener("mouseenter",()=>node.setAttribute("stroke-width",Math.max(cfg.itemBorderWidth,fixed?3:2))); node.addEventListener("mouseleave",()=>node.setAttribute("stroke-width",fixed?Math.max(cfg.itemBorderWidth+1,2.25):cfg.itemBorderWidth)); node.setAttribute("title", LDT_Core.formatEventRange(e,state.displayTimeZone)); });
       }
     }
   }
@@ -322,7 +293,7 @@
   }
 
   function renderNowLine(svg, rangeStart, rangeEnd){
-    const line=svg.querySelector("#ld-now line"); const xScale=t=>((t-rangeStart)/(rangeEnd-rangeStart))*C.TL_W; const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const nowX=xScale(+nowD);
+    const line=svg.querySelector("#ld-now line"); const xScale=t=>((t-rangeStart)/(rangeEnd-rangeStart))*C.TL_W; const nowX=xScale(Date.now());
     if(isFinite(nowX)){ line.setAttribute("x1",nowX); line.setAttribute("x2",nowX); }
   }
 
@@ -334,50 +305,30 @@
 
   function renderMonthGrid(){
     const mg=document.getElementById("ld-monthgrid"); const svg=document.getElementById("ld-timeline-svg");
-    mg.style.display="block"; svg.style.display="none"; mg.innerHTML="";
-    const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-    const head=document.createElement("div"); head.className="nd-month-head"; head.innerHTML=days.map(d=>`<div>${d}</div>`).join(""); mg.appendChild(head);
-    const rangeStart=new Date(state.rangeStart), rangeEnd=new Date(state.rangeEnd);
-    let wk=LDT_Core.mondayOfWeek(rangeStart); const last=LDT_Core.addDays(LDT_Core.mondayOfWeek(rangeEnd),7);
-    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e)})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd);
-    while(+wk<+last){
-      const weekStart=new Date(wk), weekEnd=LDT_Core.addDays(weekStart,7);
-      const row=document.createElement("div"); row.className="nd-week-row";
-      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"; cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
-      const segs=[];
-      visible.forEach(x=>{
-        if(+x.d<+weekStart || +x.s>=+weekEnd) return;
-        const a=Math.max(0, Math.floor((Math.max(+x.s,+weekStart)-+weekStart)/86400000));
-        const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000));
-        segs.push({e:x.e,a,b,s:+x.s});
-      });
-      segs.sort((a,b)=>a.a-b.a || a.s-b.s);
-      const lanes=[];
-      segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
-      row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
-      segs.forEach(seg=>{
-        const ev=seg.e, fill=state.colors[ev.sub]||state.colors[ev.category]||state.colors[ev.lane]||"lightsteelblue";
-        const div=document.createElement("div"); div.className="nd-month-event"+(ev.isFixedTimeZone?" fixed-tz":"")+(state.selectedIds&&state.selectedIds.has(ev.id)?" selected":"");
-        div.style.left=`calc(${seg.a*100/7}% + 3px)`; div.style.width=`calc(${(seg.b-seg.a+1)*100/7}% - 6px)`; div.style.top=(26+seg.lane*24)+"px"; div.style.background=fill; div.style.color=LDT_Core.contrastTextColor(fill);
-        div.textContent=LDT_Core.localizeEventTitle(ev, state.lang, state.pokemonDB);
-        div.title=`${div.textContent}\n${LDT_Core.fmtInTimeZone(ev.start,state.displayTimeZone)} → ${LDT_Core.fmtInTimeZone(ev.endKnown||ev.endInferred,state.displayTimeZone)}${ev.isFixedTimeZone?` (${ev.timeZoneLabel||ev.timeZone})`:""}`;
-        div.addEventListener("click",evn=>{ evn.stopPropagation(); toggleSelect(ev.id); });
-        row.appendChild(div);
-      });
-      mg.appendChild(row); wk=LDT_Core.addDays(wk,7);
-    }
+    mg.style.display="block"; svg.style.display="none"; mg.innerHTML=""; mg.className="nd-monthgrid"; mg.style.position="relative"; mg.style.height=(C.HEIGHT-78)+"px"; mg.style.overflowY="auto"; mg.style.width=C.TL_W+"px";
+    const colW=C.TL_W/7, baseMon=LDT_Core.mondayOfWeek(new Date(state.rangeStart)), endLimit=LDT_Core.addDays(LDT_Core.mondayOfWeek(new Date(state.rangeEnd)),7), weeks=[];
+    for(let t=baseMon; +t<+endLimit; t=LDT_Core.addDays(t,7)) weeks.push({start:new Date(t), end:LDT_Core.addDays(t,7)});
+    const dow=["M","T","W","T","F","S","S"], nowDay=LDT_Core.beginOfDay(new Date()), colors=state.colors;
+    function timeText(e){ const ss=LDT_Core.eventDisplayDate(e,"start",state.displayTimeZone), ee=LDT_Core.eventDisplayDate(e,"endKnown",state.displayTimeZone)||LDT_Core.eventDisplayDate(e,"endInferred",state.displayTimeZone); if(!ss||!ee) return ""; const pad=n=>String(n).padStart(2,"0"); if(ss.getHours()===0&&ss.getMinutes()===0&&ee.getHours()>=23) return ""; return `${pad(ss.getHours())}:${pad(ss.getMinutes())}-${pad(ee.getHours())}:${pad(ee.getMinutes())}`; }
+    weeks.forEach(week=>{
+      const events=(state.events||[]).filter(e=>{ const sMs=LDT_Core.eventStartMs(e,state.displayTimeZone), eMs=LDT_Core.eventEndMs(e,state.displayTimeZone); return isFinite(sMs)&&isFinite(eMs)&&eMs>=+week.start&&sMs<+week.end; }).sort((a,b)=>{ const da=LDT_Core.eventEndMs(a,state.displayTimeZone)-LDT_Core.eventStartMs(a,state.displayTimeZone), db=LDT_Core.eventEndMs(b,state.displayTimeZone)-LDT_Core.eventStartMs(b,state.displayTimeZone); return (db-da)||(LDT_Core.eventStartMs(a,state.displayTimeZone)-LDT_Core.eventStartMs(b,state.displayTimeZone)); });
+      const shown=events.slice(0,9), rowH=34+Math.max(4,shown.length)*21+(events.length>shown.length?18:0), row=document.createElement("div"); row.className="week-row"; row.style.position="relative"; row.style.height=rowH+"px"; mg.appendChild(row);
+      for(let i=0;i<7;i++){ const d=LDT_Core.addDays(week.start,i), dayStart=LDT_Core.beginOfDay(d), day=document.createElement("div"); day.className="nd-month-day"; day.style.left=(i*colW)+"px"; day.style.width=colW+"px"; if(+dayStart===+nowDay) day.classList.add("today"); row.appendChild(day); const lab=document.createElement("div"); lab.className="nd-month-label"; lab.style.left=(i*colW+4)+"px"; lab.textContent=`${dow[i]} ${d.getMonth()+1}/${d.getDate()}`; row.appendChild(lab); }
+      shown.forEach((e,idx)=>{ const sMs=LDT_Core.eventStartMs(e,state.displayTimeZone), eMs=LDT_Core.eventEndMs(e,state.displayTimeZone), left=Math.max(0,Math.min(7,(sMs-+week.start)/86400000))*colW+2, right=Math.max(0,Math.min(7,(eMs-+week.start)/86400000))*colW-2, width=Math.max(18,right-left), fill=colors[e.sub]||colors[e.category]||colors[e.lane]||"lightsteelblue", div=document.createElement("div"); div.className="nd-month-event"+(LDT_Core.isFixedTimeEvent(e)?" fixed-tz":""); div.style.left=left+"px"; div.style.top=(28+idx*21)+"px"; div.style.width=width+"px"; div.style.background=fill; div.style.color=LDT_Core.contrastTextColor(fill); const tt=timeText(e); div.textContent=(tt?tt+" ":"")+LDT_Core.localizeEventTitle(e,state.lang,state.pokemonDB); div.title=LDT_Core.formatEventRange(e,state.displayTimeZone); div.addEventListener("click",ev=>{ ev.stopPropagation(); toggleSelect(e.id); }); row.appendChild(div); });
+      if(events.length>shown.length){ const more=document.createElement("div"); more.className="nd-month-more"; more.style.top=(28+shown.length*21)+"px"; more.textContent=`+${events.length-shown.length} more`; row.appendChild(more); }
+    });
   }
 
   function updateViewMode(){
-    if(window.ND_Info) window.ND_Info.hide();
     const svg=document.getElementById("ld-timeline-svg"); const mg=document.getElementById("ld-monthgrid");
+    syncViewToggleButton();
     if(state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); } else renderMonthGrid();
   }
 
   function fitRangeToEvents(){
-    const has=state.events.filter(e=>e.start && (e.endKnown||e.endInferred));
-    if(has.length){ const starts=has.map(e=>eventDisplayStart(e)).filter(Boolean).map(d=>+d); const ends=has.map(e=>eventDisplayEnd(e)).filter(Boolean).map(d=>+d); const min=Math.min(...starts); const max=Math.max(...ends); state.rangeStart=+LDT_Core.addDays(min,-2); state.rangeEnd=+LDT_Core.addDays(max,5); }
-    else { const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5); }
+    const vals=(state.events||[]).map(e=>({s:LDT_Core.eventStartMs(e,state.displayTimeZone), e:LDT_Core.eventEndMs(e,state.displayTimeZone)})).filter(x=>isFinite(x.s)&&isFinite(x.e));
+    if(vals.length){ const min=Math.min(...vals.map(x=>x.s)); const max=Math.max(...vals.map(x=>x.e)); state.rangeStart=+LDT_Core.addDays(min,-2); state.rangeEnd=+LDT_Core.addDays(max,5); }
+    else { const now=Date.now(); state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5); }
   }
 
   function attachInteractions(){
@@ -411,7 +362,7 @@
       return;
     }
     const st=await LDT_Core.loadState();
-    state.lang=st.lang||state.lang; state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(st.displayTimeZone||state.displayTimeZone); applyI18n(); state.colors=st.colors||state.colors; state.settings=LDT_Core.normalizeSettings(st.settings); state.detailsCache=st.detailsCache||{}; state.remoteUrl=LDT_Core.normalizeRemoteUrl(st.remoteUrl); applyRenderSettings(); updateTimeZoneSelect();
+    state.lang=st.lang||state.lang; state.displayTimeZone=st.displayTimeZone||state.displayTimeZone||"local"; applyI18n(); populateTimeZoneSelect(); state.colors=st.colors||state.colors; state.settings=LDT_Core.normalizeSettings(st.settings); state.detailsCache=st.detailsCache||{}; state.remoteUrl=LDT_Core.normalizeRemoteUrl(st.remoteUrl); applyRenderSettings();
     if(!state.pokemonDB){
       try{
         const res = await fetch(chrome.runtime.getURL("assets/pokemon.json"));
@@ -442,7 +393,7 @@
     let timer=null;
     chrome.storage.onChanged.addListener((changes, areaName)=>{
       if(areaName !== "local") return;
-      const keys = ["ld_events_csv_text","ld_events_history_csv_text","ld_events_cache","ld_events_history_cache","ld_events_fingerprint","ld_events_live_ids","ldt_events","ld_colors","ld_lang","ldt_saved_at","ld_last_scan_at","ld_settings","ld_remote_events_csv_text","ld_remote_last_fetch_at","ld_remote_url","ld_display_timezone"];
+      const keys = ["ld_events_csv_text","ld_events_history_csv_text","ld_events_cache","ld_events_history_cache","ld_events_fingerprint","ld_events_live_ids","ldt_events","ld_colors","ld_lang","ldt_saved_at","ld_last_scan_at","ld_settings","ld_remote_events_csv_text","ld_remote_last_fetch_at","ld_remote_url"];
       if(!keys.some(k => Object.prototype.hasOwnProperty.call(changes,k))) return;
       clearTimeout(timer);
       timer=setTimeout(()=>loadAndRenderFromStorage({preserveRange:false}), 80);
@@ -451,8 +402,6 @@
 
   async function init(){
     attachStorageListener();
-    ensureTopbarTimeZoneSelect();
-    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang});
     await refreshRemoteData(false);
     await loadAndRenderFromStorage({preserveRange:false});
     const exportBtn = document.querySelector('[data-act="export-events-csv"]');
@@ -478,21 +427,22 @@
     const mask=document.getElementById("ld-mask");
     if(mask && !mask.__ndBound){ mask.addEventListener("click",()=>{ document.querySelectorAll(".ld-modal").forEach(m=>m.style.display="none"); mask.style.display="none"; }); mask.__ndBound=true; }
     document.querySelectorAll("[data-close='settings']").forEach(b=>{ if(!b.__ndBound){ b.addEventListener("click",()=>{ document.getElementById("ld-settings-modal").style.display="none"; document.getElementById("ld-mask").style.display="none"; }); b.__ndBound=true; } });
+    const tzSel=document.getElementById("ld-timezone-select");
+    if(tzSel && !tzSel.__ldtBound) tzSel.addEventListener("change", async ()=>{ state.displayTimeZone=tzSel.value||"local"; await LDT_Core.saveState({ld_display_timezone:state.displayTimeZone}); updateViewMode(); });
+    if(tzSel) tzSel.__ldtBound = true;
     const todayBtn = document.querySelector('[data-act="today"]');
-    if(todayBtn && !todayBtn.__ldtBound) todayBtn.addEventListener("click", ()=>{ const span=state.rangeEnd-state.rangeStart; if(isFinite(span) && span>0){ const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+nowD-span*0.25; state.rangeEnd=state.rangeStart+span; updateViewMode(); } });
+    if(todayBtn && !todayBtn.__ldtBound) todayBtn.addEventListener("click", ()=>{ const span=state.rangeEnd-state.rangeStart; if(isFinite(span) && span>0){ state.rangeStart=Date.now()-span*0.25; state.rangeEnd=state.rangeStart+span; updateViewMode(); } });
     if(todayBtn) todayBtn.__ldtBound = true;
     const weekBtn = document.querySelector('[data-act="reset-week"]');
-    if(weekBtn && !weekBtn.__ldtBound) weekBtn.addEventListener("click", ()=>{ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5); updateViewMode(); });
+    if(weekBtn && !weekBtn.__ldtBound) weekBtn.addEventListener("click", ()=>{ const now=Date.now(); state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5); updateViewMode(); });
     if(weekBtn) weekBtn.__ldtBound = true;
     const monthBtn = document.querySelector('[data-act="reset-month"]');
-    if(monthBtn && !monthBtn.__ldtBound) monthBtn.addEventListener("click", ()=>{ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-7); state.rangeEnd=+LDT_Core.addDays(now,21); updateViewMode(); });
+    if(monthBtn && !monthBtn.__ldtBound) monthBtn.addEventListener("click", ()=>{ const now=Date.now(); state.rangeStart=+LDT_Core.addDays(now,-7); state.rangeEnd=+LDT_Core.addDays(now,31); updateViewMode(); });
     if(monthBtn) monthBtn.__ldtBound = true;
-    const linearBtn = document.querySelector('[data-act="switch-linear"]');
-    if(linearBtn && !linearBtn.__ldtBound) linearBtn.addEventListener("click", ()=>{ state.viewMode="linear"; updateViewMode(); });
-    if(linearBtn) linearBtn.__ldtBound = true;
-    const gridBtn = document.querySelector('[data-act="switch-monthgrid"]');
-    if(gridBtn && !gridBtn.__ldtBound) gridBtn.addEventListener("click", ()=>{ state.viewMode="month"; updateViewMode(); });
-    if(gridBtn) gridBtn.__ldtBound = true;
+    const toggleBtn = document.querySelector('[data-act="toggle-view"]');
+    if(toggleBtn && !toggleBtn.__ldtBound) toggleBtn.addEventListener("click", ()=>{ state.viewMode=state.viewMode==="linear"?"month":"linear"; updateViewMode(); });
+    if(toggleBtn) toggleBtn.__ldtBound = true;
+    LDT_Core.initInfoPages({state, updateViewMode, getDataUrl:(p)=>chrome.runtime.getURL(p)});
     attachInteractions();
   }
   if (document.readyState==="complete" || document.readyState==="interactive") init(); else window.addEventListener("DOMContentLoaded", init);

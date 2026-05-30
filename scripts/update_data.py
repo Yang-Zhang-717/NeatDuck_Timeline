@@ -33,8 +33,8 @@ from dateutil import tz
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 CACHE_PATH = DATA_DIR / "detail_cache.json"
-EVENTS_PATH = DATA_DIR / "events.csv"
-MANUAL_PATH = DATA_DIR / "events.manual.csv"
+EVENTS_PATH = DATA_DIR / "events.tsv"
+MANUAL_PATH = DATA_DIR / "events.manual.tsv"
 MANIFEST_PATH = DATA_DIR / "manifest.json"
 SNAPSHOT_PATH = DATA_DIR / "snapshot-latest.json"
 
@@ -43,15 +43,17 @@ REQUEST_TIMEOUT = int(os.environ.get("REQUEST_TIMEOUT", "20"))
 MAX_DETAIL_PAGES = int(os.environ.get("MAX_DETAIL_PAGES", "140"))
 DETAIL_SLEEP_SECONDS = float(os.environ.get("DETAIL_SLEEP_SECONDS", "0.20"))
 
-CSV_COLUMNS = [
-    "uid", "source", "title", "shortTitle", "category", "lane", "sub", "overlay", "overlayTargetSub",
-    "start", "endKnown", "endInferred", "href", "timeZone", "timeZoneLabel", "isFixedTimeZone",
-    "isLocal", "status", "firstSeenAt", "lastSeenAt", "rawText",
+TSV_COLUMNS = [
+    "uid",
+    "title", "shortTitle", "category", "lane", "sub",
+    "start", "endKnown", "endInferred", "href",
+    "timeZone", "timeZoneLabel", "isFixedTimeZone",
+    "source", "firstSeenAt", "lastSeenAt", "lastScrapedAt", "status",
 ]
 CORE_COLUMNS = ["title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href"]
 
 UA = (
-    "NeatDuck_Timeline/1.0 (+https://github.com/Yang-Zhang-717/NeatDuck_Timeline; "
+    "NeatDuck_Timeline/1.1 (+https://github.com/Yang-Zhang-717/NeatDuck_Timeline; "
     "public schedule updater; contact via GitHub issues)"
 )
 
@@ -123,14 +125,10 @@ class EventRecord:
     timeZone: str = "local"
     timeZoneLabel: str = "Local Time"
     isFixedTimeZone: str = ""
-    isLocal: str = "1"
     uid: str = ""
     source: str = "leekduck"
     firstSeenAt: str = ""
     lastSeenAt: str = ""
-    rawText: str = ""
-    overlay: str = ""
-    overlayTargetSub: str = ""
     lastScrapedAt: str = ""
     status: str = "active"
 
@@ -286,7 +284,7 @@ def pokemonish_title_part(title: str) -> str:
     patterns = [
         r"(.+?)\s+in\s+(?:Mega|5-star|5-Star|Shadow)\s+Raids?",
         r"(.+?)\s+in\s+5-star\s+Raid\s+Battles?",
-        r"(?:Dynamax|Gigantamax)\s+(.+?)\s+during\s+Max\s+Monday",
+        r"(?:Featured)\s+(.+?)\s+during\s+Monday",
         r"(.+?)\s+Raid\s+Hour",
         r"(.+?)\s+Spotlight\s+Hour",
         r"(.+?)\s+Community\s+Day",
@@ -306,8 +304,6 @@ def short_title(title: str, category: str, sub: str) -> str:
         return name if name.lower().startswith("max ") else f"Max {name}"
     if "mega raid" in sub_l:
         name = pokemonish_title_part(title)
-        if not name or re.search(r"^mega\s+raid\s+(day|weekend)$", name, re.I):
-            return title
         return name if re.match(r"^(Mega|超级|超級)\b", name, re.I) else f"Mega {name}"
     if "raid" in sub_l:
         return pokemonish_title_part(title)
@@ -629,9 +625,9 @@ def read_events(path: Path) -> List[EventRecord]:
         return []
     rows: List[EventRecord] = []
     with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
+        reader = tsv.DictReader(f)
         for row in reader:
-            data = {k: (row.get(k) or "") for k in CSV_COLUMNS}
+            data = {k: (row.get(k) or "") for k in TSV_COLUMNS}
             for k in CORE_COLUMNS:
                 data[k] = row.get(k, data.get(k, "")) or ""
             rec = EventRecord(**data)
@@ -717,11 +713,11 @@ def merge_library(existing: List[EventRecord], manual: List[EventRecord], fresh:
 def write_events(path: Path, events: List[EventRecord]) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS, lineterminator="\n")
+        writer = csv.DictWriter(f, fieldnames=TSV_COLUMNS, delimiter="\t", lineterminator="\n")
         writer.writeheader()
         for e in events:
             row = asdict(e)
-            writer.writerow({k: row.get(k, "") for k in CSV_COLUMNS})
+            writer.writerow({k: row.get(k, "") for k in TSV_COLUMNS})
 
 
 def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
@@ -732,9 +728,9 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
         "updatedAt": latest,
         "totalEvents": len(events),
         "activeEvents": len(fresh),
-        "schema": "events.csv/v1.0.7-canonical-timezone",
+        "schema": "events.tsv/v1.7-timezone-compatible",
         "coreColumns": CORE_COLUMNS,
-        "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
+        "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv",
     }
     MANIFEST_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     SNAPSHOT_PATH.write_text(json.dumps([asdict(e) for e in fresh], ensure_ascii=False, indent=2), encoding="utf-8")

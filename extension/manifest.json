@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NeatDuck v1.0.7",
-  "version": "1.0.7",
-  "description": "NeatDuck Pokémon GO event calendar, type matchup, Pokédex, and CP calculator with GitHub-backed data.",
+  "name": "NeatDuck Timeline",
+  "version": "1.1.0",
+  "description": "Pokémon GO event calendar, type chart, Pokédex, and CP calculator.",
   "icons": {
     "128": "icon128.png"
   },

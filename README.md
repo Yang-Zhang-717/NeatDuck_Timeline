@@ -1,218 +1,78 @@
-# NeatDuck v1.0.7
+# NeatDuck Timeline v1.1.0
 
-NeatDuck is a Chrome extension for Pokémon GO planning. It provides three independent tabs in one compact UI:
+NeatDuck 是一个 Pokémon GO 活动时间线浏览器扩展，v1.1.0 将主界面整理为三个互不干扰的 tab：
 
-1. **Event Calendar**: GitHub-backed LeekDuck event timeline and month view.
-2. **属性克制 / Type Matchup**: Pokémon GO type chart heatmap with attack and defense summaries.
-3. **宝可梦图鉴 / Pokédex**: searchable Pokémon GO-oriented Pokédex plus a CP calculator.
+- **event calendar**：活动日历，默认进入本周 linear timeline。
+- **属性克制**：Pokémon GO 属性倍率 heatmap，可从攻击视角和防御视角查看复合倍率。
+- **宝可梦图鉴**：Pokémon GO 图鉴表 + CP 计算器。
 
-The project is intentionally small. Apparently that is now a feature because the previous version had enough duplicated data files to qualify as a tiny bureaucracy.
-
-## Repository layout
+## 目录结构
 
 ```text
-NeatDuck_Timeline/
-├── data/
-│   ├── events.csv              # canonical public event CSV consumed by the extension
-│   ├── events.manual.csv       # optional manually reviewed events
-│   ├── pokemon_go.csv          # unified, non-redundant Pokédex CSV export
-│   └── manifest.json           # data build metadata
-├── assets/
-│   └── pokemon_go.json         # unified type chart + Pokédex + CPM + CP verification data
-├── scripts/
-│   ├── update_data.py          # LeekDuck scraper / CSV updater
-│   ├── normalize_event_fixture.py
-│   ├── js_event_csv_runner.mjs
-│   └── CompareCsv.java         # strict byte-for-byte CSV comparator
-├── extension/
-│   ├── manifest.json
-│   ├── background.js
-│   ├── core.js
-│   ├── content.js
-│   ├── standalone.html
-│   ├── standalone.js
-│   ├── info.js
-│   ├── timeline.css
-│   ├── assets/pokemon_go.json
-│   └── data/pokemon_go.csv
-├── packed_extension/
-│   └── NeatDuck_Timeline_v1.0.7_extension.zip
-└── tests/fixtures/events_fixture.json
+data/                 # 统一 TSV 数据源，不再输出 CSV
+  events.tsv           # 云端活动源
+  events.manual.tsv    # 手工补充活动源
+  pokemon.tsv          # 合并后的 Pokémon GO 图鉴数据
+scripts/              # 数据更新与校验脚本
+extension/            # Chrome/Edge unpacked extension 源码
+packed_extension/     # 已打包扩展 zip
 ```
 
-Removed duplicated runtime data files:
+## 安装
+
+1. 打开 Chrome/Edge 的扩展管理页面。
+2. 开启“开发者模式”。
+3. 点击“加载已解压的扩展程序”。
+4. 选择本仓库的 `extension/` 目录。
+
+也可以直接解压 `packed_extension/NeatDuck_v1.1.0_extension.zip` 后加载。
+
+## event calendar
+
+左上角 tab 进入 event calendar。默认显示 **本周**、**linear timeline**。按钮包括：今日、本周、本月、模式、时区、页面更新、云端更新、导出活动 TSV、导出日志文件、清除选择。今日/本周/本月只改变时间范围，不强行改变 linear/month 模式。
+
+云端默认读取：
 
 ```text
-assets/pokemon.json
-assets/pokemon_extra.json
-data/pokemon.csv
-extension/assets/pokemon.json
-extension/assets/pokemon_extra.json
-extension/data/pokemon.csv
+https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv
 ```
 
-The extension now reads `assets/pokemon_go.json` and `data/pokemon_go.csv` only for Pokédex/type/CP data.
+v1.1 仍兼容读取旧 CSV 缓存，但所有新导出都是 TSV。悬停窗默认 600 ms；滚轮滚动会立即关闭悬停窗。Mega Raid Day 等“时间已定、内容未定”的活动会保留事件标题，不再把它伪装成 Mega Mega Raid boss rollover。
 
-## Install the extension
+## 属性克制
 
-1. Download or clone this repository.
-2. Open Chrome and go to `chrome://extensions`.
-3. Enable **Developer mode**.
-4. Click **Load unpacked**.
-5. Select the `extension/` folder.
-6. Click the NeatDuck extension icon to open the standalone page, or open `https://leekduck.com/events/` and use the embedded panel.
+heatmap 使用 Pokémon GO 倍率。左侧点击一行作为攻击属性，点击一到两列作为防御属性组合，所选行/列会高亮。右侧上方显示攻击视角的复合伤害倍率；下方按超级有效、有效、一般、抗性、超级抗性分区显示防御视角。
 
-## Event Calendar tab
+## 宝可梦图鉴与 CP 计算器
 
-The calendar tab opens by default in **linear timeline / this week** mode.
+图鉴支持中文搜索、世代筛选、特殊类别筛选、显示 50/100/200/500/全部，以及 TSV 导出。右侧 CP 计算器先从左侧选择 Pokémon，再调 IV 与等级。
 
-Toolbar controls:
-
-- **Today / This Week / This Month**: changes only the visible date range. It does not switch between timeline and month view.
-- **Mode**: toggles between linear timeline and month view.
-- **Time Zone**: choose Browser Local, UTC, or UTC-12 through UTC+14. Each offset label includes at least three representative cities.
-- **Page Update**: scans the current LeekDuck page and merges results into local history.
-- **Cloud Update**: pulls the canonical CSV from GitHub.
-- **Export Events CSV**: exports the current event cache using the canonical CSV schema.
-- **Export Log File**: exports a small diagnostic JSON file.
-- **Clear Selection**: clears selected events.
-
-Behavior changes in v1.0.7:
-
-- Hover popup hide delay defaults to **600 ms**.
-- Mouse wheel immediately hides any hover popup.
-- Shading begins at the event start edge, not after the visible event block.
-- The month view follows the same lane/category ordering as the linear timeline.
-- Today is highlighted with a stronger border in month view.
-- Switching to Type Matchup or Pokédex hides the calendar and legend. Scroll/click inside those tabs no longer jumps back to the calendar.
-- The LeekDuck embedded view is centered across the whole page instead of being biased to the right.
-
-### Event/time robustness
-
-`core.js` and `scripts/update_data.py` now write the same canonical CSV columns:
-
-```csv
-uid,source,title,shortTitle,category,lane,sub,overlay,overlayTargetSub,start,endKnown,endInferred,href,timeZone,timeZoneLabel,isFixedTimeZone,isLocal,status,firstSeenAt,lastSeenAt,rawText
-```
-
-The parser keeps fixed-timezone events, such as Copenhagen events in CEST, distinct from local-time events. Generic future events with undecided content, such as a placeholder “Mega Raid Day”, stay generic and no longer become fake titles like “Mega Mega”. Civilization inches forward.
-
-## Type Matchup tab
-
-The Type Matchup tab has one tab-specific toolbar action: **Export Type CSV**.
-
-Layout:
-
-- Left: Pokémon GO type heatmap.
-  - Column width: 40 px.
-  - Row height: 35 px.
-  - Multipliers are shown with at most two decimals.
-  - Type labels use same-size centered badges.
-  - Click a row/cell to choose the attacking type.
-  - Click one or two defense columns to choose defending type(s). The two defense columns cannot be the same.
-  - Selected row and columns are highlighted.
-- Right top third: attack view, showing the selected attack type against the selected single/dual defense combination.
-- Right bottom two thirds: defense view, grouping incoming attack types into:
-  - 超级有效 / Double super effective
-  - 有效 / Super effective
-  - 一般 / Neutral
-  - 抗性 / Resisted
-  - 超级抗性 / Double resisted
-
-The previous explanatory joke sentence was removed to save space. Mourning period: zero seconds.
-
-## Pokédex tab
-
-Toolbar controls:
-
-- Search box: accepts Chinese, English, Japanese, number, form, type, and category text.
-- Generation filter: includes generation number and representative game versions.
-- Special category filter:
-  - Can Mega
-  - Legendary
-  - Mythical
-  - Form change
-  - Fusion
-  - Verified Pokémon GO CP data
-- Row count: 50 / 100 / 200 / 500 / all.
-- Export Pokédex CSV.
-
-Removed from the UI/data pages:
-
-- Dynamax
-- Gigantamax
-- the old Max-info tab
-
-### CP calculator
-
-Select a Pokémon from the table, then set:
-
-- Level, including half-level steps from 1 to 50.
-- IV Attack / Defense / Stamina using sliders or the triangular IV selector.
-
-Formula:
+CP 公式：
 
 ```text
-CP = floor((BaseAttack + IVAttack) × sqrt(BaseDefense + IVDefense) × sqrt(BaseStamina + IVStamina) × CPM(Level)^2 / 10)
-minimum CP = 10
+CP = floor((BaseAtk + AtkIV) × sqrt(BaseDef + DefIV) × sqrt(BaseSta + StaIV) × CPM(level)^2 / 10)
 ```
 
-The CPM table is embedded in `assets/pokemon_go.json`.
+v1.1 内置了 Level 50 的 CPM `0.84029999`，并在 `scripts/validate_cp.py` 中用以下样例校验：
 
-Verification cases included in `assets/pokemon_go.json`:
+- 满 IV Lv50 酋雷姆·捷克罗姆合体 / White Kyurem：5206
+- 13/15/15 Lv50 藏玛然特 剑/盾形态 / Crowned Shield Zamazenta：4681
+- 满 IV Lv50 凤王：4367
+- 满 IV Lv50 巨金怪：4286
+- 满 IV Lv50 盖欧卡：4652
+- 满 IV Lv50 超甲狂犀：4221
+- 满 IV Lv50 三首恶龙：4098
 
-| Case | Expected | Computed |
-|---|---:|---:|
-| Black Kyurem, 15/15/15, Lv50 | 5206 | 5206 |
-| Zamazenta Crowned Shield, 13/15/15, Lv50 | 4681 | 4681 |
-| Ho-Oh, 15/15/15, Lv50 | 4367 | 4367 |
-| Metagross, 15/15/15, Lv50 | 4286 | 4286 |
-| Kyogre, 15/15/15, Lv50 | 4652 | 4652 |
-| Rhyperior, 15/15/15, Lv50 | 4221 | 4221 |
-| Hydreigon, 15/15/15, Lv50 | 4098 | 4098 |
-
-Note: the requested “13/15/15 Lv50 Zamazenta Hero of Many Battles = 4681” conflicts with current public Pokémon GO stats. The calculator labels the matching case as **Crowned Shield** because 4681 matches the Crowned Shield stats used by the verification table.
-
-## Updating event data
-
-Run the updater in a network-enabled environment:
+## 校验
 
 ```bash
-python scripts/update_data.py
+python3 scripts/validate_cp.py
+node scripts/compare_event_tables.js
+javac scripts/TsvRoundTrip.java && java -cp scripts TsvRoundTrip data/events.tsv
 ```
 
-The updater writes:
+这些校验分别覆盖 CP 公式、扩展 JavaScript TSV round-trip、Java TSV 结构比对。
 
-```text
-data/events.csv
-data/manifest.json
-data/snapshot-latest.json
-data/detail_cache.json
-```
+## 数据说明
 
-The extension uses GitHub raw CSV by default:
-
-```text
-https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv
-```
-
-## Strict CSV comparison test
-
-The extension parser is JavaScript, not Java. The test harness runs:
-
-1. Python normalization through `scripts/normalize_event_fixture.py`.
-2. JavaScript extension serialization through Node.js and `extension/core.js`.
-3. Java byte-for-byte comparison through `scripts/CompareCsv.java`.
-
-```bash
-python scripts/normalize_event_fixture.py tests/fixtures/events_fixture.json tmp_test/python_events.csv
-node scripts/js_event_csv_runner.mjs tests/fixtures/events_fixture.json tmp_test/js_events.csv
-javac scripts/CompareCsv.java
-java -cp scripts CompareCsv tmp_test/python_events.csv tmp_test/js_events.csv
-```
-
-Expected output:
-
-```text
-CSV byte-for-byte match: tmp_test/python_events.csv == tmp_test/js_events.csv
-```
+旧包中 `assets/pokemon.json`、`assets/pokemon_extra.json`、`data/pokemon.csv` 存在内容重叠：`assets/pokemon.json` 偏名称字典，`assets/pokemon_extra.json` 供扩展 UI 使用，`data/pokemon.csv` 是表格数据副本。v1.1 合并为 `data/pokemon.tsv` + `assets/pokemon_extra.json`，扩展直接使用非冗余图鉴字段。极巨化 / 超极巨化内容已移除。

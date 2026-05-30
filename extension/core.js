@@ -12,37 +12,15 @@
     MIN_SHORT_EVENT_W: 10
   };
 
-  Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv";
+  Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv";
   Core.DEFAULT_DISPLAY_TIME_ZONE = "local";
   Core.TIME_ZONE_OPTIONS = [
     {value:"local", label:"Browser / Local"},
-    {value:"UTC-12", label:"UTC-12 · Baker Island / Howland Island / US Minor Outlying Islands"},
-    {value:"UTC-11", label:"UTC-11 · Pago Pago / Niue / Midway"},
-    {value:"UTC-10", label:"UTC-10 · Honolulu / Papeete / Rarotonga"},
-    {value:"UTC-09", label:"UTC-09 · Anchorage / Juneau / Gambell"},
-    {value:"UTC-08", label:"UTC-08 · Los Angeles / Vancouver / Tijuana"},
-    {value:"UTC-07", label:"UTC-07 · Denver / Phoenix / Calgary"},
-    {value:"UTC-06", label:"UTC-06 · Chicago / Mexico City / Guatemala City"},
-    {value:"UTC-05", label:"UTC-05 · New York / Toronto / Lima"},
-    {value:"UTC-04", label:"UTC-04 · Santiago / Halifax / La Paz"},
-    {value:"UTC-03", label:"UTC-03 · Buenos Aires / São Paulo / Montevideo"},
-    {value:"UTC-02", label:"UTC-02 · South Georgia / Fernando de Noronha / Noronha"},
-    {value:"UTC-01", label:"UTC-01 · Azores / Praia / Ittoqqortoormiit"},
-    {value:"UTC", label:"UTC · London / Reykjavik / Accra"},
-    {value:"UTC+01", label:"UTC+01 · Paris / Berlin / Lagos"},
-    {value:"UTC+02", label:"UTC+02 · Athens / Cairo / Johannesburg"},
-    {value:"UTC+03", label:"UTC+03 · Moscow / Istanbul / Nairobi"},
-    {value:"UTC+04", label:"UTC+04 · Dubai / Baku / Muscat"},
-    {value:"UTC+05", label:"UTC+05 · Karachi / Tashkent / Maldives"},
-    {value:"UTC+06", label:"UTC+06 · Dhaka / Almaty / Thimphu"},
-    {value:"UTC+07", label:"UTC+07 · Bangkok / Jakarta / Hanoi"},
-    {value:"UTC+08", label:"UTC+08 · Beijing / Singapore / Taipei"},
-    {value:"UTC+09", label:"UTC+09 · Tokyo / Seoul / Osaka"},
-    {value:"UTC+10", label:"UTC+10 · Sydney / Brisbane / Guam"},
-    {value:"UTC+11", label:"UTC+11 · Nouméa / Honiara / Magadan"},
-    {value:"UTC+12", label:"UTC+12 · Auckland / Fiji / Kamchatka"},
-    {value:"UTC+13", label:"UTC+13 · Apia / Nukuʻalofa / Tokelau"},
-    {value:"UTC+14", label:"UTC+14 · Kiritimati / Line Islands / Kiribati"}
+    {value:"UTC", label:"UTC"},
+    {value:"America/Los_Angeles", label:"PT / America/Los_Angeles"},
+    {value:"Asia/Tokyo", label:"JST / Asia/Tokyo"},
+    {value:"Europe/Copenhagen", label:"CET/CEST / Europe/Copenhagen"},
+    {value:"Europe/London", label:"GMT/BST / Europe/London"}
   ];
   Core.namedZoneToIANA = function(z){
     const t=String(z||"").toUpperCase();
@@ -54,26 +32,9 @@
     if(/^[-+]?\d/.test(t)) return "UTC";
     return "";
   };
-  Core.parseFixedOffsetMinutes = function(value){
-    const raw = String(value || "").trim();
-    if (/^UTC$/i.test(raw) || /^GMT$/i.test(raw)) return 0;
-    const m = raw.match(/^(?:UTC|GMT)?([+-])(\d{1,2})(?::?(\d{2}))?$/i);
-    if (!m) return null;
-    const h = Number(m[2]), min = Number(m[3] || 0);
-    if (!Number.isFinite(h) || !Number.isFinite(min) || h > 14 || min >= 60) return null;
-    return (m[1] === "+" ? 1 : -1) * (h * 60 + min);
-  };
-  Core.formatFixedOffset = function(minutes){
-    if (minutes === 0) return "UTC";
-    const sign = minutes >= 0 ? "+" : "-";
-    const h = Math.floor(Math.abs(minutes) / 60);
-    return `UTC${sign}${String(h).padStart(2,"0")}`;
-  };
   Core.normalizeDisplayTimeZone = function(value){
     const v=String(value||Core.DEFAULT_DISPLAY_TIME_ZONE).trim();
     if(!v || v==="local") return "local";
-    const fixed = Core.parseFixedOffsetMinutes(v);
-    if (fixed !== null) return Core.formatFixedOffset(fixed);
     if(Core.TIME_ZONE_OPTIONS.some(x=>x.value===v)) return v;
     try{ new Intl.DateTimeFormat("en-US", {timeZone:v}).format(new Date()); return v; }
     catch(_){ return "local"; }
@@ -89,11 +50,6 @@
     const d=Core.parseLocalDateString(date); if(!d) return null;
     const tz=Core.normalizeDisplayTimeZone(timeZone);
     if(tz==="local") return {year:d.getFullYear(), month:d.getMonth()+1, day:d.getDate(), hour:d.getHours(), minute:d.getMinutes(), second:d.getSeconds()};
-    const fixed = Core.parseFixedOffsetMinutes(tz);
-    if (fixed !== null){
-      const shifted = new Date(d.getTime() + fixed * 60000);
-      return {year:shifted.getUTCFullYear(), month:shifted.getUTCMonth()+1, day:shifted.getUTCDate(), hour:shifted.getUTCHours(), minute:shifted.getUTCMinutes(), second:shifted.getUTCSeconds()};
-    }
     const fmt=new Intl.DateTimeFormat("en-CA", {timeZone:tz, year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hourCycle:"h23"});
     const out={};
     fmt.formatToParts(d).forEach(p=>{ if(p.type!=="literal") out[p.type]=Number(p.value); });
@@ -155,8 +111,6 @@
   };
 
   Core._tzOffsetMinutes = function(tzName, localPartsDate){
-    const fixedOffset = Core.parseFixedOffsetMinutes(tzName);
-    if (fixedOffset !== null) return fixedOffset;
     const t = String(tzName || "").toUpperCase();
     if (t === "JST") return 9 * 60;
     if (t === "UTC" || t === "GMT") return 0;
@@ -181,21 +135,21 @@
 
   /* i18n */
   Core.I18N = {
-    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local","tabCalendar":"Event Calendar","tabTypes":"Type Matchup","tabPokedex":"Pokédex","modeToggle":"Mode","pageUpdate":"Page Update","exportLogFile":"Export Log File","exportTypesCSV":"Export Type CSV","exportPokedexCSV":"Export Pokédex CSV","search":"Search","generation":"Generation","categoryFilter":"Category","pageSize":"Rows"},
-    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地","tabCalendar":"活动日历","tabTypes":"属性克制","tabPokedex":"宝可梦图鉴","modeToggle":"模式","pageUpdate":"页面更新","exportLogFile":"导出日志文件","exportTypesCSV":"导出属性CSV","exportPokedexCSV":"导出图鉴CSV","search":"搜索","generation":"世代","categoryFilter":"特殊类别","pageSize":"显示行数"},
-    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地","tabCalendar":"活動日曆","tabTypes":"屬性克制","tabPokedex":"寶可夢圖鑑","modeToggle":"模式","pageUpdate":"頁面更新","exportLogFile":"匯出日誌檔","exportTypesCSV":"匯出屬性CSV","exportPokedexCSV":"匯出圖鑑CSV","search":"搜尋","generation":"世代","categoryFilter":"特殊類別","pageSize":"顯示列數"}
+    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export TSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import TSV","exportCSVEvents":"Export Events TSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
+    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出TSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入TSV","exportCSVEvents":"导出活动TSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
+    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出TSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入TSV","exportCSVEvents":"匯出活動TSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
   };
   Core.DEFAULT_LANG = "zh-CN";
 
 
   Object.assign(Core.I18N.en, {
-    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote CSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK"
+    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote TSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK"
   });
   Object.assign(Core.I18N["zh-CN"], {
-    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 CSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定"
+    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 TSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定"
   });
   Object.assign(Core.I18N["zh-TW"], {
-    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 CSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
+    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 TSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
   });
   Core.t = function(lang, key){ const dict = Core.I18N[lang] || Core.I18N.en; return dict[key] || Core.I18N.en[key] || key; };
 
@@ -211,7 +165,6 @@
     "Mega Raid Battles": "#f97316",
     "Raid Day": "#ef6c00",
     "Raid Weekend": "#6f1e51",
-    "Max Mondays": "#690342",
     "Shadow Raid Battles": "#4b235f",
     "Pokémon Spotlight Hour": "#e58e26",
     "Raid Hour": "#c0392b",
@@ -227,7 +180,7 @@
     { key: "season",  title: "赛季 / Season", sub: ["Season"] },
     { key: "gbl",     title: "GO对战联盟 / GO Battle League", sub: ["GO Battle League"] },
     { key: "raids",  title: "团体战 / Raids", sub: ["Shadow Raid Battles","Mega Raid Battles","5-Star Raid Battles"], overlays: ["Raid Day","Raid Weekend"] },
-    { key: "weekly", title: "每周活动 / Weekly", sub: ["Max Mondays","Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"] },
+    { key: "weekly", title: "每周活动 / Weekly", sub: ["Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"] },
     { key: "community", title: "社群日 / Community Day", sub: ["Community Day"] },
     { key: "city", title: "城市探险 / City Safari", sub: ["City Safari"] }
   ];
@@ -338,8 +291,8 @@
 
   Core.shortenWeekly = function(raw){
     let s = Core.cleanTitle(raw||"");
-    // Dynamax XXX during Max Monday(s)
-    s = s.replace(/Dynamax\s+(.+?)\s+during\s+Max\s+Monday(?:s)?/i, "$1");
+    // Former Max Monday wording parser (kept only for old cache migration)
+    s = s.replace(/(.+?)\s+during\s+Max\s+Monday(?:s)?/i, "$1");
     // Spotlight Hour / Raid Hour / Showcase
     s = s.replace(/(.+?)\s+Spotlight\s+Hour/i, "$1");
     s = s.replace(/(.+?)\s+Raid\s+Hour/i, "$1");
@@ -357,12 +310,8 @@
     s = s.replace(/\s+in\s+Shadow\s+(?:Raids?|Raid\s+Battles?)/i, "");
     // "... in 5-Star Raid Battles" -> "..."
     s = s.replace(/\s+in\s+5-?\s*Star\s+Raid\s+Battles/i, "");
-    // Mega Raid Day/Weekend suffixes. If the card has no boss name yet, keep the generic event title.
-    s = s.replace(/^(.*?)(?:\s+)?Mega\s+Raid\s+(Day|Weekend)\s*:?\s*(.*)$/i, (m, before, kind, after) => {
-      const boss = String(after || before || "").trim();
-      if (!boss || /^(mega\s*)?raid\s*(day|weekend)$/i.test(boss)) return `Mega Raid ${kind}`;
-      return /^mega/i.test(boss) ? boss : `Mega ${boss}`;
-    });
+    // Mega Raid Day/Weekend suffixes
+    s = s.replace(/\s*Mega\s+Raid\s+(Day|Weekend)\s*:?\s*(.*)$/i, "Mega $2".trim());
     return s.trim();
   };
 
@@ -374,7 +323,6 @@
     const text = (e.rawText||"") + " " + (e.title||"") + " " + (e.category||"");
     // Weekly
     const wk=[
-      {sub:"Max Mondays",re:/(max\s*monday|max\s*mondays)/i},
       {sub:"Pokémon Spotlight Hour",re:/(spotlight\s*hour|聚焦時刻)/i},
       {sub:"Raid Hour",re:/(raid\s*hour|團體戰時刻)/i},
       {sub:"PokéStop Showcase",re:/(pok[eé]stop\s*showcase|補給站展示)/i}
@@ -409,7 +357,7 @@
     else if (sub === "Season") out.lane = "season";
     else if (sub === "GO Battle League") out.lane = "gbl";
     else if (["Shadow Raid Battles","Mega Raid Battles","5-Star Raid Battles"].includes(sub)) out.lane = "raids";
-    else if (["Max Mondays","Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"].includes(sub)) out.lane = "weekly";
+    else if (["Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"].includes(sub)) out.lane = "weekly";
     else if (sub === "Community Day") out.lane = "community";
     else if (sub === "City Safari") out.lane = "city";
     return out;
@@ -458,13 +406,13 @@
     "zh-CN": {
       "Theme Main":"主题活动", "Theme Event A":"主题活动", "Theme Event B":"主题活动", "Theme Event C":"主题活动",
       "City Safari":"城市探险", "Community Day":"社群日", "5-Star Raid Battles":"五星团体战", "Mega Raid Battles":"超级团体战", "Shadow Raid Battles":"暗影团体战",
-      "Raid Day":"团体战日", "Raid Weekend":"团体战周末", "Max Mondays":"极巨星期一", "Pokémon Spotlight Hour":"聚焦时刻",
+      "Raid Day":"团体战日", "Raid Weekend":"团体战周末", "Max Mondays":"Max Mondays", "Pokémon Spotlight Hour":"聚焦时刻",
       "Raid Hour":"团体战时刻", "PokéStop Showcase":"宝可梦补给站选秀", "GO Pass":"GO通行证", "Season":"赛季", "GO Battle League":"GO对战联盟"
     },
     "zh-TW": {
       "Theme Main":"主題活動", "Theme Event A":"主題活動", "Theme Event B":"主題活動", "Theme Event C":"主題活動",
       "City Safari":"城市探險", "Community Day":"社群日", "5-Star Raid Battles":"五星團體戰", "Mega Raid Battles":"超級團體戰", "Shadow Raid Battles":"暗影團體戰",
-      "Raid Day":"團體戰日", "Raid Weekend":"團體戰週末", "Max Mondays":"極巨星期一", "Pokémon Spotlight Hour":"聚焦時刻",
+      "Raid Day":"團體戰日", "Raid Weekend":"團體戰週末", "Max Mondays":"Max Mondays", "Pokémon Spotlight Hour":"聚焦時刻",
       "Raid Hour":"團體戰時刻", "PokéStop Showcase":"寶可補給站選秀", "GO Pass":"GO通行證", "Season":"季節", "GO Battle League":"GO對戰聯盟"
     }
   };
@@ -593,7 +541,6 @@
     let keyName = original;
     if (/^Shadow\s+/i.test(keyName)) { prefix = (lang==="zh-TW"?"暗影":(lang==="zh-CN"?"暗影":"Shadow ")); keyName = keyName.replace(/^Shadow\s+/i, ""); }
     if (/^Mega\s+/i.test(keyName)) { prefix += (lang==="zh-TW"?"超級·":(lang==="zh-CN"?"超级·":"Mega ")); keyName = keyName.replace(/^Mega\s+/i, ""); }
-    if (/^Dynamax\s+/i.test(keyName)) { prefix += (lang==="zh-TW"?"極巨":"zh-CN"===lang?"极巨":"Dynamax "); keyName = keyName.replace(/^Dynamax\s+/i, ""); }
     const key = Core._pokemonKey(keyName);
     const manual = Core._pokemonManual[key];
     if (manual && manual[lang]) return prefix + manual[lang];
@@ -631,7 +578,6 @@
     s = s.replace(/\s+during\s+Max\s+Monday(?:s)?\b.*$/i, "");
     s = s.replace(/\s+(?:Spotlight\s+Hour|Raid\s+Hour|Raid\s+Day|Raid\s+Weekend|Pok[eé]Stop\s+Showcases?).*$/i, "");
     s = s.replace(/\s+Battles?$/i, "");
-    s = s.replace(/^Dynamax\s+/i, "");
     return s.trim();
   };
 
@@ -644,7 +590,7 @@
     if (isPokemonOnly){
       let pokemon = Core.extractPokemonName(e.title || raw);
       if (sub === "Mega Raid Battles" && !/^Mega\s+/i.test(pokemon)) pokemon = "Mega " + pokemon;
-      const local = (l === "en") ? pokemon.replace(/^Dynamax\s+/i, "") : (Core.translatePokemonName(pokemon, l, pokemonDB) || pokemon);
+      const local = (l === "en") ? pokemon : (Core.translatePokemonName(pokemon, l, pokemonDB) || pokemon);
       if (sub === "Max Mondays") return /^Max\b/i.test(local) ? local : "Max " + local;
       if (sub === "Pokémon Spotlight Hour") return l === "en" ? `${local} Spotlight Hour` : local + (l==="zh-TW"?"聚焦時刻":"聚焦时刻");
       if (sub === "Raid Hour") return l === "en" ? `${local} Raid Hour` : local + (l==="zh-TW"?"團體戰時刻":"团体战时刻");
@@ -799,59 +745,32 @@
     }catch(_){ return { start:null, end:null }; }
   };
 
-  /* CSV <-> events */
-  Core.EVENT_CSV_COLUMNS = ["uid","source","title","shortTitle","category","lane","sub","overlay","overlayTargetSub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone","isLocal","status","firstSeenAt","lastSeenAt","rawText"];
-  Core._csvCell = function(value){
-    if (value == null) value = "";
-    const s = String(value);
-    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
-  };
-  Core._csvDate = function(value){
-    const d = Core.parseLocalDateString(value);
-    return d ? d.toISOString().replace(/\.\d{3}Z$/, "Z") : "";
-  };
+  /* Legacy CSV reader + v1.1 TSV writer */
   Core.eventsToCSV = function(events){
-    const rows = [Core.EVENT_CSV_COLUMNS.join(",")];
-    for (const raw of (events || [])){
-      const e = Core.normalizeLegacyEvent(raw);
-      if (!e) continue;
-      const rec = {
-        uid: e.uid || e.id || Core.makeEventId(e) || "",
-        source: e.source || "extension",
-        title: e.title || "",
-        shortTitle: e.shortTitle || "",
-        category: e.category || "",
-        lane: e.lane || "",
-        sub: e.sub || "",
-        overlay: e.overlay || "",
-        overlayTargetSub: e.overlayTargetSub || "",
-        start: Core._csvDate(e.start),
-        endKnown: Core._csvDate(e.endKnown),
-        endInferred: Core._csvDate(e.endInferred),
-        href: Core.normalizeHref(e.href || ""),
-        timeZone: e.timeZone || "local",
-        timeZoneLabel: e.timeZoneLabel || (e.isFixedTimeZone ? (e.timeZone || "Fixed TZ") : "Local Time"),
-        isFixedTimeZone: e.isFixedTimeZone ? "1" : "",
-        isLocal: e.isLocal === false ? "" : "1",
-        status: e.status || "saved",
-        firstSeenAt: e.firstSeenAt || "",
-        lastSeenAt: e.lastSeenAt || "",
-        rawText: e.rawText || ""
-      };
-      rows.push(Core.EVENT_CSV_COLUMNS.map(k => Core._csvCell(rec[k])).join(","));
-    }
-    return rows.join("\n");
+    const header = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone"].join(",");
+    const rows = (events || []).map(e => [
+      JSON.stringify(e.title||""), JSON.stringify(e.shortTitle||""), JSON.stringify(e.category||""),
+      JSON.stringify(e.lane||""), JSON.stringify(e.sub||""),
+      JSON.stringify(e.start? new Date(e.start).toISOString():""),
+      JSON.stringify(e.endKnown? new Date(e.endKnown).toISOString():""),
+      JSON.stringify(e.endInferred? new Date(e.endInferred).toISOString():""),
+      JSON.stringify(e.href||""),
+      JSON.stringify(e.timeZone||"local"),
+      JSON.stringify(e.timeZoneLabel||"Local Time"),
+      JSON.stringify(e.isFixedTimeZone?"1":"")
+    ].join(","));
+    return [header].concat(rows).join("\n");
   };
 
   Core._splitCsvLine = function(line){
-    const cols=[]; let cur="", inQuote=false;
+    const cols=[];
+    let cur="", inQuote=false, escaped=false;
     for (let i=0;i<line.length;i++){
       const ch=line[i];
-      if (ch === '"'){
-        if (inQuote && line[i+1] === '"'){ cur += '"'; i++; continue; }
-        inQuote = !inQuote; continue;
-      }
-      if (ch === "," && !inQuote){ cols.push(cur); cur=""; continue; }
+      if (escaped){ cur += ch; escaped=false; continue; }
+      if (inQuote && ch==="\\"){ cur += ch; escaped=true; continue; }
+      if (ch==='"'){ inQuote=!inQuote; cur += ch; continue; }
+      if (ch==="," && !inQuote){ cols.push(cur); cur=""; continue; }
       cur += ch;
     }
     cols.push(cur);
@@ -860,43 +779,54 @@
 
   Core._safeJsonField = function(v, fallback=""){
     if (v==null || v==="") return fallback;
-    const s=String(v);
-    try { return JSON.parse(s); }
-    catch(_){ return s; }
+    try { return JSON.parse(v); }
+    catch(_){
+      try { return String(v).replace(/^"/,"").replace(/"$/ ,"").replace(/\\"/g, '"'); }
+      catch(__){ return fallback; }
+    }
   };
 
   Core.csvToEvents = function(text){
     if (!text) return [];
     const lines = String(text).split(/\r?\n/).filter(x=>x.trim().length>0);
     if (lines.length<=1) return [];
-    const header = Core._splitCsvLine(lines[0]).map(h => String(h).trim());
+    const header = Core._splitCsvLine(lines[0]).map(h => String(h).replace(/(^"|"$)/g,""));
     const idx = {};
     header.forEach((h,i)=> idx[h] = i);
     const required = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href"];
     if (!required.every(k => Object.prototype.hasOwnProperty.call(idx,k))){
-      console.warn("LDT: CSV header not recognized; ignoring imported cache.");
+      console.warn("LDT: legacy CSV header not recognized; ignoring imported cache.");
       return [];
     }
-    const get=(cols,k,fb="")=>Object.prototype.hasOwnProperty.call(idx,k) ? Core._safeJsonField(cols[idx[k]], fb) : fb;
+    const parseDateField = (cols,key)=>{
+      const raw = cols[idx[key]];
+      const val = Core._safeJsonField(raw, "");
+      return Core.parseLocalDateString(val);
+    };
     const events=[];
     for (let i=1;i<lines.length;i++){
       try{
         const cols = Core._splitCsvLine(lines[i]);
         const e = {
-          uid:get(cols,"uid",""), id:get(cols,"uid", get(cols,"id","")), source:get(cols,"source","csv"),
-          title:get(cols,"title",""), shortTitle:get(cols,"shortTitle",""), category:get(cols,"category",""),
-          lane:get(cols,"lane",""), sub:get(cols,"sub",""), overlay:get(cols,"overlay",""), overlayTargetSub:get(cols,"overlayTargetSub",""),
-          start: Core.parseLocalDateString(get(cols,"start","")),
-          endKnown: Core.parseLocalDateString(get(cols,"endKnown","")),
-          endInferred: Core.parseLocalDateString(get(cols,"endInferred","")),
-          href:get(cols,"href",""), timeZone:get(cols,"timeZone","local"), timeZoneLabel:get(cols,"timeZoneLabel","Local Time"),
-          isFixedTimeZone: !!String(get(cols,"isFixedTimeZone","")).trim(),
-          isLocal: !!String(get(cols,"isLocal","1")).trim(), status:get(cols,"status","saved"), firstSeenAt:get(cols,"firstSeenAt",""), lastSeenAt:get(cols,"lastSeenAt",""), rawText:get(cols,"rawText","")
+          title: Core._safeJsonField(cols[idx["title"]], ""),
+          shortTitle: Core._safeJsonField(cols[idx["shortTitle"]], ""),
+          category: Core._safeJsonField(cols[idx["category"]], ""),
+          lane: Core._safeJsonField(cols[idx["lane"]], ""),
+          sub: Core._safeJsonField(cols[idx["sub"]], ""),
+          start: parseDateField(cols,"start"),
+          endKnown: parseDateField(cols,"endKnown"),
+          endInferred: parseDateField(cols,"endInferred"),
+          href: Core._safeJsonField(cols[idx["href"]], ""),
+          timeZone: Object.prototype.hasOwnProperty.call(idx,"timeZone") ? Core._safeJsonField(cols[idx["timeZone"]], "local") : "local",
+          timeZoneLabel: Object.prototype.hasOwnProperty.call(idx,"timeZoneLabel") ? Core._safeJsonField(cols[idx["timeZoneLabel"]], "Local Time") : "Local Time",
+          isFixedTimeZone: Object.prototype.hasOwnProperty.call(idx,"isFixedTimeZone") ? !!String(Core._safeJsonField(cols[idx["isFixedTimeZone"]], "")).trim() : false
         };
         if (!e.title && !e.href) continue;
         const normalized = Core.normalizeLegacyEvent(e);
         if (normalized) events.push(normalized);
-      }catch(err){ console.warn("LDT: skipped bad CSV row", i+1, err); }
+      }catch(err){
+        console.warn("LDT: skipped bad legacy row", i+1, err);
+      }
     }
     return events;
   };
@@ -964,10 +894,8 @@
       let title = e.title || e.nameOriginal || e.nameDisplay || "";
       const category = e.category || e.categoryLabel || e.categoryKey || "";
       if (category && typeof title === "string"){
-        const c = String(category).replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-        // Only collapse truly duplicated badges. Do not strip meaningful prefixes such as
-        // "Pokémon GO Fest 2026: Copenhagen" into the wonderfully useless "2026: Copenhagen".
-        title = title.replace(new RegExp("^(" + c + ")\\s+\\1\\b", "i"), category);
+        const c = String(category).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        title = title.replace(new RegExp("^(?:" + c + ")(?:\\s+" + c + ")?\\s+", "i"), "");
       }
       const start = Core.parseLocalDateString(e.startISO || e.start);
       const endKnown = Core.parseLocalDateString(e.endISO || e.endKnown || e.end);
@@ -984,8 +912,6 @@
         isLocal: e.isLocal !== false,
         firstSeenAt: e.firstSeenAt || e.createdAt || null,
         lastSeenAt: e.lastSeenAt || e.updatedAt || null,
-        uid: e.uid || e.id || "",
-        source: e.source || "extension",
         status: e.status || "saved",
         timeZone: e.timeZone || e.tz || "local",
         timeZoneLabel: e.timeZoneLabel || e.tzLabel || (e.isFixedTimeZone ? (e.timeZone || "Fixed TZ") : "Local Time"),
@@ -1011,8 +937,7 @@
       else if (out.lane === "raids") out.shortTitle = Core.shortenRaids(out.title);
       else if (out.lane === "gbl") out.shortTitle = Core.shortenGBL(out.title);
       else out.shortTitle = Core.cleanTitle(out.title);
-      out.id = e.uid || e.id || Core.makeEventId(out);
-      out.uid = out.id;
+      out.id = Core.makeEventId(out) || e.id;
       return out;
     }catch(err){
       console.warn("LDT: failed to normalize cached event", err, e);
@@ -1025,8 +950,6 @@
     if (!n) return null;
     return {
       id: n.id,
-      uid: n.uid || n.id,
-      source: n.source || "extension",
       title: n.title || "",
       shortTitle: n.shortTitle || "",
       category: n.category || "",
@@ -1042,11 +965,7 @@
       isLocal: n.isLocal !== false,
       firstSeenAt: n.firstSeenAt || null,
       lastSeenAt: n.lastSeenAt || null,
-      status: n.status || "saved",
-      timeZone: n.timeZone || "local",
-      timeZoneLabel: n.timeZoneLabel || (n.isFixedTimeZone ? (n.timeZone || "Fixed TZ") : "Local Time"),
-      isFixedTimeZone: !!n.isFixedTimeZone,
-      rawText: n.rawText || ""
+      status: n.status || "saved"
     };
   };
 
@@ -1054,14 +973,13 @@
     if (!prev) return next;
     if (!next) return prev;
     const out = {...prev};
-    for (const k of ["uid","source","title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status","timeZone","timeZoneLabel"]){
+    for (const k of ["title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status"]){
       if (next[k] != null && next[k] !== "") out[k] = next[k];
     }
     for (const k of ["start","endKnown","endInferred"]){
       if (next[k]) out[k] = next[k];
     }
     out.isLocal = next.isLocal !== false;
-    out.isFixedTimeZone = !!next.isFixedTimeZone;
     out.firstSeenAt = prev.firstSeenAt || next.firstSeenAt || null;
     out.lastSeenAt = next.lastSeenAt || prev.lastSeenAt || null;
     out.id = Core.makeEventId(out) || next.id || prev.id;
@@ -1274,7 +1192,6 @@
     if (!e.start) return { known: null, inferred: null };
     const sub = e.sub || "";
     if (sub === "Raid Hour" || sub === "Pokémon Spotlight Hour") return { known:null, inferred: Core.addHours(e.start, 1) };
-    if (sub === "Max Mondays") return { known:null, inferred: Core.addHours(e.start, 15) }; // LeekDuck details: Mondays 6 AM → 9 PM local time.
     if (/weekend/.test(titleLower)){
       const start = new Date(e.start);
       const dow=start.getDay();
@@ -1295,6 +1212,124 @@
       if (inferred > cap) inferred = cap;
     }
     return { known: null, inferred };
+  };
+
+
+
+  // ===== NeatDuck v1.1.0 compatibility + TSV layer =====
+  Core.VERSION = "1.1.0";
+  Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv";
+  Core.DEFAULT_SETTINGS.hoverPersistMs = 600;
+
+  Core.TIME_ZONE_OPTIONS = [
+    {value:"local", label:"Browser / Local"},
+    {value:"UTC", label:"UTC ±00: London / Reykjavik / Accra"},
+    {value:"Etc/GMT+12", label:"UTC-12: Baker Island / Howland / AoE"},
+    {value:"Pacific/Pago_Pago", label:"UTC-11: Pago Pago / Niue / Midway"},
+    {value:"Pacific/Honolulu", label:"UTC-10: Honolulu / Tahiti / Rarotonga"},
+    {value:"America/Anchorage", label:"UTC-09: Anchorage / Juneau / Fairbanks"},
+    {value:"America/Los_Angeles", label:"UTC-08/-07: Los Angeles / Vancouver / Seattle"},
+    {value:"America/Denver", label:"UTC-07/-06: Denver / Calgary / Phoenix"},
+    {value:"America/Chicago", label:"UTC-06/-05: Chicago / Mexico City / Winnipeg"},
+    {value:"America/New_York", label:"UTC-05/-04: New York / Toronto / Lima"},
+    {value:"America/Halifax", label:"UTC-04/-03: Halifax / Santiago / La Paz"},
+    {value:"America/Sao_Paulo", label:"UTC-03: São Paulo / Buenos Aires / Montevideo"},
+    {value:"Atlantic/South_Georgia", label:"UTC-02: South Georgia / Noronha / Grytviken"},
+    {value:"Atlantic/Azores", label:"UTC-01: Azores / Praia / Scoresbysund"},
+    {value:"Europe/London", label:"UTC+00/+01: London / Dublin / Lisbon"},
+    {value:"Europe/Paris", label:"UTC+01/+02: Paris / Berlin / Rome"},
+    {value:"Europe/Copenhagen", label:"UTC+01/+02: Copenhagen / Oslo / Stockholm"},
+    {value:"Europe/Athens", label:"UTC+02/+03: Athens / Cairo / Helsinki"},
+    {value:"Europe/Moscow", label:"UTC+03: Moscow / Istanbul / Nairobi"},
+    {value:"Asia/Dubai", label:"UTC+04: Dubai / Abu Dhabi / Muscat"},
+    {value:"Asia/Karachi", label:"UTC+05: Karachi / Tashkent / Maldives"},
+    {value:"Asia/Dhaka", label:"UTC+06: Dhaka / Almaty / Thimphu"},
+    {value:"Asia/Bangkok", label:"UTC+07: Bangkok / Jakarta / Hanoi"},
+    {value:"Asia/Shanghai", label:"UTC+08: Beijing / Singapore / Taipei"},
+    {value:"Asia/Tokyo", label:"UTC+09: Tokyo / Seoul / Osaka"},
+    {value:"Australia/Sydney", label:"UTC+10/+11: Sydney / Melbourne / Guam"},
+    {value:"Pacific/Noumea", label:"UTC+11: Nouméa / Honiara / Magadan"},
+    {value:"Pacific/Auckland", label:"UTC+12/+13: Auckland / Fiji / Wellington"},
+    {value:"Pacific/Tongatapu", label:"UTC+13: Tonga / Samoa / Tokelau"},
+    {value:"Pacific/Kiritimati", label:"UTC+14: Kiritimati / Line Islands / Samoa DST"}
+  ];
+
+  Core.TABLE_COLUMNS = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone","status","source"];
+  Core._tsvEscape = function(v){
+    if (v instanceof Date) v = v.toISOString();
+    v = String(v == null ? "" : v);
+    return v.replace(/\t/g," ").replace(/\r?\n/g," ").trim();
+  };
+  Core.eventsToTSV = function(events){
+    const cols = Core.TABLE_COLUMNS;
+    const rows = (events || []).map(e => cols.map(k => {
+      let v = e && e[k];
+      if ((k === "start" || k === "endKnown" || k === "endInferred") && v) v = new Date(v).toISOString();
+      if (k === "isFixedTimeZone") v = e && e.isFixedTimeZone ? "1" : "";
+      return Core._tsvEscape(v);
+    }).join("\t"));
+    return [cols.join("\t")].concat(rows).join("\n");
+  };
+  Core.tsvToEvents = function(text){
+    if (!text) return [];
+    const lines = String(text).split(/\r?\n/).filter(x => x.trim().length > 0);
+    if (lines.length <= 1) return [];
+    const header = lines[0].split("\t").map(x => x.trim());
+    const idx = {}; header.forEach((h,i)=>idx[h]=i);
+    if (!("title" in idx) || !("start" in idx)) return [];
+    const events = [];
+    for (let i=1;i<lines.length;i++){
+      const cols = lines[i].split("\t");
+      const get = k => idx[k] == null ? "" : (cols[idx[k]] || "");
+      const e = {
+        title:get("title"), shortTitle:get("shortTitle"), category:get("category"), lane:get("lane"), sub:get("sub"),
+        start:Core.parseLocalDateString(get("start")), endKnown:Core.parseLocalDateString(get("endKnown")), endInferred:Core.parseLocalDateString(get("endInferred")),
+        href:get("href"), timeZone:get("timeZone") || "local", timeZoneLabel:get("timeZoneLabel") || "Local Time",
+        isFixedTimeZone:/^(1|true|yes)$/i.test(get("isFixedTimeZone")), status:get("status") || "saved", source:get("source") || "tsv"
+      };
+      const normalized = Core.normalizeLegacyEvent(e);
+      if (normalized){ normalized.status=e.status; normalized.source=e.source; events.push(normalized); }
+    }
+    Core.assignThemeRows(events);
+    return events;
+  };
+  Core._csvToEventsLegacy = Core.csvToEvents;
+  Core.csvToEvents = function(text){
+    const first = String(text || "").split(/\r?\n/)[0] || "";
+    if (first.indexOf("\t") >= 0) return Core.tsvToEvents(text);
+    return Core._csvToEventsLegacy(text);
+  };
+  Core.eventsToCSV = Core.eventsToTSV; // backward API name, TSV payload by design in v1.1
+
+  Core._oldNormalizeRemoteUrl = Core.normalizeRemoteUrl;
+  Core.normalizeRemoteUrl = function(input){
+    const u = Core._oldNormalizeRemoteUrl(input);
+    return String(u || Core.DEFAULT_REMOTE_URL).replace(/events\.csv(\?|$)/i, "events.tsv$1");
+  };
+
+  Core._oldShortenRaids = Core.shortenRaids;
+  Core.shortenRaids = function(raw){
+    const s = String(raw || "").replace(/\s+/g," ").trim();
+    if (/^Mega\s+Raid\s+Day$/i.test(s)) return "Mega Raid Day";
+    if (/^Mega\s+Raid\s+Weekend$/i.test(s)) return "Mega Raid Weekend";
+    let out = Core._oldShortenRaids ? Core._oldShortenRaids(raw) : s;
+    out = String(out || s).replace(/^Mega\s+Mega\b/i, "Mega").replace(/\s+/g," ").trim();
+    return out || s;
+  };
+
+  Core._oldChooseLaneAndSub = Core.chooseLaneAndSub;
+  Core.chooseLaneAndSub = function(e){
+    const raw = [e && e.title, e && e.category, e && e.rawText, e && e.sub].join(" ");
+    if (/\bMega\s+Raid\s+Day\b/i.test(raw)) return {lane:"weekly", sub:"Raid Day", overlay:true};
+    const out = Core._oldChooseLaneAndSub ? Core._oldChooseLaneAndSub(e) : {lane:"theme", sub:"Theme Event A"};
+    if (out && out.sub === "Max Mondays") return {lane:"theme", sub:"Theme Event A"};
+    return out;
+  };
+
+  Core._oldLabelTitle = Core.labelTitle;
+  Core.labelTitle = function(e, lang, pokemonDB){
+    if (e && /\bMega\s+Raid\s+Day\b/i.test([e.title,e.category,e.rawText].join(" "))) return "Mega Raid Day";
+    return Core._oldLabelTitle ? Core._oldLabelTitle(e, lang, pokemonDB) : (e && (e.shortTitle || e.title)) || "";
   };
 
   // Public hook so other scripts can use

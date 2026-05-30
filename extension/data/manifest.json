@@ -1,10 +1,6 @@
 {
-  "generatedAt": "2026-05-30T00:00:00Z",
-  "schema": "events.csv/v1.8-timezone-compatible",
-  "count": 5,
-  "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
-  "notes": [
-    "Seed includes current/reference events so Cloud Update is not an empty CSV.",
-    "Local Time entries intentionally remain floating local times; PT entries store fixed UTC instants with timeZone metadata."
-  ]
+  "format": "tsv",
+  "generatedAt": "2026-05-30T20:09:41.142928+00:00",
+  "eventRows": 15,
+  "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv"
 }

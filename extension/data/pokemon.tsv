@@ -1,0 +1,1216 @@
+Number	Name	zh-CN	zh-TW	ja	Form	Generation	type1Key	type2Key	goAttack	goDefense	goStamina	special
+1	Bulbasaur	妙蛙种子	妙蛙種子	フシギダネ		1	grass	poison	125	115	129	
+2	Ivysaur	妙蛙草	妙蛙草	フシギソウ		1	grass	poison	155	145	155	
+3	Venusaur	妙蛙花	妙蛙花	フシギバナ		1	grass	poison	195	185	190	
+3	Venusaur	妙蛙花	妙蛙花	フシギバナ	Mega Venusaur	1	grass	poison	234	214	190	mega form
+4	Charmander	小火龙	小火龍	ヒトカゲ		1	fire		121	92	118	
+5	Charmeleon	火恐龙	火恐龍	リザード		1	fire		160	125	152	
+6	Charizard	喷火龙	噴火龍	リザードン		1	fire	flying	216	165	186	
+6	Charizard	喷火龙	噴火龍	リザードン	Mega Charizard X	1	fire	dragon	252	197	186	mega form
+6	Charizard	喷火龙	噴火龍	リザードン	Mega Charizard Y	1	fire	flying	303	202	186	mega form
+7	Squirtle	杰尼龟	傑尼龜	ゼニガメ		1	water		98	114	127	
+8	Wartortle	卡咪龟	卡咪龜	カメール		1	water		128	144	153	
+9	Blastoise	水箭龟	水箭龜	カメックス		1	water		168	190	188	
+9	Blastoise	水箭龟	水箭龜	カメックス	Mega Blastoise	1	water		256	209	188	mega form
+10	Caterpie	绿毛虫	綠毛蟲	キャタピー		1	bug		64	78	129	
+11	Metapod	铁甲蛹	鐵甲蛹	トランセル		1	bug		51	106	138	
+12	Butterfree	巴大蝶	巴大蝶	バタフリー		1	bug	flying	175	145	155	
+13	Weedle	独角虫	獨角蟲	ビードル		1	bug	poison	74	68	120	
+14	Kakuna	铁壳蛹	鐵殼蛹	コクーン		1	bug	poison	52	96	129	
+15	Beedrill	大针蜂	大針蜂	スピアー		1	bug	poison	176	149	164	
+15	Beedrill	大针蜂	大針蜂	スピアー	Mega Beedrill	1	bug	poison	299	149	164	mega form
+16	Pidgey	波波	波波	ポッポ		1	normal	flying	93	80	120	
+17	Pidgeotto	比比鸟	比比鳥	ピジョン		1	normal	flying	123	116	160	
+18	Pidgeot	大比鸟	大比鳥	ピジョット		1	normal	flying	165	156	195	
+18	Pidgeot	大比鸟	大比鳥	ピジョット	Mega Pidgeot	1	normal	flying	266	162	195	mega form
+19	Rattata	小拉达	小拉達	コラッタ		1	normal		116	66	102	
+19	Rattata	小拉达	小拉達	コラッタ	Alolan Rattata	1	dark	normal	116	66	102	form
+20	Raticate	拉达	拉達	ラッタ		1	normal		166	129	146	
+20	Raticate	拉达	拉達	ラッタ	Alolan Raticate	1	dark	normal	144	156	181	form
+21	Spearow	烈雀	烈雀	オニスズメ		1	normal	flying	122	69	120	
+22	Fearow	大嘴雀	大嘴雀	オニドリル		1	normal	flying	182	130	164	
+23	Ekans	阿柏蛇	阿柏蛇	アーボ		1	poison		119	94	111	
+24	Arbok	阿柏怪	阿柏怪	アーボック		1	poison		186	144	155	
+25	Pikachu	皮卡丘	皮卡丘	ピカチュウ		1	electric		119	89	111	
+25	Pikachu	皮卡丘	皮卡丘	ピカチュウ	Partner Pikachu	1	electric		170	109	129	form
+26	Raichu	雷丘	雷丘	ライチュウ		1	electric		185	145	155	
+26	Raichu	雷丘	雷丘	ライチュウ	Alolan Raichu	1	electric	psychic	194	151	155	form
+27	Sandshrew	穿山鼠	穿山鼠	サンド		1	ground		141	144	138	
+27	Sandshrew	穿山鼠	穿山鼠	サンド	Alolan Sandshrew	1	ice	steel	141	150	138	form
+28	Sandslash	穿山王	穿山王	サンドパン		1	ground		191	194	181	
+28	Sandslash	穿山王	穿山王	サンドパン	Alolan Sandslash	1	ice	steel	191	206	181	form
+29	Nidoran♀	尼多兰	尼多蘭	ニドラン♀		1	poison		92	106	146	
+30	Nidorina	尼多娜	尼多娜	ニドリーナ		1	poison		122	136	172	
+31	Nidoqueen	尼多后	尼多后	ニドクイン		1	poison	ground	180	176	208	
+32	Nidoran♂	尼多朗	尼多朗	ニドラン♂		1	poison		112	84	130	
+33	Nidorino	尼多力诺	尼多力諾	ニドリーノ		1	poison		142	117	157	
+34	Nidoking	尼多王	尼多王	ニドキング		1	poison	ground	200	157	192	
+35	Clefairy	皮皮	皮皮	ピッピ		1	fairy		114	134	172	
+36	Clefable	皮可西	皮可西	ピクシー		1	fairy		181	184	216	
+37	Vulpix	六尾	六尾	ロコン		1	fire		104	110	116	
+37	Vulpix	六尾	六尾	ロコン	Alolan Vulpix	1	ice		104	110	116	form
+38	Ninetales	九尾	九尾	キュウコン		1	fire		167	180	178	
+38	Ninetales	九尾	九尾	キュウコン	Alolan Ninetales	1	ice	fairy	169	180	178	form
+39	Jigglypuff	胖丁	胖丁	プリン		1	normal	fairy	84	118	251	
+40	Wigglytuff	胖可丁	胖可丁	プクリン		1	normal	fairy	160	168	295	
+41	Zubat	超音蝠	超音蝠	ズバット		1	poison	flying	92	80	120	
+42	Golbat	大嘴蝠	大嘴蝠	ゴルバット		1	poison	flying	162	150	181	
+43	Oddish	走路草	走路草	ナゾノクサ		1	grass	poison	139	115	129	
+44	Gloom	臭臭花	臭臭花	クサイハナ		1	grass	poison	159	139	155	
+45	Vileplume	霸王花	霸王花	ラフレシア		1	grass	poison	205	169	181	
+46	Paras	派拉斯	派拉斯	パラス		1	bug	grass	129	95	111	
+47	Parasect	派拉斯特	派拉斯特	パラセクト		1	bug	grass	174	145	155	
+48	Venonat	毛球	毛球	コンパン		1	bug	poison	108	114	155	
+49	Venomoth	摩鲁蛾	摩魯蛾	モルフォン		1	bug	poison	180	146	172	
+50	Diglett	地鼠	地鼠	ディグダ		1	ground		120	64	68	
+50	Diglett	地鼠	地鼠	ディグダ	Alolan Diglett	1	ground	steel	119	64	68	form
+51	Dugtrio	三地鼠	三地鼠	ダグトリオ		1	ground		205	114	111	
+51	Dugtrio	三地鼠	三地鼠	ダグトリオ	Alolan Dugtrio	1	ground	steel	202	114	111	form
+52	Meowth	喵喵	喵喵	ニャース		1	normal		101	80	120	
+52	Meowth	喵喵	喵喵	ニャース	Alolan Meowth	1	dark		110	80	120	form
+52	Meowth	喵喵	喵喵	ニャース	Galarian Meowth	1	steel		124	106	138	form
+53	Persian	猫老大	貓老大	ペルシアン		1	normal		151	130	164	
+53	Persian	猫老大	貓老大	ペルシアン	Alolan Persian	1	dark		160	130	164	form
+54	Psyduck	可达鸭	可達鴨	コダック		1	water		128	100	138	
+55	Golduck	哥达鸭	哥達鴨	ゴルダック		1	water		188	160	190	
+56	Mankey	猴怪	猴怪	マンキー		1	fighting		158	86	120	
+57	Primeape	火爆猴	火爆猴	オコリザル		1	fighting		208	136	164	
+58	Growlithe	卡蒂狗	卡蒂狗	ガーディ		1	fire		138	104	146	
+58	Growlithe	卡蒂狗	卡蒂狗	ガーディ	Hisuian Growlithe	1	fire	rock	145	108	155	form
+59	Arcanine	风速狗	風速狗	ウインディ		1	fire		216	168	208	
+59	Arcanine	风速狗	風速狗	ウインディ	Hisuian Arcanine	1	fire	rock	224	171	216	form
+60	Poliwag	蚊香蝌蚪	蚊香蝌蚪	ニョロモ		1	water		110	80	120	
+61	Poliwhirl	蚊香君	蚊香君	ニョロゾ		1	water		136	130	164	
+62	Poliwrath	蚊香泳士	蚊香泳士	ニョロボン		1	water	fighting	184	186	208	
+63	Abra	卡西	凱西	ケーシィ		1	psychic		206	88	94	
+64	Kadabra	勇基拉	勇基拉	ユンゲラー		1	psychic		236	118	120	
+65	Alakazam	胡地	胡地	フーディン		1	psychic		266	160	146	
+65	Alakazam	胡地	胡地	フーディン	Mega Alakazam	1	psychic		344	172	146	mega form
+66	Machop	腕力	腕力	ワンリキー		1	fighting		149	115	172	
+67	Machoke	豪力	豪力	ゴーリキー		1	fighting		186	148	190	
+68	Machamp	怪力	怪力	カイリキー		1	fighting		241	174	208	
+69	Bellsprout	喇叭芽	喇叭芽	マダツボミ		1	grass	poison	141	81	138	
+70	Weepinbell	口呆花	口呆花	ウツドン		1	grass	poison	171	111	164	
+71	Victreebel	大食花	大食花	ウツボット		1	grass	poison	201	148	190	
+72	Tentacool	玛瑙水母	瑪瑙水母	メノクラゲ		1	water	poison	105	155	120	
+73	Tentacruel	毒刺水母	毒刺水母	ドククラゲ		1	water	poison	165	210	190	
+74	Geodude	小拳石	小拳石	イシツブテ		1	rock	ground	145	155	120	
+74	Geodude	小拳石	小拳石	イシツブテ	Alolan Geodude	1	rock	electric	145	155	120	form
+75	Graveler	隆隆石	隆隆石	ゴローン		1	rock	ground	175	185	146	
+75	Graveler	隆隆石	隆隆石	ゴローン	Alolan Graveler	1	rock	electric	175	185	146	form
+76	Golem	隆隆岩	隆隆岩	ゴローニャ		1	rock	ground	221	222	190	
+76	Golem	隆隆岩	隆隆岩	ゴローニャ	Alolan Golem	1	rock	electric	221	222	190	form
+77	Ponyta	小火马	小火馬	ポニータ		1	fire		171	119	138	
+77	Ponyta	小火马	小火馬	ポニータ	Galarian Ponyta	1	psychic		171	119	138	form
+78	Rapidash	烈焰马	烈焰馬	ギャロップ		1	fire		201	149	164	
+78	Rapidash	烈焰马	烈焰馬	ギャロップ	Galarian Rapidash	1	psychic	fairy	201	149	164	form
+79	Slowpoke	呆呆兽	呆呆獸	ヤドン		1	water	psychic	118	149	208	
+79	Slowpoke	呆呆兽	呆呆獸	ヤドン	Galarian Slowpoke	1	psychic		118	149	208	form
+80	Slowbro	呆壳兽	呆殼獸	ヤドラン		1	water	psychic	182	209	216	
+80	Slowbro	呆壳兽	呆殼獸	ヤドラン	Mega Slowbro	1	water	psychic	235	296	216	mega form
+80	Slowbro	呆壳兽	呆殼獸	ヤドラン	Galarian Slowbro	1	poison	psychic	182	190	216	form
+81	Magnemite	小磁怪	小磁怪	コイル		1	electric	steel	178	106	94	
+82	Magneton	三合一磁怪	三合一磁怪	レアコイル		1	electric	steel	228	156	138	
+83	Farfetch'd	大葱鸭	大蔥鴨	カモネギ		1	normal	flying	172	116	141	
+83	Farfetch'd	大葱鸭	大蔥鴨	カモネギ	Galarian Farfetch'd	1	fighting		180	116	141	form
+84	Doduo	嘟嘟	嘟嘟	ドードー		1	normal	flying	168	82	111	
+85	Dodrio	嘟嘟利	嘟嘟利	ドードリオ		1	normal	flying	220	132	155	
+86	Seel	小海狮	小海獅	パウワウ		1	water		90	136	164	
+87	Dewgong	白海狮	白海獅	ジュゴン		1	water	ice	140	186	208	
+88	Grimer	臭泥	臭泥	ベトベター		1	poison		146	122	190	
+88	Grimer	臭泥	臭泥	ベトベター	Alolan Grimer	1	poison	dark	146	122	190	form
+89	Muk	臭臭泥	臭臭泥	ベトベトン		1	poison		196	204	234	
+89	Muk	臭臭泥	臭臭泥	ベトベトン	Alolan Muk	1	poison	dark	196	204	234	form
+90	Shellder	大舌贝	大舌貝	シェルダー		1	water		124	148	102	
+91	Cloyster	刺甲贝	刺甲貝	パルシェン		1	water	ice	184	262	138	
+92	Gastly	鬼斯	鬼斯	ゴース		1	ghost	poison	195	66	102	
+93	Haunter	鬼斯通	鬼斯通	ゴースト		1	ghost	poison	225	102	129	
+94	Gengar	耿鬼	耿鬼	ゲンガー		1	ghost	poison	255	139	155	
+94	Gengar	耿鬼	耿鬼	ゲンガー	Mega Gengar	1	ghost	poison	330	164	155	mega form
+95	Onix	大岩蛇	大岩蛇	イワーク		1	rock	ground	96	226	111	
+96	Drowzee	催眠貘	催眠貘	スリープ		1	psychic		94	158	155	
+97	Hypno	引梦貘人	引夢貘人	スリーパー		1	psychic		144	208	199	
+98	Krabby	大钳蟹	大鉗蟹	クラブ		1	water		196	135	102	
+99	Kingler	巨钳蟹	巨鉗蟹	キングラー		1	water		246	185	146	
+100	Voltorb	霹雳电球	霹靂電球	ビリリダマ		1	electric		121	99	120	
+100	Voltorb	霹雳电球	霹靂電球	ビリリダマ	Hisuian Voltorb	1	electric	grass	121	99	120	form
+101	Electrode	顽皮雷弹	頑皮雷彈	マルマイン		1	electric		178	145	155	
+101	Electrode	顽皮雷弹	頑皮雷彈	マルマイン	Hisuian Electrode	1	electric	grass	178	145	155	form
+102	Exeggcute	蛋蛋	蛋蛋	タマタマ		1	grass	psychic	115	145	155	
+103	Exeggutor	椰蛋树	椰蛋樹	ナッシー		1	grass	psychic	232	178	216	
+103	Exeggutor	椰蛋树	椰蛋樹	ナッシー	Alolan Exeggutor	1	grass	dragon	230	178	216	form
+104	Cubone	卡拉卡拉	卡拉卡拉	カラカラ		1	ground		96	156	138	
+105	Marowak	嘎啦嘎啦	嘎啦嘎啦	ガラガラ		1	ground		151	182	155	
+105	Marowak	嘎啦嘎啦	嘎啦嘎啦	ガラガラ	Alolan Marowak	1	fire	ghost	151	182	155	form
+106	Hitmonlee	飞腿郎	飛腿郎	サワムラー		1	fighting		232	175	138	
+107	Hitmonchan	快拳郎	快拳郎	エビワラー		1	fighting		203	175	138	
+108	Lickitung	大舌头	大舌頭	ベロリンガ		1	normal		112	161	208	
+109	Koffing	瓦斯弹	瓦斯彈	ドガース		1	poison		122	149	120	
+110	Weezing	双弹瓦斯	雙彈瓦斯	マタドガス		1	poison		172	199	164	
+110	Weezing	双弹瓦斯	雙彈瓦斯	マタドガス	Galarian Weezing	1	poison	fairy	172	199	164	form
+111	Rhyhorn	独角犀牛	獨角犀牛	サイホーン		1	ground	rock	155	179	190	
+112	Rhydon	钻角犀兽	鑽角犀獸	サイドン		1	ground	rock	238	229	234	
+113	Chansey	吉利蛋	吉利蛋	ラッキー		1	normal		74	319	488	
+114	Tangela	蔓藤怪	蔓藤怪	モンジャラ		1	grass		190	192	164	
+115	Kangaskhan	袋兽	袋獸	ガルーラ		1	normal		189	179	234	
+115	Kangaskhan	袋兽	袋獸	ガルーラ	Mega Kangaskhan	1	normal		244	204	234	mega form
+116	Horsea	墨海马	墨海馬	タッツー		1	water		138	110	102	
+117	Seadra	海刺龙	海刺龍	シードラ		1	water		188	160	146	
+118	Goldeen	角金鱼	角金魚	トサキント		1	water		133	109	129	
+119	Seaking	金鱼王	金魚王	アズマオウ		1	water		178	160	190	
+120	Staryu	海星星	海星星	ヒトデマン		1	water		144	91	102	
+121	Starmie	宝石海星	寶石海星	スターミー		1	water	psychic	204	151	155	
+122	Mr. Mime	魔墙人偶	魔牆人偶	バリヤード		1	psychic	fairy	198	180	120	
+122	Mr. Mime	魔墙人偶	魔牆人偶	バリヤード	Galarian Mr. Mime	1	ice	psychic	182	150	138	form
+123	Scyther	飞天螳螂	飛天螳螂	ストライク		1	bug	flying	219	152	172	
+124	Jynx	迷唇姐	迷唇姐	ルージュラ		1	ice	psychic	225	168	164	
+125	Electabuzz	电击兽	電擊獸	エレブー		1	electric		192	155	164	
+126	Magmar	鸭嘴火兽	鴨嘴火獸	ブーバー		1	fire		198	155	164	
+127	Pinsir	凯罗斯	凱羅斯	カイロス		1	bug		240	174	164	
+127	Pinsir	凯罗斯	凱羅斯	カイロス	Mega Pinsir	1	bug	flying	298	199	164	mega form
+128	Tauros	肯泰罗	肯泰羅	ケンタロス		1	normal		202	175	181	
+128	Tauros	肯泰罗	肯泰羅	ケンタロス	Combat Breed	1	fighting		218	188	181	form
+128	Tauros	肯泰罗	肯泰羅	ケンタロス	Blaze Breed	1	fighting	fire	218	188	181	form
+128	Tauros	肯泰罗	肯泰羅	ケンタロス	Aqua Breed	1	fighting	water	218	188	181	form
+129	Magikarp	鲤鱼王	鯉魚王	コイキング		1	water		46	84	85	
+130	Gyarados	暴鲤龙	暴鯉龍	ギャラドス		1	water	flying	239	196	216	
+130	Gyarados	暴鲤龙	暴鯉龍	ギャラドス	Mega Gyarados	1	water	dark	292	234	216	mega form
+131	Lapras	拉普拉斯	拉普拉斯	ラプラス		1	water	ice	164	216	278	
+132	Ditto	百变怪	百變怪	メタモン		1	normal		96	96	134	
+133	Eevee	伊布	伊布	イーブイ		1	normal		110	122	146	
+133	Eevee	伊布	伊布	イーブイ	Partner Eevee	1	normal		150	155	164	form
+134	Vaporeon	水伊布	水伊布	シャワーズ		1	water		209	216	278	
+135	Jolteon	雷伊布	雷伊布	サンダース		1	electric		225	168	164	
+136	Flareon	火伊布	火伊布	ブースター		1	fire		244	186	164	
+137	Porygon	多边兽	多邊獸	ポリゴン		1	normal		159	142	164	
+138	Omanyte	菊石兽	菊石獸	オムナイト		1	rock	water	166	151	111	
+139	Omastar	多刺菊石兽	多刺菊石獸	オムスター		1	rock	water	215	209	172	
+140	Kabuto	化石盔	化石盔	カブト		1	rock	water	154	135	102	
+141	Kabutops	镰刀盔	鐮刀盔	カブトプス		1	rock	water	221	176	155	
+142	Aerodactyl	化石翼龙	化石翼龍	プテラ		1	rock	flying	216	154	190	
+142	Aerodactyl	化石翼龙	化石翼龍	プテラ	Mega Aerodactyl	1	rock	flying	274	179	190	mega form
+143	Snorlax	卡比兽	卡比獸	カビゴン		1	normal		200	258	330	
+144	Articuno	急冻鸟	急凍鳥	フリーザー		1	ice	flying	188	224	208	
+144	Articuno	急冻鸟	急凍鳥	フリーザー	Galarian Articuno	1	psychic	flying	242	192	208	form
+145	Zapdos	闪电鸟	閃電鳥	サンダー		1	electric	flying	244	180	208	
+145	Zapdos	闪电鸟	閃電鳥	サンダー	Galarian Zapdos	1	fighting	flying	244	180	208	form
+146	Moltres	火焰鸟	火焰鳥	ファイヤー		1	fire	flying	241	180	208	
+146	Moltres	火焰鸟	火焰鳥	ファイヤー	Galarian Moltres	1	dark	flying	198	224	208	form
+147	Dratini	迷你龙	迷你龍	ミニリュウ		1	dragon		124	93	122	
+148	Dragonair	哈克龙	哈克龍	ハクリュー		1	dragon		164	133	157	
+149	Dragonite	快龙	快龍	カイリュー		1	dragon	flying	254	193	209	
+150	Mewtwo	超梦	超夢	ミュウツー		1	psychic		302	192	236	
+150	Mewtwo	超梦	超夢	ミュウツー	Mega Mewtwo X	1	psychic	fighting	365	204	236	mega form
+150	Mewtwo	超梦	超夢	ミュウツー	Mega Mewtwo Y	1	psychic		374	230	236	mega form
+151	Mew	梦幻	夢幻	ミュウ		1	psychic		200	200	225	
+152	Chikorita	菊草叶	菊草葉	チコリータ		2	grass		97	115	129	
+153	Bayleef	月桂叶	月桂葉	ベイリーフ		2	grass		125	145	155	
+154	Meganium	大竺葵	大竺葵	メガニウム		2	grass		165	185	190	
+155	Cyndaquil	火球鼠	火球鼠	ヒノアラシ		2	fire		121	92	118	
+156	Quilava	火岩鼠	火岩鼠	マグマラシ		2	fire		160	125	152	
+157	Typhlosion	火爆兽	火爆獸	バクフーン		2	fire		216	165	186	
+157	Typhlosion	火暴兽	火爆獸	バクフーン	Hisuian Typhlosion	2	fire	ghost	232	161	178	form
+158	Totodile	小锯鳄	小鋸鱷	ワニノコ		2	water		124	118	138	
+159	Croconaw	蓝鳄	藍鱷	アリゲイツ		2	water		154	149	164	
+160	Feraligatr	大力鳄	大力鱷	オーダイル		2	water		203	189	199	
+161	Sentret	尾立	尾立	オタチ		2	normal		86	82	111	
+162	Furret	大尾立	大尾立	オオタチ		2	normal		156	144	199	
+163	Hoothoot	咕咕	咕咕	ホーホー		2	normal	flying	76	115	155	
+164	Noctowl	猫头夜鹰	貓頭夜鷹	ヨルノズク		2	normal	flying	168	195	225	
+165	Ledyba	芭瓢虫	芭瓢蟲	レディバ		2	bug	flying	84	130	120	
+166	Ledian	安瓢虫	安瓢蟲	レディアン		2	bug	flying	118	179	146	
+167	Spinarak	圆丝蛛	圓絲蛛	イトマル		2	bug	poison	112	80	120	
+168	Ariados	阿利多斯	阿利多斯	アリアドス		2	bug	poison	168	140	172	
+169	Crobat	叉字蝠	叉字蝠	クロバット		2	poison	flying	190	164	199	
+170	Chinchou	灯笼鱼	燈籠魚	チョンチー		2	water	electric	115	126	181	
+171	Lanturn	电灯怪	電燈怪	ランターン		2	water	electric	150	189	269	
+172	Pichu	皮丘	皮丘	ピチュー		2	electric		85	59	85	
+173	Cleffa	皮宝宝	皮寶寶	ピィ		2	fairy		82	106	138	
+174	Igglybuff	宝宝丁	寶寶丁	ププリン		2	normal	fairy	74	92	208	
+175	Togepi	波克比	波克比	トゲピー		2	fairy		75	108	111	
+176	Togetic	波克基古	波克基古	トゲチック		2	fairy	flying	150	172	146	
+177	Natu	天然雀	天然雀	ネイティ		2	psychic	flying	140	86	120	
+178	Xatu	天然鸟	天然鳥	ネイティオ		2	psychic	flying	190	136	164	
+179	Mareep	咩利羊	咩利羊	メリープ		2	electric		122	98	146	
+180	Flaaffy	茸茸羊	茸茸羊	モココ		2	electric		151	128	172	
+181	Ampharos	电龙	電龍	デンリュウ		2	electric		215	180	208	
+181	Ampharos	电龙	電龍	デンリュウ	Mega Ampharos	2	electric	dragon	300	205	208	mega form
+182	Bellossom	美丽花	美麗花	キレイハナ		2	grass		170	181	181	
+183	Marill	玛力露	瑪力露	マリル		2	water	fairy	45	115	172	
+184	Azumarill	玛力露丽	瑪力露麗	マリルリ		2	water	fairy	118	175	225	
+185	Sudowoodo	树才怪	樹才怪	ウソッキー		2	rock		182	196	172	
+186	Politoed	蚊香蛙皇	蚊香蛙皇	ニョロトノ		2	water		175	192	208	
+187	Hoppip	毽子草	毽子草	ハネッコ		2	grass	flying	74	95	111	
+188	Skiploom	毽子花	毽子花	ポポッコ		2	grass	flying	99	122	146	
+189	Jumpluff	毽子棉	毽子棉	ワタッコ		2	grass	flying	124	175	181	
+190	Aipom	长尾挖掘机	長尾怪手	エイパム		2	normal		144	110	146	
+191	Sunkern	向日种子	向日種子	ヒマナッツ		2	grass		60	60	102	
+192	Sunflora	向日花怪	向日花怪	キマワリ		2	grass		191	162	181	
+193	Yanma	蜻蜻蜓	蜻蜻蜓	ヤンヤンマ		2	bug	flying	155	105	164	
+194	Wooper	乌波	烏波	ウパー		2	water	ground	82	98	146	
+194	Wooper	乌波	烏波	ウパー	Paldean Wooper	2	poison	ground	82	98	146	form
+195	Quagsire	沼王	沼王	ヌオー		2	water	ground	158	178	216	
+196	Espeon	太阳伊布	太陽伊布	エーフィ		2	psychic		255	168	164	
+197	Umbreon	月亮伊布	月亮伊布	ブラッキー		2	dark		130	234	216	
+198	Murkrow	黑暗鸦	黑暗鴉	ヤミカラス		2	dark	flying	172	98	155	
+199	Slowking	呆呆王	呆呆王	ヤドキング		2	water	psychic	182	209	216	
+199	Slowking	呆呆王	呆呆王	ヤドキング	Galarian Slowking	2	poison	psychic	200	209	216	form
+200	Misdreavus	梦妖	夢妖	ムウマ		2	ghost		170	151	155	
+201	Unown	未知图腾	未知圖騰	アンノーン		2	psychic		138	96	134	
+202	Wobbuffet	果然翁	果然翁	ソーナンス		2	psychic		66	215	382	
+203	Girafarig	麒麟奇	麒麟奇	キリンリキ		2	normal	psychic	179	134	172	
+204	Pineco	榛果球	榛果球	クヌギダマ		2	bug		118	150	138	
+205	Forretress	佛烈托斯	佛烈托斯	フォレトス		2	bug	steel	168	231	181	
+206	Dunsparce	土龙弟弟	土龍弟弟	ノコッチ		2	normal		134	162	225	
+207	Gligar	天蝎	天蠍	グライガー		2	ground	flying	152	180	164	
+208	Steelix	大钢蛇	大鋼蛇	ハガネール		2	steel	ground	156	306	181	
+208	Steelix	大钢蛇	大鋼蛇	ハガネール	Mega Steelix	2	steel	ground	226	344	181	mega form
+209	Snubbull	布鲁	布魯	ブルー		2	fairy		148	108	155	
+210	Granbull	布鲁皇	布魯皇	グランブル		2	fairy		221	161	208	
+211	Qwilfish	千针鱼	千針魚	ハリーセン		2	water	poison	188	155	164	
+211	Qwilfish	千针鱼	千針魚	ハリーセン	Hisuian Qwilfish	2	dark	poison	188	155	164	form
+212	Scizor	巨钳螳螂	巨鉗螳螂	ハッサム		2	bug	steel	244	178	172	
+212	Scizor	巨钳螳螂	巨鉗螳螂	ハッサム	Mega Scizor	2	bug	steel	281	228	172	mega form
+213	Shuckle	壶壶	壺壺	ツボツボ		2	bug	rock	19	302	85	
+214	Heracross	赫拉克罗斯	赫拉克羅斯	ヘラクロス		2	bug	fighting	240	179	190	
+214	Heracross	赫拉克罗斯	赫拉克羅斯	ヘラクロス	Mega Heracross	2	bug	fighting	342	204	190	mega form
+215	Sneasel	狃拉	狃拉	ニューラ		2	dark	ice	195	135	146	
+215	Sneasel	狃拉	狃拉	ニューラ	Hisuian Sneasel	2	fighting	poison	195	135	146	form
+216	Teddiursa	熊宝宝	熊寶寶	ヒメグマ		2	normal		150	108	155	
+217	Ursaring	圈圈熊	圈圈熊	リングマ		2	normal		241	161	208	
+218	Slugma	熔岩虫	熔岩蟲	マグマッグ		2	fire		128	80	120	
+219	Magcargo	熔岩蜗牛	熔岩蝸牛	マグカルゴ		2	fire	rock	165	195	155	
+220	Swinub	小山猪	小山豬	ウリムー		2	ice	ground	100	88	138	
+221	Piloswine	长毛猪	長毛豬	イノムー		2	ice	ground	188	175	225	
+222	Corsola	太阳珊瑚	太陽珊瑚	サニーゴ		2	water	rock	122	168	164	
+222	Corsola	太阳珊瑚	太陽珊瑚	サニーゴ	Galarian Corsola	2	ghost		121	170	155	form
+223	Remoraid	铁炮鱼	鐵炮魚	テッポウオ		2	water		130	70	111	
+224	Octillery	章鱼桶	章魚桶	オクタン		2	water		195	150	181	
+225	Delibird	信使鸟	信使鳥	デリバード		2	ice	flying	132	90	129	
+226	Mantine	巨翅飞鱼	巨翅飛魚	マンタイン		2	water	flying	158	239	199	
+227	Skarmory	盔甲鸟	盔甲鳥	エアームド		2	steel	flying	158	224	164	
+228	Houndour	戴鲁比	戴魯比	デルビル		2	dark	fire	156	96	129	
+229	Houndoom	黑鲁加	黑魯加	ヘルガー		2	dark	fire	216	156	181	
+229	Houndoom	黑鲁加	黑魯加	ヘルガー	Mega Houndoom	2	dark	fire	274	169	181	mega form
+230	Kingdra	刺龙王	刺龍王	キングドラ		2	water	dragon	188	175	181	
+231	Phanpy	小小象	小小象	ゴマゾウ		2	ground		115	142	208	
+232	Donphan	顿甲	頓甲	ドンファン		2	ground		222	218	208	
+233	Porygon2	多边兽Ⅱ	多邊獸Ⅱ	ポリゴン２		2	normal		199	182	199	
+234	Stantler	惊角鹿	驚角鹿	オドシシ		2	normal		188	136	178	
+235	Smeargle	图图犬	圖圖犬	ドーブル		2	normal		54	98	146	
+236	Tyrogue	无畏小子	無畏小子	バルキー		2	fighting		70	70	111	
+237	Hitmontop	战舞郎	戰舞郎	カポエラー		2	fighting		184	175	138	
+238	Smoochum	迷唇娃	迷唇娃	ムチュール		2	ice	psychic	165	115	129	
+239	Elekid	电击怪	電擊怪	エレキッド		2	electric		138	102	129	
+240	Magby	鸭嘴宝宝	鴨嘴寶寶	ブビィ		2	fire		152	102	129	
+241	Miltank	大奶罐	大奶罐	ミルタンク		2	normal		165	202	216	
+242	Blissey	幸福蛋	幸福蛋	ハピナス		2	normal		145	360	496	
+243	Raikou	雷公	雷公	ライコウ		2	electric		230	192	208	
+244	Entei	炎帝	炎帝	エンテイ		2	fire		226	192	251	
+245	Suicune	水君	水君	スイクン		2	water		179	219	225	
+246	Larvitar	幼基拉斯	幼基拉斯	ヨーギラス		2	rock	ground	122	100	138	
+247	Pupitar	沙基拉斯	沙基拉斯	サナギラス		2	rock	ground	160	140	172	
+248	Tyranitar	班吉拉斯	班基拉斯	バンギラス		2	rock	dark	250	212	225	
+248	Tyranitar	班基拉斯	班基拉斯	バンギラス	Mega Tyranitar	2	rock	dark	305	262	225	mega form
+249	Lugia	洛奇亚	洛奇亞	ルギア		2	psychic	flying	185	272	236	
+250	Ho-oh	凤王	鳳王	ホウオウ		2	fire	flying	239	244	214	legendary
+251	Celebi	时拉比	時拉比	セレビィ		2	psychic	grass	200	200	225	
+252	Treecko	木守宫	木守宮	キモリ		3	grass		131	99	120	
+253	Grovyle	森林蜥蜴	森林蜥蜴	ジュプトル		3	grass		172	119	138	
+254	Sceptile	蜥蜴王	蜥蜴王	ジュカイン		3	grass		214	159	172	
+254	Sceptile	蜥蜴王	蜥蜴王	ジュカイン	Mega Sceptile	3	grass	dragon	290	159	172	mega form
+255	Torchic	火稚鸡	火稚雞	アチャモ		3	fire		134	96	129	
+256	Combusken	力壮鸡	力壯雞	ワカシャモ		3	fire	fighting	162	120	155	
+257	Blaziken	火焰鸡	火焰雞	バシャーモ		3	fire	fighting	230	148	190	
+257	Blaziken	火焰鸡	火焰雞	バシャーモ	Mega Blaziken	3	fire	fighting	305	160	190	mega form
+258	Mudkip	水跃鱼	水躍魚	ミズゴロウ		3	water		132	100	138	
+259	Marshtomp	沼跃鱼	沼躍魚	ヌマクロー		3	water	ground	161	140	172	
+260	Swampert	巨沼怪	巨沼怪	ラグラージ		3	water	ground	208	188	225	
+260	Swampert	巨沼怪	巨沼怪	ラグラージ	Mega Swampert	3	water	ground	280	212	225	mega form
+261	Poochyena	土狼犬	土狼犬	ポチエナ		3	dark		105	70	111	
+262	Mightyena	大狼犬	大狼犬	グラエナ		3	dark		175	140	172	
+263	Zigzagoon	蛇纹熊	蛇紋熊	ジグザグマ		3	normal		68	80	116	
+263	Zigzagoon	蛇纹熊	蛇紋熊	ジグザグマ	Galarian Zigzagoon	3	dark	normal	68	80	116	form
+264	Linoone	直冲熊	直衝熊	マッスグマ		3	normal		148	135	186	
+264	Linoone	直冲熊	直衝熊	マッスグマ	Galarian Linoone	3	dark	normal	148	135	186	form
+265	Wurmple	刺尾虫	刺尾蟲	ケムッソ		3	bug		84	78	129	
+266	Silcoon	甲壳茧	甲殼繭	カラサリス		3	bug		65	106	138	
+267	Beautifly	狩猎凤蝶	狩獵鳳蝶	アゲハント		3	bug	flying	191	108	155	
+268	Cascoon	盾甲茧	盾甲繭	マユルド		3	bug		65	106	138	
+269	Dustox	毒粉蛾	毒粉蛾	ドクケイル		3	bug	poison	104	158	155	
+270	Lotad	莲叶童子	蓮葉童子	ハスボー		3	water	grass	78	92	120	
+271	Lombre	莲帽小童	蓮帽小童	ハスブレロ		3	water	grass	118	132	155	
+272	Ludicolo	乐天河童	樂天河童	ルンパッパ		3	water	grass	175	185	190	
+273	Seedot	橡实果	橡實果	タネボー		3	grass		78	92	120	
+274	Nuzleaf	长鼻叶	長鼻葉	コノハナ		3	grass	dark	138	102	172	
+275	Shiftry	狡猾天狗	狡猾天狗	ダーテング		3	grass	dark	195	142	208	
+276	Taillow	傲骨燕	傲骨燕	スバメ		3	normal	flying	118	68	120	
+277	Swellow	大王燕	大王燕	オオスバメ		3	normal	flying	180	120	155	
+278	Wingull	长翅鸥	長翅鷗	キャモメ		3	water	flying	118	68	120	
+279	Pelipper	大嘴鸥	大嘴鷗	ペリッパー		3	water	flying	182	170	155	
+280	Ralts	拉鲁拉丝	拉魯拉絲	ラルトス		3	psychic	fairy	89	65	99	
+281	Kirlia	奇鲁莉安	奇魯莉安	キルリア		3	psychic	fairy	126	97	116	
+282	Gardevoir	沙奈朵	沙奈朵	サーナイト		3	psychic	fairy	239	195	169	
+282	Gardevoir	沙奈朵	沙奈朵	サーナイト	Mega Gardevoir	3	psychic	fairy	314	220	169	mega form
+283	Surskit	溜溜糖球	溜溜糖球	アメタマ		3	bug	water	104	95	120	
+284	Masquerain	雨翅蛾	雨翅蛾	アメモース		3	bug	flying	195	155	172	
+285	Shroomish	蘑蘑菇	蘑蘑菇	キノココ		3	grass		79	120	155	
+286	Breloom	斗笠菇	斗笠菇	キノガッサ		3	grass	fighting	245	145	155	
+287	Slakoth	懒人獭	懶人獺	ナマケロ		3	normal		112	120	155	
+288	Vigoroth	过动猿	過動猿	ヤルキモノ		3	normal		162	160	190	
+289	Slaking	请假王	請假王	ケッキング		3	normal		305	238	312	
+290	Nincada	土居忍士	土居忍士	ツチニン		3	bug	ground	89	136	104	
+291	Ninjask	铁面忍者	鐵面忍者	テッカニン		3	bug	flying	198	108	157	
+292	Shedinja	脱壳忍者	脫殼忍者	ヌケニン		3	bug	ghost	168	57	52	
+293	Whismur	咕妞妞	咕妞妞	ゴニョニョ		3	normal		96	77	162	
+294	Loudred	吼爆弹	吼爆彈	ドゴーム		3	normal		136	117	197	
+295	Exploud	爆音怪	爆音怪	バクオング		3	normal		176	169	232	
+296	Makuhita	幕下力士	幕下力士	マクノシタ		3	fighting		111	92	176	
+297	Hariyama	铁掌力士	鐵掌力士	ハリテヤマ		3	fighting		222	183	302	
+298	Azurill	露力丽	露力麗	ルリリ		3	normal	fairy	40	88	138	
+299	Nosepass	朝北鼻	朝北鼻	ノズパス		3	rock		86	191	102	
+300	Skitty	向尾喵	向尾喵	エネコ		3	normal		91	94	138	
+301	Delcatty	优雅猫	優雅貓	エネコロロ		3	normal		136	134	172	
+302	Sableye	勾魂眼	勾魂眼	ヤミラミ		3	dark	ghost	144	131	138	
+302	Sableye	勾魂眼	勾魂眼	ヤミラミ	Mega Sableye	3	dark	ghost	154	194	138	mega form
+303	Mawile	大嘴娃	大嘴娃	クチート		3	steel	fairy	161	144	138	
+303	Mawile	大嘴娃	大嘴娃	クチート	Mega Mawile	3	steel	fairy	196	194	138	mega form
+304	Aron	可可多拉	可可多拉	ココドラ		3	steel	rock	130	162	138	
+305	Lairon	可多拉	可多拉	コドラ		3	steel	rock	168	220	155	
+306	Aggron	波士可多拉	波士可多拉	ボスゴドラ		3	steel	rock	205	278	172	
+306	Aggron	波士可多拉	波士可多拉	ボスゴドラ	Mega Aggron	3	steel		258	340	172	mega form
+307	Meditite	玛萨那	瑪沙那	アサナン		3	fighting	psychic	85	91	102	
+308	Medicham	恰雷姆	恰雷姆	チャーレム		3	fighting	psychic	125	139	155	
+308	Medicham	恰雷姆	恰雷姆	チャーレム	Mega Medicham	3	fighting	psychic	200	151	155	mega form
+309	Electrike	落雷兽	落雷獸	ラクライ		3	electric		130	80	120	
+310	Manectric	雷电兽	雷電獸	ライボルト		3	electric		210	128	172	
+310	Manectric	雷电兽	雷電獸	ライボルト	Mega Manectric	3	electric		270	152	172	mega form
+311	Plusle	正电拍拍	正電拍拍	プラスル		3	electric		172	139	155	
+312	Minun	负电拍拍	負電拍拍	マイナン		3	electric		155	151	155	
+313	Volbeat	电萤虫	電螢蟲	バルビート		3	bug		149	155	164	
+314	Illumise	甜甜萤	甜甜螢	イルミーゼ		3	bug		149	155	164	
+315	Roselia	毒蔷薇	毒薔薇	ロゼリア		3	grass	poison	191	138	138	
+316	Gulpin	溶食兽	溶食獸	ゴクリン		3	poison		85	119	172	
+317	Swalot	吞食兽	吞食獸	マルノーム		3	poison		142	179	225	
+318	Carvanha	利牙鱼	利牙魚	キバニア		3	water	dark	174	59	129	
+319	Sharpedo	巨牙鲨	巨牙鯊	サメハダー		3	water	dark	234	102	172	
+319	Sharpedo	巨牙鲨	巨牙鯊	サメハダー	Mega Sharpedo	3	water	dark	271	140	172	mega form
+320	Wailmer	吼吼鲸	吼吼鯨	ホエルコ		3	water		138	141	278	
+321	Wailord	吼鲸王	吼鯨王	ホエルオー		3	water		172	184	348	
+322	Numel	呆火驼	呆火駝	ドンメル		3	fire	ground	122	101	155	
+323	Camerupt	喷火驼	噴火駝	バクーダ		3	fire	ground	194	146	172	
+323	Camerupt	喷火驼	噴火駝	バクーダ	Mega Camerupt	3	fire	ground	259	184	172	mega form
+324	Torkoal	煤炭龟	煤炭龜	コータス		3	fire		154	228	172	
+325	Spoink	跳跳猪	跳跳豬	バネブー		3	psychic		138	145	155	
+326	Grumpig	噗噗猪	噗噗豬	ブーピッグ		3	psychic		178	198	190	
+327	Spinda	晃晃斑	晃晃斑	パッチール		3	normal		120	120	155	
+328	Trapinch	大颚蚁	大顎蟻	ナックラー		3	ground		178	90	129	
+329	Vibrava	超音波幼虫	超音波幼蟲	ビブラーバ		3	ground	dragon	140	100	138	
+330	Flygon	沙漠蜻蜓	沙漠蜻蜓	フライゴン		3	ground	dragon	200	160	190	
+331	Cacnea	刺球仙人掌	刺球仙人掌	サボネア		3	grass		158	88	138	
+332	Cacturne	梦歌仙人掌	夢歌仙人掌	ノクタス		3	grass	dark	215	128	172	
+333	Swablu	青绵鸟	青綿鳥	チルット		3	normal	flying	82	128	129	
+334	Altaria	七夕青鸟	七夕青鳥	チルタリス		3	dragon	flying	142	188	181	
+334	Altaria	七夕青鸟	七夕青鳥	チルタリス	Mega Altaria	3	dragon	fairy	212	194	181	mega form
+335	Zangoose	猫鼬斩	貓鼬斬	ザングース		3	normal		224	130	178	
+336	Seviper	饭匙蛇	飯匙蛇	ハブネーク		3	poison		191	130	178	
+337	Lunatone	月石	月石	ルナトーン		3	rock	psychic	184	174	208	
+338	Solrock	太阳岩	太陽岩	ソルロック		3	rock	psychic	184	174	208	
+339	Barboach	泥泥鳅	泥泥鰍	ドジョッチ		3	water	ground	99	91	138	
+340	Whiscash	鲶鱼王	鯰魚王	ナマズン		3	water	ground	152	174	242	
+341	Corphish	龙虾小兵	龍蝦小兵	ヘイガニ		3	water		149	114	125	
+342	Crawdaunt	铁螯龙虾	鐵螯龍蝦	シザリガー		3	water	dark	224	154	160	
+343	Baltoy	天秤偶	天秤偶	ヤジロン		3	ground	psychic	84	118	120	
+344	Claydol	念力土偶	念力土偶	ネンドール		3	ground	psychic	141	195	155	
+345	Lileep	触手百合	觸手百合	リリーラ		3	rock	grass	112	158	166	
+346	Cradily	摇篮百合	搖籃百合	ユレイドル		3	rock	grass	152	198	200	
+347	Anorith	太古羽虫	太古羽蟲	アノプス		3	rock	bug	185	96	129	
+348	Armaldo	太古盔甲	太古盔甲	アーマルド		3	rock	bug	230	181	181	
+349	Feebas	丑丑鱼	醜醜魚	ヒンバス		3	water		46	84	85	
+350	Milotic	美纳斯	美納斯	ミロカロス		3	water		195	228	216	
+351	Castform	飘浮泡泡	飄浮泡泡	ポワルン		3	normal		140	140	172	
+351	Castform	飘浮泡泡	飄浮泡泡	ポワルン	Sunny Form	3	fire		140	140	172	form
+351	Castform	飘浮泡泡	飄浮泡泡	ポワルン	Rainy Form	3	water		140	140	172	form
+351	Castform	飘浮泡泡	飄浮泡泡	ポワルン	Snowy Form	3	ice		140	140	172	form
+352	Kecleon	变隐龙	變隱龍	カクレオン		3	normal		168	195	155	
+353	Shuppet	怨影娃娃	怨影娃娃	カゲボウズ		3	ghost		142	77	127	
+354	Banette	诅咒娃娃	詛咒娃娃	ジュペッタ		3	ghost		218	129	162	
+354	Banette	诅咒娃娃	詛咒娃娃	ジュペッタ	Mega Banette	3	ghost		308	152	162	mega form
+355	Duskull	夜巡灵	夜巡靈	ヨマワル		3	ghost		76	128	85	
+356	Dusclops	彷徨夜灵	彷徨夜靈	サマヨール		3	ghost		129	192	120	
+357	Tropius	热带龙	熱帶龍	トロピウス		3	grass	flying	139	183	223	
+358	Chimecho	风铃铃	風鈴鈴	チリーン		3	psychic		182	169	181	
+359	Absol	阿勃梭鲁	阿勃梭魯	アブソル		3	dark		246	124	164	
+359	Absol	阿勃梭鲁	阿勃梭魯	アブソル	Mega Absol	3	dark		291	124	164	mega form
+360	Wynaut	小果然	小果然	ソーナノ		3	psychic		46	131	216	
+361	Snorunt	雪童子	雪童子	ユキワラシ		3	ice		100	100	138	
+362	Glalie	冰鬼护	冰鬼護	オニゴーリ		3	ice		160	160	190	
+362	Glalie	冰鬼护	冰鬼護	オニゴーリ	Mega Glalie	3	ice		235	160	190	mega form
+363	Spheal	海豹球	海豹球	タマザラシ		3	ice	water	102	115	172	
+364	Sealeo	海魔狮	海魔獅	トドグラー		3	ice	water	142	155	208	
+365	Walrein	帝牙海狮	帝牙海獅	トドゼルガ		3	ice	water	182	195	242	
+366	Clamperl	珍珠贝	珍珠貝	パールル		3	water		138	132	111	
+367	Huntail	猎斑鱼	獵斑魚	ハンテール		3	water		195	172	146	
+368	Gorebyss	樱花鱼	櫻花魚	サクラビス		3	water		212	172	146	
+369	Relicanth	古空棘鱼	古空棘魚	ジーランス		3	water	rock	171	238	225	
+370	Luvdisc	爱心鱼	愛心魚	ラブカス		3	water		94	114	125	
+371	Bagon	宝贝龙	寶貝龍	タツベイ		3	dragon		144	109	129	
+372	Shelgon	甲壳龙	甲殼龍	コモルー		3	dragon		179	174	164	
+373	Salamence	暴飞龙	暴飛龍	ボーマンダ		3	dragon	flying	261	171	216	
+373	Salamence	暴飞龙	暴飛龍	ボーマンダ	Mega Salamence	3	dragon	flying	284	234	216	mega form
+374	Beldum	铁哑铃	鐵啞鈴	ダンバル		3	steel	psychic	104	130	120	
+375	Metang	金属怪	金屬怪	メタング		3	steel	psychic	144	170	155	
+376	Metagross	巨金怪	巨金怪	メタグロス		3	steel	psychic	257	228	190	
+376	Metagross	巨金怪	巨金怪	メタグロス	Mega Metagross	3	steel	psychic	281	248	190	mega form
+377	Regirock	雷吉洛克	雷吉洛克	レジロック		3	rock		188	310	190	
+378	Regice	雷吉艾斯	雷吉艾斯	レジアイス		3	ice		188	310	190	
+379	Registeel	雷吉斯奇鲁	雷吉斯奇魯	レジスチル		3	steel		144	248	190	
+380	Latias	拉帝亚斯	拉帝亞斯	ラティアス		3	dragon	psychic	220	222	190	
+380	Latias	拉帝亚斯	拉帝亞斯	ラティアス	Mega Latias	3	dragon	psychic	272	248	190	mega form
+381	Latios	拉帝欧斯	拉帝歐斯	ラティオス		3	dragon	psychic	255	198	190	
+381	Latios	拉帝欧斯	拉帝歐斯	ラティオス	Mega Latios	3	dragon	psychic	308	210	190	mega form
+382	Kyogre	盖欧卡	蓋歐卡	カイオーガ		3	water		270	228	205	legendary
+382	Kyogre	盖欧卡	蓋歐卡	カイオーガ	Primal Kyogre	3	water		338	275	225	form
+383	Groudon	固拉多	固拉多	グラードン		3	ground		285	250	225	
+383	Groudon	固拉多	固拉多	グラードン	Primal Groudon	3	ground	fire	338	275	225	form
+384	Rayquaza	烈空坐	烈空坐	レックウザ		3	dragon	flying	286	191	234	
+384	Rayquaza	烈空坐	烈空坐	レックウザ	Mega Rayquaza	3	dragon	flying	344	204	234	mega form
+385	Jirachi	基拉祈	基拉祈	ジラーチ		3	steel	psychic	200	200	225	
+386	Deoxys	代欧奇希斯	代歐奇希斯	デオキシス	Normal Forme	3	psychic		300	100	138	form
+386	Deoxys	代欧奇希斯	代歐奇希斯	デオキシス	Attack Forme	3	psychic		352	62	138	form
+386	Deoxys	代欧奇希斯	代歐奇希斯	デオキシス	Defense Forme	3	psychic		145	238	138	form
+386	Deoxys	代欧奇希斯	代歐奇希斯	デオキシス	Speed Forme	3	psychic		211	150	138	form
+387	Turtwig	草苗龟	草苗龜	ナエトル		4	grass		127	121	146	
+388	Grotle	树林龟	樹林龜	ハヤシガメ		4	grass		165	162	181	
+389	Torterra	土台龟	土台龜	ドダイトス		4	grass	ground	205	202	216	
+390	Chimchar	小火焰猴	小火焰猴	ヒコザル		4	fire		117	88	127	
+391	Monferno	猛火猴	猛火猴	モウカザル		4	fire	fighting	157	113	162	
+392	Infernape	烈焰猴	烈焰猴	ゴウカザル		4	fire	fighting	209	146	183	
+393	Piplup	波加曼	波加曼	ポッチャマ		4	water		117	110	143	
+394	Prinplup	波皇子	波皇子	ポッタイシ		4	water		154	143	162	
+395	Empoleon	帝王拿波	帝王拿波	エンペルト		4	water	steel	209	189	197	
+396	Starly	姆克儿	姆克兒	ムックル		4	normal	flying	111	68	120	
+397	Staravia	姆克鸟	姆克鳥	ムクバード		4	normal	flying	151	104	146	
+398	Staraptor	姆克鹰	姆克鷹	ムクホーク		4	normal	flying	235	151	199	
+399	Bidoof	大牙狸	大牙狸	ビッパ		4	normal		86	94	153	
+400	Bibarel	大尾狸	大尾狸	ビーダル		4	normal	water	166	134	188	
+401	Kricketot	圆法师	圓法師	コロボーシ		4	bug		50	79	115	
+402	Kricketune	音箱蟀	音箱蟀	コロトック		4	bug		165	122	185	
+403	Shinx	小猫怪	小貓怪	コリンク		4	electric		125	76	129	
+404	Luxio	勒克猫	勒克貓	ルクシオ		4	electric		164	106	155	
+405	Luxray	伦琴猫	倫琴貓	レントラー		4	electric		228	159	190	
+406	Budew	含羞苞	含羞苞	スボミー		4	grass	poison	101	118	120	
+407	Roserade	罗丝雷朵	羅絲雷朵	ロズレイド		4	grass	poison	241	176	155	
+408	Cranidos	头盖龙	頭蓋龍	ズガイドス		4	rock		233	100	167	
+409	Rampardos	战槌龙	戰槌龍	ラムパルド		4	rock		303	148	220	
+410	Shieldon	盾甲龙	盾甲龍	タテトプス		4	rock	steel	81	170	102	
+411	Bastiodon	护城龙	護城龍	トリデプス		4	rock	steel	98	255	155	
+412	Burmy	结草儿	結草兒	ミノムッチ	Plant Cloak	4	bug		60	86	120	form
+412	Burmy	结草儿	結草兒	ミノムッチ	Sandy Cloak	4	bug		60	86	120	form
+412	Burmy	结草儿	結草兒	ミノムッチ	Trash Cloak	4	bug		60	86	120	form
+413	Wormadam	结草贵妇	結草貴婦	ミノマダム	Plant Cloak	4	bug	grass	147	176	155	form
+413	Wormadam	结草贵妇	結草貴婦	ミノマダム	Sandy Cloak	4	bug	ground	147	176	155	form
+413	Wormadam	结草贵妇	結草貴婦	ミノマダム	Trash Cloak	4	bug	steel	130	164	155	form
+414	Mothim	绅士蛾	紳士蛾	ガーメイル		4	bug	flying	181	115	172	
+415	Combee	三蜜蜂	三蜜蜂	ミツハニー		4	bug	flying	70	75	102	
+416	Vespiquen	蜂女王	蜂女王	ビークイン		4	bug	flying	150	180	172	
+417	Pachirisu	帕奇利兹	帕奇利茲	パチリス		4	electric		102	158	155	
+418	Buizel	泳圈鼬	泳圈鼬	ブイゼル		4	water		135	85	146	
+419	Floatzel	浮潜鼬	浮潛鼬	フローゼル		4	water		212	132	199	
+420	Cherubi	樱花宝	櫻花寶	チェリンボ		4	grass		117	100	129	
+421	Cherrim	樱花儿	櫻花兒	チェリム		4	grass		174	150	172	
+422	Shellos	无壳海兔	無殼海兔	カラナクシ		4	water		108	134	183	
+423	Gastrodon	海兔兽	海兔獸	トリトドン		4	water	ground	171	186	244	
+424	Ambipom	双尾挖掘机	雙尾怪手	エテボース		4	normal		204	139	181	
+425	Drifloon	飘飘球	飄飄球	フワンテ		4	ghost	flying	122	122	208	
+426	Drifblim	随风球	隨風球	フワライド		4	ghost	flying	178	180	312	
+427	Buneary	卷卷耳	捲捲耳	ミミロル		4	normal		137	111	146	
+428	Lopunny	长耳兔	長耳兔	ミミロップ		4	normal		159	169	164	
+428	Lopunny	长耳兔	長耳兔	ミミロップ	Mega Lopunny	4	normal	fighting	272	169	164	mega form
+429	Mismagius	梦妖魔	夢妖魔	ムウマージ		4	ghost		210	176	155	
+430	Honchkrow	乌鸦头头	烏鴉頭頭	ドンカラス		4	dark	flying	236	140	225	
+431	Glameow	魅力喵	魅力喵	ニャルマー		4	normal		118	89	136	
+432	Purugly	东施喵	東施喵	ブニャット		4	normal		172	133	174	
+433	Chingling	铃铛响	鈴鐺響	リーシャン		4	psychic		125	96	129	
+434	Stunky	臭鼬噗	臭鼬噗	スカンプー		4	poison	dark	129	106	160	
+435	Skuntank	坦克臭鼬	坦克臭鼬	スカタンク		4	poison	dark	184	161	230	
+436	Bronzor	铜镜怪	銅鏡怪	ドーミラー		4	steel	psychic	48	150	150	
+437	Bronzong	青铜钟	青銅鐘	ドータクン		4	steel	psychic	164	195	167	
+438	Bonsly	盆才怪	盆才怪	ウソハチ		4	rock		142	156	138	
+439	Mime Jr.	魔尼尼	魔尼尼	マネネ		4	psychic	fairy	138	128	85	
+440	Happiny	小福蛋	小福蛋	ピンプク		4	normal		34	156	225	
+441	Chatot	聒噪鸟	聒噪鳥	ペラップ		4	normal	flying	184	113	183	
+442	Spiritomb	花岩怪	花岩怪	ミカルゲ		4	ghost	dark	170	172	138	
+443	Gible	圆陆鲨	圓陸鯊	フカマル		4	dragon	ground	133	100	152	
+444	Gabite	尖牙陆鲨	尖牙陸鯊	ガバイト		4	dragon	ground	178	132	169	
+445	Garchomp	烈咬陆鲨	烈咬陸鯊	ガブリアス		4	dragon	ground	253	200	239	
+445	Garchomp	烈咬陆鲨	烈咬陸鯊	ガブリアス	Mega Garchomp	4	dragon	ground	320	225	239	mega form
+446	Munchlax	小卡比兽	小卡比獸	ゴンベ		4	normal		150	208	286	
+447	Riolu	利欧路	利歐路	リオル		4	fighting		138	80	120	
+448	Lucario	路卡利欧	路卡利歐	ルカリオ		4	fighting	steel	224	140	172	
+448	Lucario	路卡利欧	路卡利歐	ルカリオ	Mega Lucario	4	fighting	steel	282	162	172	mega form
+449	Hippopotas	沙河马	沙河馬	ヒポポタス		4	ground		134	148	169	
+450	Hippowdon	河马兽	河馬獸	カバルドン		4	ground		208	228	239	
+451	Skorupi	钳尾蝎	鉗尾蠍	スコルピ		4	poison	bug	104	142	120	
+452	Drapion	龙王蝎	龍王蠍	ドラピオン		4	poison	dark	181	190	172	
+453	Croagunk	不良蛙	不良蛙	グレッグル		4	poison	fighting	119	86	134	
+454	Toxicroak	毒骷蛙	毒骷蛙	ドクロッグ		4	poison	fighting	207	144	195	
+455	Carnivine	尖牙笼	尖牙籠	マスキッパ		4	grass		186	146	180	
+456	Finneon	荧光鱼	螢光魚	ケイコウオ		4	water		102	113	136	
+457	Lumineon	霓虹鱼	霓虹魚	ネオラント		4	water		144	159	171	
+458	Mantyke	小球飞鱼	小球飛魚	タマンタ		4	water	flying	118	184	129	
+459	Snover	雪笠怪	雪笠怪	ユキカブリ		4	grass	ice	118	120	155	
+460	Abomasnow	暴雪王	暴雪王	ユキノオー		4	grass	ice	176	174	208	
+460	Abomasnow	暴雪王	暴雪王	ユキノオー	Mega Abomasnow	4	grass	ice	238	199	208	mega form
+461	Weavile	玛狃拉	瑪狃拉	マニューラ		4	dark	ice	241	159	172	
+462	Magnezone	自爆磁怪	自爆磁怪	ジバコイル		4	electric	steel	242	196	172	
+463	Lickilicky	大舌舔	大舌舔	ベロベルト		4	normal		161	201	242	
+464	Rhyperior	超甲狂犀	超甲狂犀	ドサイドン		4	ground	rock	241	190	251	
+465	Tangrowth	巨蔓藤	巨蔓藤	モジャンボ		4	grass		205	231	225	
+466	Electivire	电击魔兽	電擊魔獸	エレキブル		4	electric		239	162	181	
+467	Magmortar	鸭嘴炎兽	鴨嘴炎獸	ブーバーン		4	fire		240	175	181	
+468	Togekiss	波克基思	波克基斯	トゲキッス		4	fairy	flying	230	208	199	
+469	Yanmega	远古巨蜓	遠古巨蜓	メガヤンマ		4	bug	flying	227	172	200	
+470	Leafeon	叶伊布	葉伊布	リーフィア		4	grass		216	211	164	
+471	Glaceon	冰伊布	冰伊布	グレイシア		4	ice		244	186	164	
+472	Gliscor	天蝎王	天蠍王	グライオン		4	ground	flying	190	212	181	
+473	Mamoswine	象牙猪	象牙豬	マンムー		4	ice	ground	248	182	242	
+474	Porygon-Z	多边兽Ｚ	多邊獸Ｚ	ポリゴンＺ		4	normal		259	158	199	
+475	Gallade	艾路雷朵	艾路雷朵	エルレイド		4	psychic	fighting	239	195	169	
+475	Gallade	艾路雷朵	艾路雷朵	エルレイド	Mega Gallade	4	psychic	fighting	316	195	169	mega form
+476	Probopass	大朝北鼻	大朝北鼻	ダイノーズ		4	rock	steel	141	232	155	
+477	Dusknoir	黑夜魔灵	黑夜魔靈	ヨノワール		4	ghost		186	202	129	
+478	Froslass	雪妖女	雪妖女	ユキメノコ		4	ice	ghost	168	140	172	
+479	Rotom	洛托姆	洛托姆	ロトム		4	electric	ghost	189	134	138	
+479	Rotom	洛托姆	洛托姆	ロトム	Heat Rotom	4	electric	fire	205	171	138	form
+479	Rotom	洛托姆	洛托姆	ロトム	Wash Rotom	4	electric	water	205	171	138	form
+479	Rotom	洛托姆	洛托姆	ロトム	Frost Rotom	4	electric	ice	205	171	138	form
+479	Rotom	洛托姆	洛托姆	ロトム	Fan Rotom	4	electric	flying	205	171	138	form
+479	Rotom	洛托姆	洛托姆	ロトム	Mow Rotom	4	electric	grass	205	171	138	form
+480	Uxie	由克希	由克希	ユクシー		4	psychic		155	219	181	
+481	Mesprit	艾姆利多	艾姆利多	エムリット		4	psychic		204	191	190	
+482	Azelf	亚克诺姆	亞克諾姆	アグノム		4	psychic		248	144	181	
+483	Dialga	帝牙卢卡	帝牙盧卡	ディアルガ		4	steel	dragon	285	225	225	
+483	Dialga	帝牙卢卡	帝牙盧卡	ディアルガ	Origin Forme	4	steel	dragon	285	225	225	form
+484	Palkia	帕路奇亚	帕路奇亞	パルキア		4	water	dragon	288	218	208	
+484	Palkia	帕路奇亚	帕路奇亞	パルキア	Origin Forme	4	water	dragon	292	218	208	form
+485	Heatran	席多蓝恩	席多藍恩	ヒードラン		4	fire	steel	247	201	209	
+486	Regigigas	雷吉奇卡斯	雷吉奇卡斯	レジギガス		4	normal		305	220	242	
+487	Giratina	骑拉帝纳	騎拉帝納	ギラティナ	Altered Forme	4	ghost	dragon	198	262	312	form
+487	Giratina	骑拉帝纳	騎拉帝納	ギラティナ	Origin Forme	4	ghost	dragon	232	238	312	form
+488	Cresselia	克雷色利亚	克雷色利亞	クレセリア		4	psychic		152	240	260	
+489	Phione	霏欧纳	霏歐納	フィオネ		4	water		160	160	190	
+490	Manaphy	玛纳霏	瑪納霏	マナフィ		4	water		200	200	225	
+491	Darkrai	达克莱伊	達克萊伊	ダークライ		4	dark		268	165	172	
+492	Shaymin	谢米	謝米	シェイミ	Land Forme	4	grass		200	200	225	form
+492	Shaymin	骑拉帝纳	騎拉帝納	ギラティナ	Sky Forme	4	grass	flying	242	169	225	form
+493	Arceus	阿尔宙斯	阿爾宙斯	アルセウス		4	normal		240	240	260	
+494	Victini	比克提尼	比克提尼	ビクティニ		5	psychic	fire	200	200	225	
+495	Snivy	藤藤蛇	藤藤蛇	ツタージャ		5	grass		94	102	129	
+496	Servine	青藤蛇	青藤蛇	ジャノビー		5	grass		126	139	155	
+497	Serperior	君主蛇	君主蛇	ジャローダ		5	grass		160	175	181	
+498	Tepig	暖暖猪	暖暖豬	ポカブ		5	fire		122	105	164	
+499	Pignite	炒炒猪	炒炒豬	チャオブー		5	fire	fighting	176	136	208	
+500	Emboar	炎武王	炎武王	エンブオー		5	fire	fighting	232	164	242	
+501	Oshawott	水水獭	水水獺	ミジュマル		5	water		122	98	146	
+502	Dewott	双刃丸	雙刃丸	フタチマル		5	water		160	131	181	
+503	Samurott	大剑鬼	大劍鬼	ダイケンキ		5	water		206	178	216	
+503	Samurott	大剑鬼	大劍鬼	ダイケンキ	Hisuian Samurott	5	water	dark	210	168	208	form
+504	Patrat	探探鼠	探探鼠	ミネズミ		5	normal		107	82	129	
+505	Watchog	步哨鼠	步哨鼠	ミルホッグ		5	normal		168	131	155	
+506	Lillipup	小约克	小約克	ヨーテリー		5	normal		119	90	129	
+507	Herdier	哈约克	哈約克	ハーデリア		5	normal		155	130	164	
+508	Stoutland	长毛狗	長毛狗	ムーランド		5	normal		212	176	199	
+509	Purrloin	扒手猫	扒手貓	チョロネコ		5	dark		104	77	122	
+510	Liepard	酷豹	酷豹	レパルダス		5	dark		180	110	162	
+511	Pansage	花椰猴	花椰猴	ヤナップ		5	grass		109	98	138	
+512	Simisage	花椰猿	花椰猿	ヤナッキー		5	grass		197	135	181	
+513	Pansear	爆香猴	爆香猴	バオップ		5	fire		109	98	138	
+514	Simisear	爆香猿	爆香猿	バオッキー		5	fire		197	135	181	
+515	Panpour	冷水猴	冷水猴	ヒヤップ		5	water		109	98	138	
+516	Simipour	冷水猿	冷水猿	ヒヤッキー		5	water		197	135	181	
+517	Munna	食梦梦	食夢夢	ムンナ		5	psychic		123	126	183	
+518	Musharna	梦梦蚀	夢夢蝕	ムシャーナ		5	psychic		194	206	253	
+519	Pidove	豆豆鸽	豆豆鴿	マメパト		5	normal	flying	107	100	138	
+520	Tranquill	咕咕鸽	咕咕鴿	ハトーボー		5	normal	flying	151	124	158	
+521	Unfezant	高傲雉鸡	高傲雉雞	ケンホロウ		5	normal	flying	224	160	190	
+522	Blitzle	斑斑马	斑斑馬	シママ		5	electric		124	74	129	
+523	Zebstrika	雷电斑马	雷電斑馬	ゼブライカ		5	electric		204	135	181	
+524	Roggenrola	石丸子	石丸子	ダンゴロ		5	rock		135	148	146	
+525	Boldore	地幔岩	地幔岩	ガントル		5	rock		189	184	172	
+526	Gigalith	庞岩怪	龐岩怪	ギガイアス		5	rock		242	226	199	
+527	Woobat	滚滚蝙蝠	滾滾蝙蝠	コロモリ		5	psychic	flying	114	102	164	
+528	Swoobat	心蝙蝠	心蝙蝠	ココロモリ		5	psychic	flying	163	119	167	
+529	Drilbur	螺钉地鼠	螺釘地鼠	モグリュー		5	ground		166	101	155	
+530	Excadrill	龙头地鼠	龍頭地鼠	ドリュウズ		5	ground	steel	258	164	242	
+531	Audino	差不多娃娃	差不多娃娃	タブンネ		5	normal		118	185	230	
+531	Audino	差不多娃娃	差不多娃娃	タブンネ	Mega Audino	5	normal	fairy	152	235	230	mega form
+532	Timburr	搬运小匠	搬運小匠	ドッコラー		5	fighting		149	125	181	
+533	Gurdurr	铁骨土人	鐵骨土人	ドテッコツ		5	fighting		194	170	199	
+534	Conkeldurr	修建老匠	修建老匠	ローブシン		5	fighting		256	198	234	
+535	Tympole	圆蝌蚪	圓蝌蚪	オタマロ		5	water		104	88	138	
+536	Palpitoad	蓝蟾蜍	藍蟾蜍	ガマガル		5	water	ground	131	125	181	
+537	Seismitoad	蟾蜍王	蟾蜍王	ガマゲロゲ		5	water	ground	185	172	234	
+538	Throh	投摔鬼	投摔鬼	ナゲキ		5	fighting		186	196	260	
+539	Sawk	打击鬼	打擊鬼	ダゲキ		5	fighting		240	150	181	
+540	Sewaddle	虫宝包	蟲寶包	クルミル		5	bug	grass	103	121	129	
+541	Swadloon	宝包茧	寶包繭	クルマユ		5	bug	grass	121	154	146	
+542	Leavanny	保母虫	保母蟲	ハハコモリ		5	bug	grass	203	156	181	
+543	Venipede	百足蜈蚣	百足蜈蚣	フシデ		5	bug	poison	93	96	102	
+544	Whirlipede	车轮球	車輪毬	ホイーガ		5	bug	poison	108	154	120	
+545	Scolipede	蜈蚣王	蜈蚣王	ペンドラー		5	bug	poison	203	156	155	
+546	Cottonee	木棉球	木棉球	モンメン		5	grass	fairy	81	105	120	
+547	Whimsicott	风妖精	風妖精	エルフーン		5	grass	fairy	164	151	155	
+548	Petilil	百合根娃娃	百合根娃娃	チュリネ		5	grass		130	96	129	
+549	Lilligant	裙儿小姐	裙兒小姐	ドレディア		5	grass		215	146	172	
+549	Lilligant	裙儿小姐	裙兒小姐	ドレディア	Hisuian Lilligant	5	grass	fighting	210	146	172	form
+550	Basculin	野蛮鲈鱼	野蠻鱸魚	バスラオ	Red-Striped Form	5	water		186	134	172	form
+550	Basculin	野蛮鲈鱼	野蠻鱸魚	バスラオ	Blue-Striped Form	5	water		186	134	172	form
+550	Basculin	野蛮鲈鱼	野蠻鱸魚	バスラオ	White-Striped Form	5	water		186	134	172	form
+551	Sandile	黑眼鳄	黑眼鱷	メグロコ		5	ground	dark	142	81	138	
+552	Krokorok	混混鳄	混混鱷	ワルビル		5	ground	dark	162	101	155	
+553	Krookodile	流氓鳄	流氓鱷	ワルビアル		5	ground	dark	228	171	216	
+554	Darumaka	火红不倒翁	火紅不倒翁	ダルマッカ		5	fire		170	109	172	
+554	Darumaka	火红不倒翁	火紅不倒翁	ダルマッカ	Galarian Darumaka	5	ice		170	109	172	form
+555	Darmanitan	达摩狒狒	達摩狒狒	ヒヒダルマ	Standard Mode	5	fire		269	148	234	form
+555	Darmanitan	达摩狒狒	達摩狒狒	ヒヒダルマ	Zen Mode	5	fire	psychic	259	210	234	form
+555	Darmanitan	达摩狒狒	達摩狒狒	ヒヒダルマ	Galarian Standard Mode	5	ice		269	148	234	form
+555	Darmanitan	达摩狒狒	達摩狒狒	ヒヒダルマ	Galarian Zen Mode	5	ice	fire	314	148	234	form
+556	Maractus	沙铃仙人掌	沙鈴仙人掌	マラカッチ		5	grass		200	140	181	
+557	Dwebble	石居蟹	石居蟹	イシズマイ		5	bug	rock	128	144	138	
+558	Crustle	岩殿居蟹	岩殿居蟹	イワパレス		5	bug	rock	195	209	172	
+559	Scraggy	滑滑小子	滑滑小子	ズルッグ		5	dark	fighting	143	125	138	
+560	Scrafty	头巾混混	頭巾混混	ズルズキン		5	dark	fighting	172	192	164	
+561	Sigilyph	象征鸟	象徵鳥	シンボラー		5	psychic	flying	204	154	176	
+562	Yamask	哭哭面具	哭哭面具	デスマス		5	ghost		104	135	116	
+562	Yamask	哭哭面具	哭哭面具	デスマス	Galarian Yamask	5	ground	ghost	104	135	116	form
+563	Cofagrigus	死神棺	死神棺	デスカーン		5	ghost		174	225	152	
+564	Tirtouga	原盖海龟	原蓋海龜	プロトーガ		5	water	rock	142	169	144	
+565	Carracosta	肋骨海龟	肋骨海龜	アバゴーラ		5	water	rock	197	222	180	
+566	Archen	始祖小鸟	始祖小鳥	アーケン		5	rock	flying	214	98	146	
+567	Archeops	始祖大鸟	始祖大鳥	アーケオス		5	rock	flying	272	138	181	
+568	Trubbish	破破袋	破破袋	ヤブクロン		5	poison		104	115	138	
+569	Garbodor	灰尘山	灰塵山	ダストダス		5	poison		185	162	190	
+570	Zorua	索罗亚	索羅亞	ゾロア		5	dark		156	80	120	
+570	Zorua	索罗亚	索羅亞	ゾロア	Hisuian Zorua	5	normal	ghost	166	76	111	form
+571	Zoroark	索罗亚克	索羅亞克	ゾロアーク		5	dark		236	120	155	
+571	Zoroark	索罗亚克	索羅亞克	ゾロアーク	Hisuian Zoroark	5	normal	ghost	246	116	146	form
+572	Minccino	泡沫栗鼠	泡沫栗鼠	チラーミィ		5	normal		106	91	146	
+573	Cinccino	奇诺栗鼠	奇諾栗鼠	チラチーノ		5	normal		195	131	181	
+574	Gothita	哥德宝宝	哥德寶寶	ゴチム		5	psychic		108	115	129	
+575	Gothorita	哥德小童	哥德小童	ゴチミル		5	psychic		145	151	155	
+576	Gothitelle	哥德小姐	哥德小姐	ゴチルゼル		5	psychic		182	190	172	
+577	Solosis	单卵细胞球	單卵細胞球	ユニラン		5	psychic		189	96	129	
+578	Duosion	双卵细胞球	雙卵細胞球	ダブラン		5	psychic		226	124	164	
+579	Reuniclus	人造细胞卵	人造細胞卵	ランクルス		5	psychic		226	189	242	
+580	Ducklett	鸭宝宝	鴨寶寶	コアルヒー		5	water	flying	91	109	158	
+581	Swanna	舞天鹅	舞天鵝	スワンナ		5	water	flying	177	135	181	
+582	Vanillite	迷你冰	迷你冰	バニプッチ		5	ice		125	102	113	
+583	Vanillish	多多冰	多多冰	バニリッチ		5	ice		155	132	139	
+584	Vanilluxe	双倍多多冰	雙倍多多冰	バイバニラ		5	ice		212	172	174	
+585	Deerling	四季鹿	四季鹿	シキジカ		5	normal	grass	124	108	155	
+586	Sawsbuck	萌芽鹿	萌芽鹿	メブキジカ		5	normal	grass	199	148	190	
+587	Emolga	电飞鼠	電飛鼠	エモンガ		5	electric	flying	157	116	146	
+588	Karrablast	盖盖虫	蓋蓋蟲	カブルモ		5	bug		146	94	138	
+589	Escavalier	骑士蜗牛	騎士蝸牛	シュバルゴ		5	bug	steel	241	184	172	
+590	Foongus	哎呀球菇	哎呀球菇	タマゲタケ		5	grass	poison	100	120	171	
+591	Amoonguss	败露球菇	敗露球菇	モロバレル		5	grass	poison	156	186	250	
+592	Frillish	轻飘飘	輕飄飄	プルリル		5	water	ghost	124	148	146	
+593	Jellicent	胖嘟嘟	胖嘟嘟	ブルンゲル		5	water	ghost	164	206	225	
+594	Alomomola	保母曼波	保母曼波	ママンボウ		5	water		148	224	339	
+595	Joltik	电电虫	電電蟲	バチュル		5	bug	electric	116	100	138	
+596	Galvantula	电蜘蛛	電蜘蛛	デンチュラ		5	bug	electric	197	128	172	
+597	Ferroseed	种子铁球	種子鐵球	テッシード		5	grass	steel	90	147	127	
+598	Ferrothorn	坚果哑铃	堅果啞鈴	ナットレイ		5	grass	steel	170	219	180	
+599	Klink	齿轮儿	齒輪兒	ギアル		5	steel		104	118	120	
+600	Klang	齿轮组	齒輪組	ギギアル		5	steel		152	164	155	
+601	Klinklang	齿轮怪	齒輪怪	ギギギアル		5	steel		198	189	155	
+602	Tynamo	麻麻小鱼	麻麻小魚	シビシラス		5	electric		111	76	111	
+603	Eelektrik	麻麻鳗	麻麻鰻	シビビール		5	electric		159	136	164	
+604	Eelektross	麻麻鳗鱼王	麻麻鰻魚王	シビルドン		5	electric		214	164	199	
+605	Elgyem	小灰怪	小灰怪	リグレー		5	psychic		156	110	146	
+606	Beheeyem	大宇怪	大宇怪	オーベム		5	psychic		229	175	181	
+607	Litwick	烛光灵	燭光靈	ヒトモシ		5	ghost	fire	119	106	138	
+608	Lampent	灯火幽灵	燈火幽靈	ランプラー		5	ghost	fire	180	120	155	
+609	Chandelure	水晶灯火灵	水晶燈火靈	シャンデラ		5	ghost	fire	274	158	155	
+610	Axew	牙牙	牙牙	キバゴ		5	dragon		166	110	130	
+611	Fraxure	斧牙龙	斧牙龍	オノンド		5	dragon		222	137	166	
+612	Haxorus	双斧战龙	雙斧戰龍	オノノクス		5	dragon		282	170	183	
+613	Cubchoo	喷嚏熊	噴嚏熊	クマシュン		5	ice		132	91	146	
+614	Beartic	冻原熊	凍原熊	ツンベアー		5	ice		240	171	216	
+615	Cryogonal	几何雪花	幾何雪花	フリージオ		5	ice		192	229	190	
+616	Shelmet	小嘴蜗	小嘴蝸	チョボマキ		5	bug		76	144	138	
+617	Accelgor	敏捷虫	敏捷蟲	アギルダー		5	bug		211	135	190	
+618	Stunfisk	泥巴鱼	泥巴魚	マッギョ		5	ground	electric	150	206	241	
+618	Stunfisk	泥巴鱼	泥巴魚	マッギョ	Galarian Stunfisk	5	ground	steel	150	206	241	form
+619	Mienfoo	功夫鼬	功夫鼬	コジョフー		5	fighting		165	96	129	
+620	Mienshao	师父鼬	師父鼬	コジョンド		5	fighting		245	124	164	
+621	Druddigon	赤面龙	赤面龍	クリムガン		5	dragon		222	170	185	
+622	Golett	泥偶小人	泥偶小人	ゴビット		5	ground	ghost	138	107	153	
+623	Golurk	泥偶巨人	泥偶巨人	ゴルーグ		5	ground	ghost	231	167	206	
+624	Pawniard	驹刀小兵	駒刀小兵	コマタナ		5	dark	steel	164	121	129	
+625	Bisharp	劈斩司令	劈斬司令	キリキザン		5	dark	steel	236	174	164	
+626	Bouffalant	爆炸头水牛	爆炸頭水牛	バッフロン		5	normal		206	190	216	
+627	Rufflet	毛头小鹰	毛頭小鷹	ワシボン		5	normal	flying	160	115	172	
+628	Braviary	勇士雄鹰	勇士雄鷹	ウォーグル		5	normal	flying	235	169	225	
+628	Braviary	勇士雄鹰	勇士雄鷹	ウォーグル	Hisuian Braviary	5	psychic	flying	212	170	242	form
+629	Vullaby	秃鹰丫头	禿鷹丫頭	バルチャイ		5	dark	flying	111	146	172	
+630	Mandibuzz	秃鹰娜	禿鷹娜	バルジーナ		5	dark	flying	134	214	242	
+631	Heatmor	熔蚁兽	熔蟻獸	クイタラン		5	fire		200	146	199	
+632	Durant	铁蚁	鐵蟻	アイアント		5	bug	steel	218	184	152	
+633	Deino	单首龙	單首龍	モノズ		5	dark	dragon	123	102	141	
+634	Zweilous	双首暴龙	雙首暴龍	ジヘッド		5	dark	dragon	163	142	176	
+635	Hydreigon	三首恶龙	三首惡龍	サザンドラ		5	dark	dragon	256	188	211	
+636	Larvesta	燃烧虫	燃燒蟲	メラルバ		5	bug	fire	164	110	146	
+637	Volcarona	火神蛾	火神蛾	ウルガモス		5	bug	fire	261	195	199	
+638	Cobalion	勾帕路翁	勾帕路翁	コバルオン		5	steel	fighting	184	230	209	
+639	Terrakion	代拉基翁	代拉基翁	テラキオン		5	rock	fighting	253	181	209	
+640	Virizion	毕力吉翁	畢力吉翁	ビリジオン		5	grass	fighting	184	230	209	
+641	Tornadus	龙卷云	龍捲雲	トルネロス	Incarnate Forme	5	flying		246	159	188	form
+641	Tornadus	龙卷云	龍捲雲	トルネロス	Therian Forme	5	flying		223	172	188	form
+642	Thundurus	雷电云	雷電雲	ボルトロス	Incarnate Forme	5	electric	flying	246	159	188	form
+642	Thundurus	雷电云	雷電雲	ボルトロス	Therian Forme	5	electric	flying	279	159	188	form
+643	Reshiram	莱希拉姆	萊希拉姆	レシラム		5	dragon	fire	285	225	225	
+644	Zekrom	捷克罗姆	捷克羅姆	ゼクロム		5	dragon	electric	285	225	225	
+645	Landorus	土地云	土地雲	ランドロス	Incarnate Forme	5	ground	flying	244	179	206	form
+645	Landorus	土地云	土地雲	ランドロス	Therian Forme	5	ground	flying	276	179	206	form
+646	Kyurem	酋雷姆	酋雷姆	キュレム		5	dragon	ice	251	206	269	
+646	Kyurem	酋雷姆	酋雷姆	キュレム	White Kyurem	5	dragon	ice	310	183	245	legendary form fusion
+646	Kyurem	酋雷姆	酋雷姆	キュレム	Black Kyurem	5	dragon	ice	321	219	269	form
+647	Keldeo	凯路迪欧	凱路迪歐	ケルディオ	Ordinary Form	5	water	fighting	253	181	209	form
+647	Keldeo	凯路迪欧	凱路迪歐	ケルディオ	Resolute Form	5	water	fighting	253	181	209	form
+648	Meloetta	美洛耶塔	美洛耶塔	メロエッタ	Aria Forme	5	normal	psychic	246	235	225	form
+648	Meloetta	美洛耶塔	美洛耶塔	メロエッタ	Pirouette Forme	5	normal	fighting	256	188	225	form
+649	Genesect	盖诺赛克特	蓋諾賽克特	ゲノセクト		5	bug	steel	235	172	174	
+650	Chespin	哈力栗	哈力栗	ハリマロン		6	grass		116	123	148	
+651	Quilladin	胖胖哈力	胖胖哈力	ハリボーグ		6	grass		151	164	157	
+652	Chesnaught	布里卡隆	布里卡隆	ブリガロン		6	grass	fighting	203	218	204	
+653	Fennekin	火狐狸	火狐狸	フォッコ		6	fire		124	105	120	
+654	Braixen	长尾火狐	長尾火狐	テールナー		6	fire		176	132	153	
+655	Delphox	妖火红狐	妖火紅狐	マフォクシー		6	fire	psychic	226	181	181	
+656	Froakie	呱呱泡蛙	呱呱泡蛙	ケロマツ		6	water		126	86	122	
+657	Frogadier	呱头蛙	呱頭蛙	ゲコガシラ		6	water		170	110	144	
+658	Greninja	甲贺忍蛙	甲賀忍蛙	ゲッコウガ		6	water	dark	211	143	176	
+658	Greninja	甲贺忍蛙	甲賀忍蛙	ゲッコウガ	Ash-Greninja	6	water	dark	301	143	176	form
+659	Bunnelby	掘掘兔	掘掘兔	ホルビー		6	normal		77	76	116	
+660	Diggersby	掘地兔	掘地兔	ホルード		6	normal	ground	118	160	199	
+661	Fletchling	小箭雀	小箭雀	ヤヤコマ		6	normal	flying	103	88	129	
+662	Fletchinder	火箭雀	火箭雀	ヒノヤコマ		6	fire	flying	149	115	158	
+663	Talonflame	烈箭鹰	烈箭鷹	ファイアロー		6	fire	flying	173	147	186	
+664	Scatterbug	粉蝶虫	粉蝶蟲	コフキムシ		6	bug		70	78	116	
+665	Spewpa	粉蝶蛹	粉蝶蛹	コフーライ		6	bug		54	109	129	
+666	Vivillon	彩粉蝶	彩粉蝶	ビビヨン		6	bug	flying	180	122	190	
+667	Litleo	小狮狮	小獅獅	シシコ		6	fire	normal	146	119	158	
+668	Pyroar	火炎狮	火炎獅	カエンジシ		6	fire	normal	217	154	200	
+669	Flabébé	花蓓蓓	花蓓蓓	フラベベ		6	fairy		117	132	127	
+670	Floette	花叶蒂	花葉蒂	フラエッテ		6	fairy		144	163	144	
+671	Florges	花洁夫人	花潔夫人	フラージェス		6	fairy		215	251	186	
+672	Skiddo	坐骑小羊	坐騎小羊	メェークル		6	grass		127	121	166	
+673	Gogoat	坐骑山羊	坐騎山羊	ゴーゴート		6	grass		192	194	265	
+674	Pancham	顽皮熊猫	頑皮熊貓	ヤンチャム		6	fighting		154	128	167	
+675	Pangoro	流氓熊猫	流氓熊貓	ゴロンダ		6	fighting	dark	232	169	216	
+676	Furfrou	多丽米亚	多麗米亞	トリミアン		6	normal		166	169	181	
+677	Espurr	妙喵	妙喵	ニャスパー		6	psychic		127	122	158	
+678	Meowstic	超能妙喵	超能妙喵	ニャオニクス	Male	6	psychic		171	157	180	form
+678	Meowstic	超能妙喵	超能妙喵	ニャオニクス	Female	6	psychic		171	157	180	form
+679	Honedge	独剑鞘	獨劍鞘	ヒトツキ		6	steel	ghost	147	159	129	
+680	Doublade	双剑鞘	雙劍鞘	ニダンギル		6	steel	ghost	201	232	153	
+681	Aegislash	坚盾剑怪	堅盾劍怪	ギルガルド	Shield Forme	6	steel	ghost	102	220	155	form
+681	Aegislash	坚盾剑怪	堅盾劍怪	ギルガルド	Blade Forme	6	steel	ghost	260	108	155	form
+682	Spritzee	粉香香	粉香香	シュシュプ		6	fairy		116	140	186	
+683	Aromatisse	芳香精	芳香精	フレフワン		6	fairy		180	187	227	
+684	Swirlix	绵绵泡芙	綿綿泡芙	ペロッパフ		6	fairy		116	129	158	
+685	Slurpuff	胖甜妮	胖甜妮	ペロリーム		6	fairy		167	169	194	
+686	Inkay	好啦鱿	好啦魷	マーイーカ		6	dark	psychic	106	106	143	
+687	Malamar	乌贼王	烏賊王	カラマネロ		6	dark	psychic	179	174	200	
+688	Binacle	龟脚脚	龜腳腳	カメテテ		6	rock	water	104	115	124	
+689	Barbaracle	龟足巨铠	龜足巨鎧	ガメノデス		6	rock	water	201	198	176	
+690	Skrelp	垃垃藻	垃垃藻	クズモー		6	poison	water	112	112	138	
+691	Dragalge	毒藻龙	毒藻龍	ドラミドロ		6	poison	dragon	181	202	164	
+692	Clauncher	铁臂枪虾	鐵臂槍蝦	ウデッポウ		6	water		112	116	138	
+693	Clawitzer	钢炮臂虾	鋼炮臂蝦	ブロスター		6	water		225	164	174	
+694	Helioptile	伞电蜥	傘電蜥	エリキテル		6	electric	normal	124	87	127	
+695	Heliolisk	光电伞蜥	光電傘蜥	エレザード		6	electric	normal	218	164	158	
+696	Tyrunt	宝宝暴龙	寶寶暴龍	チゴラス		6	rock	dragon	168	140	152	
+697	Tyrantrum	怪颚龙	怪顎龍	ガチゴラス		6	rock	dragon	230	210	194	
+698	Amaura	冰雪龙	冰雪龍	アマルス		6	rock	ice	129	136	185	
+699	Aurorus	冰雪巨龙	冰雪巨龍	アマルルガ		6	rock	ice	188	207	265	
+700	Sylveon	仙子伊布	仙子伊布	ニンフィア		6	fairy		208	234	216	
+701	Hawlucha	摔角鹰人	摔角鷹人	ルチャブル		6	fighting	flying	190	152	186	
+702	Dedenne	咚咚鼠	咚咚鼠	デデンネ		6	electric	fairy	167	134	167	
+703	Carbink	小碎钻	小碎鑽	メレシー		6	rock	fairy	100	225	138	
+704	Goomy	黏黏宝	黏黏寶	ヌメラ		6	dragon		106	128	129	
+705	Sliggoo	黏美儿	黏美兒	ヌメイル		6	dragon		160	192	169	
+705	Sliggoo	黏美儿	黏美兒	ヌメイル	Hisuian Sliggoo	6	steel	dragon	155	185	152	form
+706	Goodra	黏美龙	黏美龍	ヌメルゴン		6	dragon		212	255	208	
+706	Goodra	黏美龙	黏美龍	ヌメルゴン	Hisuian Goodra	6	steel	dragon	208	248	190	form
+707	Klefki	钥圈儿	鑰圈兒	クレッフィ		6	steel	fairy	159	156	150	
+708	Phantump	小木灵	小木靈	ボクレー		6	ghost	grass	132	107	125	
+709	Trevenant	朽木妖	朽木妖	オーロット		6	ghost	grass	206	166	199	
+710	Pumpkaboo	南瓜精	南瓜精	バケッチャ	Average Size	6	ghost	grass	128	124	136	form
+710	Pumpkaboo	南瓜精	南瓜精	バケッチャ	Small Size	6	ghost	grass	130	120	127	form
+710	Pumpkaboo	南瓜精	南瓜精	バケッチャ	Large Size	6	ghost	grass	127	128	144	form
+710	Pumpkaboo	南瓜精	南瓜精	バケッチャ	Super Size	6	ghost	grass	126	132	153	form
+711	Gourgeist	南瓜怪人	南瓜怪人	パンプジン	Average Size	6	ghost	grass	178	201	164	form
+711	Gourgeist	南瓜怪人	南瓜怪人	パンプジン	Small Size	6	ghost	grass	174	194	146	form
+711	Gourgeist	南瓜怪人	南瓜怪人	パンプジン	Large Size	6	ghost	grass	184	209	181	form
+711	Gourgeist	南瓜怪人	南瓜怪人	パンプジン	Super Size	6	ghost	grass	188	216	199	form
+712	Bergmite	冰宝	冰寶	カチコール		6	ice		128	148	146	
+713	Avalugg	冰岩怪	冰岩怪	クレベース		6	ice		212	301	216	
+713	Avalugg	冰岩怪	冰岩怪	クレベース	Hisuian Avalugg	6	ice	rock	232	301	216	form
+714	Noibat	嗡蝠	嗡蝠	オンバット		6	flying	dragon	92	80	120	
+715	Noivern	音波龙	音波龍	オンバーン		6	flying	dragon	200	164	199	
+716	Xerneas	哲尔尼亚斯	哲爾尼亞斯	ゼルネアス		6	fairy		254	217	270	
+717	Yveltal	伊裴尔塔尔	伊裴爾塔爾	イベルタル		6	dark	flying	254	217	270	
+718	Zygarde	基格尔德	基格爾德	ジガルデ	50% Forme	6	dragon	ground	199	232	239	form
+718	Zygarde	基格尔德	基格爾德	ジガルデ	10% Forme	6	dragon	ground	204	147	144	form
+718	Zygarde	基格尔德	基格爾德	ジガルデ	Complete Forme	6	dragon	ground	196	313	428	form
+719	Diancie	蒂安希	蒂安希	ディアンシー		6	rock	fairy	188	225	138	
+719	Diancie	蒂安希	蒂安希	ディアンシー	Mega Diancie	6	rock	fairy	308	175	138	mega form
+720	Hoopa	胡帕·封印	胡帕·封印	フーパ	Hoopa Confined	6	psychic	ghost	280	222	190	form
+720	Hoopa	胡帕·解放	胡帕·解放	フーパ	Hoopa Unbound	6	psychic	dark	318	222	190	form
+721	Volcanion	波尔凯尼恩	波爾凱尼恩	ボルケニオン		6	fire	water	245	210	190	
+722	Rowlet	木木枭	木木梟	モクロー		7	grass	flying	107	120	169	
+723	Dartrix	投羽枭	投羽梟	フクスロー		7	grass	flying	144	152	186	
+724	Decidueye	狙射树枭	狙射樹梟	ジュナイパー		7	grass	ghost	205	184	186	
+724	Decidueye	狙射树枭	狙射樹梟	ジュナイパー	Hisuian Decidueye	7	grass	fighting	211	185	204	form
+725	Litten	火斑喵	火斑喵	ニャビー		7	fire		131	84	129	
+726	Torracat	炎热喵	炎熱喵	ニャヒート		7	fire		171	111	164	
+727	Incineroar	炽焰咆哮虎	熾焰咆哮虎	ガオガエン		7	fire	dark	216	184	216	
+728	Popplio	球球海狮	球球海獅	アシマリ		7	water		126	108	138	
+729	Brionne	花漾海狮	花漾海獅	オシャマリ		7	water		172	146	155	
+730	Primarina	西狮海壬	西獅海壬	アシレーヌ		7	water	fairy	236	205	190	
+731	Pikipek	小笃儿	小篤兒	ツツケラ		7	normal	flying	148	64	111	
+732	Trumbeak	喇叭啄鸟	喇叭啄鳥	ケララッパ		7	normal	flying	168	104	146	
+733	Toucannon	铳嘴大鸟	銃嘴大鳥	ドデカバシ		7	normal	flying	225	154	190	
+734	Yungoos	猫鼬少	貓鼬少	ヤングース		7	normal		134	74	134	
+735	Gumshoos	猫鼬探长	貓鼬探長	デカグース		7	normal		204	141	204	
+736	Grubbin	强颚鸡母虫	強顎雞母蟲	アゴジムシ		7	bug		120	92	132	
+737	Charjabug	虫电宝	蟲電寶	デンヂムシ		7	bug	electric	152	162	150	
+738	Vikavolt	锹农炮虫	鍬農炮蟲	クワガノン		7	bug	electric	264	170	185	
+739	Crabrawler	好胜蟹	好勝蟹	マケンカニ		7	fighting		159	106	132	
+740	Crabominable	好胜毛蟹	好勝毛蟹	ケケンカニ		7	fighting	ice	242	169	220	
+741	Oricorio	花舞鸟	花舞鳥	オドリドリ	Baile Style	7	fire	flying	195	144	181	form
+741	Oricorio	花舞鸟	花舞鳥	オドリドリ	Pom-Pom Style	7	electric	flying	195	144	181	form
+741	Oricorio	花舞鸟	花舞鳥	オドリドリ	Pa'u Style	7	psychic	flying	195	144	181	form
+741	Oricorio	花舞鸟	花舞鳥	オドリドリ	Sensu Style	7	ghost	flying	195	144	181	form
+742	Cutiefly	萌虻	萌虻	アブリー		7	bug	fairy	117	80	120	
+743	Ribombee	蝶结萌虻	蝶結萌虻	アブリボン		7	bug	fairy	197	132	155	
+744	Rockruff	岩狗狗	岩狗狗	イワンコ		7	rock		129	84	129	
+744	Rockruff	岩狗狗	岩狗狗	イワンコ	Own Tempo Rockruff	7	rock		129	84	129	form
+745	Lycanroc	鬃岩狼人	鬃岩狼人	ルガルガン	Midday Form	7	rock		229	138	181	form
+745	Lycanroc	鬃岩狼人	鬃岩狼人	ルガルガン	Midnight Form	7	rock		222	158	199	form
+745	Lycanroc	鬃岩狼人	鬃岩狼人	ルガルガン	Dusk Form	7	rock		232	138	181	form
+746	Wishiwashi	弱丁鱼	弱丁魚	ヨワシ	Solo Form	7	water		54	65	129	form
+746	Wishiwashi	弱丁鱼	弱丁魚	ヨワシ	School Form	7	water		252	202	129	form
+747	Mareanie	好坏星	好壞星	ヒドイデ		7	poison	water	104	115	138	
+748	Toxapex	超坏星	超壞星	ドヒドイデ		7	poison	water	119	228	138	
+749	Mudbray	泥驴仔	泥驢仔	ドロバンコ		7	ground		186	140	172	
+750	Mudsdale	重泥挽马	重泥輓馬	バンバドロ		7	ground		228	200	225	
+751	Dewpider	滴蛛	滴蛛	シズクモ		7	water	bug	77	118	116	
+752	Araquanid	滴蛛霸	滴蛛霸	オニシズクモ		7	water	bug	133	216	169	
+753	Fomantis	伪螳草	偽螳草	カリキリ		7	grass		105	74	120	
+754	Lurantis	兰螳花	蘭螳花	ラランテス		7	grass		195	165	172	
+755	Morelull	睡睡菇	睡睡菇	ネマシュ		7	grass	fairy	118	124	120	
+756	Shiinotic	灯罩夜菇	燈罩夜菇	マシェード		7	grass	fairy	165	170	155	
+757	Salandit	夜盗火蜥	夜盜火蜥	ヤトウモリ		7	poison	fire	144	86	134	
+758	Salazzle	焰后蜥	焰后蜥	エンニュート		7	poison	fire	224	126	169	
+759	Stufful	童偶熊	童偶熊	ヌイコグマ		7	normal	fighting	144	115	172	
+760	Bewear	穿着熊	穿著熊	キテルグマ		7	normal	fighting	234	190	260	
+761	Bounsweet	甜竹竹	甜竹竹	アマカジ		7	grass		60	79	124	
+762	Steenee	甜舞妮	甜舞妮	アママイコ		7	grass		86	99	141	
+763	Tsareena	甜冷美后	甜冷美后	アマージョ		7	grass		228	176	176	
+764	Comfey	花疗环环	花療環環	キュワワー		7	fairy		168	176	139	
+765	Oranguru	智挥猩	智揮猩	ヤレユータン		7	normal	psychic	172	205	208	
+766	Passimian	投掷猴	投擲猴	ナゲツケサル		7	fighting		230	188	225	
+767	Wimpod	胆小虫	膽小蟲	コソクムシ		7	bug	water	81	69	94	
+768	Golisopod	具甲武者	具甲武者	グソクムシャ		7	bug	water	229	231	181	
+769	Sandygast	沙丘娃	沙丘娃	スナバァ		7	ghost	ground	126	141	146	
+770	Palossand	噬沙堡爷	噬沙堡爺	シロデスナ		7	ghost	ground	184	201	199	
+771	Pyukumuku	拳海参	拳海參	ナマコブシ		7	water		106	204	146	
+772	Type: Null	属性：空	屬性：空	タイプ：ヌル		7	normal		181	190	216	
+773	Silvally	银伴战兽	銀伴戰獸	シルヴァディ		7	normal		190	190	216	
+774	Minior	小陨星	小隕星	メテノ	Meteor Form	7	rock	flying	120	170	155	form
+774	Minior	小陨星	小隕星	メテノ	Core Form	7	rock	flying	205	120	155	form
+775	Komala	树枕尾熊	樹枕尾熊	ネッコアラ		7	normal		218	168	164	
+776	Turtonator	爆焰龟兽	爆焰龜獸	バクガメス		7	fire	dragon	168	214	155	
+777	Togedemaru	托戈德玛尔	托戈德瑪爾	トゲデマル		7	electric	steel	196	140	164	
+778	Mimikyu	谜拟Ｑ	謎擬Ｑ	ミミッキュ		7	ghost	fairy	182	172	146	
+779	Bruxish	磨牙彩皮鱼	磨牙彩皮魚	ハギギシリ		7	water	psychic	207	138	169	
+780	Drampa	老翁龙	老翁龍	ジジーロン		7	normal	dragon	245	172	186	
+781	Dhelmise	破破舵轮	破破舵輪	ダダリン		7	ghost	grass	239	178	172	
+782	Jangmo-o	心鳞宝	心鱗寶	ジャラコ		7	dragon		108	115	129	
+783	Hakamo-o	鳞甲龙	鱗甲龍	ジャランゴ		7	dragon	fighting	148	154	146	
+784	Kommo-o	杖尾鳞甲龙	杖尾鱗甲龍	ジャラランガ		7	dragon	fighting	214	212	181	
+785	Tapu Koko	卡璞・鸣鸣	卡璞・鳴鳴	カプ・コケコ		7	electric	fairy	234	159	172	
+786	Tapu Lele	卡璞・蝶蝶	卡璞・蝶蝶	カプ・テテフ		7	psychic	fairy	251	196	172	
+787	Tapu Bulu	卡璞・哞哞	卡璞・哞哞	カプ・ブルル		7	grass	fairy	246	196	172	
+788	Tapu Fini	卡璞・鳍鳍	卡璞・鰭鰭	カプ・レヒレ		7	water	fairy	188	215	172	
+789	Cosmog	科斯莫古	科斯莫古	コスモッグ		7	psychic		60	71	125	
+790	Cosmoem	科斯莫姆	科斯莫姆	コスモウム		7	psychic		60	196	125	
+791	Solgaleo	索尔迦雷欧	索爾迦雷歐	ソルガレオ		7	psychic	steel	264	236	290	
+792	Lunala	露奈雅拉	露奈雅拉	ルナアーラ		7	psychic	ghost	264	236	290	
+793	Nihilego	虚吾伊德	虛吾伊德	ウツロイド		7	rock	poison	248	246	241	
+794	Buzzwole	爆肌蚊	爆肌蚊	マッシブーン		7	bug	fighting	263	254	237	
+795	Pheromosa	费洛美螂	費洛美螂	フェローチェ		7	bug	fighting	278	100	174	
+796	Xurkitree	电束木	電束木	デンジュモク		7	electric		324	151	195	
+797	Celesteela	铁火辉夜	鐵火輝夜	テッカグヤ		7	steel	flying	202	202	220	
+798	Kartana	纸御剑	紙御劍	カミツルギ		7	grass	steel	344	208	153	
+799	Guzzlord	恶食大王	惡食大王	アクジキング		7	dark	dragon	188	234	440	
+800	Necrozma	奈克洛兹玛	奈克洛茲瑪	ネクロズマ		7	psychic		242	199	220	
+800	Necrozma	奈克洛兹玛	奈克洛茲瑪	ネクロズマ	Dusk Mane Necrozma	7	psychic	steel	294	232	220	form
+800	Necrozma	奈克洛兹玛	奈克洛茲瑪	ネクロズマ	Dawn Wings Necrozma	7	psychic	ghost	294	232	220	form
+800	Necrozma	奈克洛兹玛	奈克洛茲瑪	ネクロズマ	Ultra Necrozma	7	psychic	dragon	324	194	220	form
+801	Magearna	玛机雅娜	瑪機雅娜	マギアナ		7	steel	fairy	244	204	190	
+802	Marshadow	玛夏多	瑪夏多	マーシャドー		7	fighting	ghost	250	180	208	
+803	Poipole	毒贝比	毒貝比	ベベノム		7	poison		146	134	167	
+804	Naganadel	四颚针龙	四顎針龍	アーゴヨン		7	poison	dragon	252	146	178	
+805	Stakataka	垒磊石	壘磊石	ツンデツンデ		7	rock	steel	232	310	157	
+806	Blacephalon	砰头小丑	砰頭小丑	ズガドーン		7	fire	ghost	291	138	143	
+807	Zeraora	捷拉奥拉	捷拉奧拉	ゼラオラ		7	electric		232	166	204	
+808	Meltan	美录坦	美錄坦	メルタン		7	steel		122	116	130	
+809	Melmetal	美录梅塔	美錄梅塔	メルメタル		7	steel		259	280	286	
+810	Grookey	敲音猴	敲音猴	サルノリ		8	grass		130	100	138	
+811	Thwackey	啪咚猴	啪咚猴	バチンキー		8	grass		169	140	172	
+812	Rillaboom	轰擂金刚猩	轟擂金剛猩	ゴリランダー		8	grass		240	188	225	
+813	Scorbunny	炎兔儿	炎兔兒	ヒバニー		8	fire		142	88	138	
+814	Raboot	腾蹴小将	騰蹴小將	ラビフット		8	fire		174	124	164	
+815	Cinderace	闪焰王牌	閃焰王牌	エースバーン		8	fire		233	154	190	
+816	Sobble	泪眼蜥	淚眼蜥	メッソン		8	water		140	88	138	
+817	Drizzile	变涩蜥	變澀蜥	ジメレオン		8	water		189	118	164	
+818	Inteleon	千面避役	千面避役	インテレオン		8	water		249	134	172	
+819	Skwovet	贪心栗鼠	貪心栗鼠	ホシガリス		8	normal		102	121	172	
+820	Greedent	藏饱栗鼠	藏飽栗鼠	ヨクバリス		8	normal		171	209	260	
+821	Rookidee	稚山雀	稚山雀	ココガラ		8	flying		96	72	116	
+822	Corvisquire	蓝鸦	藍鴉	アオガラス		8	flying		136	120	169	
+823	Corviknight	钢铠鸦	鋼鎧鴉	アーマーガア		8	flying	steel	169	205	222	
+824	Blipbug	索侦虫	索偵蟲	サッチムシ		8	bug		55	75	94	
+825	Dottler	天罩虫	天罩蟲	レドームシ		8	bug	psychic	95	150	138	
+826	Orbeetle	以欧路普	以歐路普	イオルブ		8	bug	psychic	162	195	155	
+827	Nickit	狡小狐	偷兒狐	クスネ		8	dark		95	95	120	
+828	Thievul	猾大狐	狐大盜	フォクスライ		8	dark		175	168	172	
+829	Gossifleur	幼棉棉	幼棉棉	ヒメンカ		8	grass		72	105	120	
+830	Eldegoss	白蓬蓬	白蓬蓬	ワタシラガ		8	grass		155	195	155	
+831	Wooloo	毛辫羊	毛辮羊	ウールー		8	normal		82	100	124	
+832	Dubwool	毛毛角羊	毛毛角羊	バイウールー		8	normal		162	179	176	
+833	Chewtle	咬咬龟	咬咬龜	カムカメ		8	water		123	100	138	
+834	Drednaw	暴噬龟	暴噬龜	カジリガメ		8	water	rock	220	180	208	
+835	Yamper	来电汪	來電汪	ワンパチ		8	electric		85	107	153	
+836	Boltund	逐电犬	逐電犬	パルスワン		8	electric		188	127	171	
+837	Rolycoly	小炭仔	小炭仔	タンドン		8	rock		78	85	102	
+838	Carkol	大炭车	大炭車	トロッゴン		8	rock	fire	118	172	190	
+839	Coalossal	巨炭山	巨炭山	セキタンザン		8	rock	fire	148	232	242	
+840	Applin	啃果虫	啃果蟲	カジッチュ		8	grass	dragon	75	130	120	
+841	Flapple	苹裹龙	蘋裹龍	アップリュー		8	grass	dragon	210	152	172	
+842	Appletun	丰蜜龙	豐蜜龍	タルップル		8	grass	dragon	182	182	242	
+843	Silicobra	沙包蛇	沙包蛇	スナヘビ		8	ground		111	133	141	
+844	Sandaconda	沙螺蟒	沙螺蟒	サダイジャ		8	ground		205	210	176	
+845	Cramorant	古月鸟	古月鳥	ウッウ		8	flying	water	170	171	172	
+846	Arrokuda	刺梭鱼	刺梭魚	サシカマス		8	water		127	81	122	
+847	Barraskewda	戽斗尖梭	戽斗尖梭	カマスジョー		8	water		249	121	157	
+848	Toxel	电音婴	毒電嬰	エレズン		8	electric	poison	104	74	120	
+849	Toxtricity	颤弦蝾螈	顫弦蠑螈	ストリンダー	Amped Form	8	electric	poison	218	144	181	form
+849	Toxtricity	颤弦蝾螈	顫弦蠑螈	ストリンダー	Low Key Form	8	electric	poison	218	144	181	form
+850	Sizzlipede	烧火蚣	燒火蚣	ヤクデ		8	fire	bug	125	100	138	
+851	Centiskorch	焚焰蚣	焚焰蚣	マルヤクデ		8	fire	bug	218	188	225	
+852	Clobbopus	拳拳蛸	拳拳蛸	タタッコ		8	fighting		127	112	138	
+853	Grapploct	八爪武师	八爪武師	オトスパス		8	fighting		217	172	190	
+854	Sinistea	来悲茶	來悲茶	ヤバチャ		8	ghost		142	98	120	
+855	Polteageist	怖思壶	怖思壺	ポットデス		8	ghost		252	188	155	
+856	Hatenna	迷布莉姆	迷布莉姆	ミブリム		8	psychic		108	98	124	
+857	Hattrem	提布莉姆	提布莉姆	テブリム		8	psychic		163	134	150	
+858	Hatterene	布莉姆温	布莉姆溫	ブリムオン		8	psychic	fairy	245	172	150	
+859	Impidimp	捣蛋小妖	搗蛋小妖	ベロバー		8	dark	fairy	109	84	129	
+860	Morgrem	诈唬魔	詐唬魔	ギモー		8	dark	fairy	149	118	164	
+861	Grimmsnarl	长毛巨魔	長毛巨魔	オーロンゲ		8	dark	fairy	225	165	216	
+862	Obstagoon	堵拦熊	堵攔熊	タチフサグマ		8	dark	normal	181	196	213	
+863	Perrserker	喵头目	喵頭目	ニャイキング		8	steel		205	178	172	
+864	Cursola	魔灵珊瑚	魔靈珊瑚	サニゴーン		8	ghost		261	208	155	
+865	Sirfetch'd	葱游兵	蔥遊兵	ネギガナイト		8	fighting		252	165	158	
+866	Mr. Rime	踏冰人偶	踏冰人偶	バリコオル		8	ice	psychic	210	185	190	
+867	Runerigus	迭失板	死神板	デスバーン		8	ground	ghost	174	225	152	
+868	Milcery	小仙奶	小仙奶	マホミル		8	fairy		96	110	129	
+869	Alcremie	霜奶仙	霜奶仙	マホイップ		8	fairy		208	200	164	
+870	Falinks	列阵兵	列陣兵	タイレーツ		8	fighting		194	174	164	
+871	Pincurchin	啪嚓海胆	啪嚓海膽	バチンウニ		8	electric		180	155	134	
+872	Snom	雪吞虫	雪吞蟲	ユキハミ		8	ice	bug	84	66	102	
+873	Frosmoth	雪绒蛾	雪絨蛾	モスノウ		8	ice	bug	235	165	172	
+874	Stonjourner	巨石丁	巨石丁	イシヘンジン		8	rock		236	244	225	
+875	Eiscue	冰砌鹅	冰砌鵝	コオリッポ	Ice Face	8	ice		152	194	181	form
+875	Eiscue	冰砌鹅	冰砌鵝	コオリッポ	Noice Face	8	ice		172	144	181	form
+876	Indeedee	爱管侍	愛管侍	イエッサン	Male	8	psychic	normal	208	164	155	form
+876	Indeedee	爱管侍	愛管侍	イエッサン	Female	8	psychic	normal	188	184	172	form
+877	Morpeko	莫鲁贝可	莫魯貝可	モルペコ	Full Belly Mode	8	electric	dark	190	116	152	form
+877	Morpeko	莫鲁贝可	莫魯貝可	モルペコ	Hangry Mode	8	electric	dark	190	116	152	form
+878	Cufant	铜象	銅象	ゾウドウ		8	steel		150	115	176	
+879	Copperajah	大王铜象	大王銅象	ダイオウドウ		8	steel		235	178	264	
+880	Dracozolt	雷鸟龙	雷鳥龍	パッチラゴン		8	electric	dragon	194	180	208	
+881	Arctozolt	雷鸟海兽	雷鳥海獸	パッチルドン		8	electric	ice	189	180	208	
+882	Dracovish	鳃鱼龙	鰓魚龍	ウオノラゴン		8	water	dragon	176	192	208	
+883	Arctovish	鳃鱼海兽	鰓魚海獸	ウオチルドン		8	water	ice	171	192	208	
+884	Duraludon	铝钢龙	鋁鋼龍	ジュラルドン		8	steel	dragon	231	196	172	
+885	Dreepy	多龙梅西亚	多龍梅西亞	ドラメシヤ		8	dragon	ghost	126	58	99	
+886	Drakloak	多龙奇	多龍奇	ドロンチ		8	dragon	ghost	166	114	169	
+887	Dragapult	多龙巴鲁托	多龍巴魯托	ドラパルト		8	dragon	ghost	246	160	204	
+888	Zacian	苍响	蒼響	ザシアン	Hero of Many Battles	8	fairy		244	213	211	form
+888	Zacian	苍响	蒼響	ザシアン	Crowned Sword	8	fairy	steel	300	213	211	form
+889	Zamazenta	藏玛然特	藏瑪然特	ザマゼンタ	Hero of Many Battles	8	fighting		244	213	211	form
+889	Zamazenta	藏玛然特	藏瑪然特	ザマゼンタ	Crowned Shield	8	fighting	steel	250	292	192	legendary form
+890	Eternatus	无极汰那	無極汰那	ムゲンダイナ		8	poison	dragon	286	224	295	
+890	Eternatus	无极汰那	無極汰那	ムゲンダイナ	Eternamax	8	poison	dragon	251	504	496	form
+891	Kubfu	熊徒弟	熊徒弟	ダクマ		8	fighting		176	120	155	
+892	Urshifu	武道熊师	武道熊師	ウーラオス	Single Strike Style	8	fighting	dark	252	200	225	form
+892	Urshifu	武道熊师	武道熊師	ウーラオス	Rapid Strike Style	8	fighting	water	252	200	225	form
+893	Zarude	萨戮德	薩戮德	ザルード		8	dark	grass	236	210	234	
+894	Regieleki	雷吉艾勒奇	雷吉艾勒奇	レジエレキ		8	electric		225	122	190	
+895	Regidrago	雷吉铎拉戈	雷吉鐸拉戈	レジドラゴ		8	dragon		195	212	400	
+896	Glastrier	雪暴马	雪暴馬	ブリザポス		8	ice		261	238	225	
+897	Spectrier	灵幽马	靈幽馬	レイスポス		8	ghost		286	175	225	
+898	Calyrex	蕾冠王	蕾冠王	バドレックス		8	psychic	grass	160	175	225	
+898	Calyrex	蕾冠王	蕾冠王	バドレックス	Ice Rider	8	psychic	ice	301	262	225	form
+898	Calyrex	蕾冠王	蕾冠王	バドレックス	Shadow Rider	8	psychic	ghost	326	200	225	form
+899	Wyrdeer	诡角鹿	詭角鹿	アヤシシ		8	normal	psychic	200	171	230	
+900	Kleavor	劈斧螳螂	劈斧螳螂	バサギリ		8	bug	rock	258	171	172	
+901	Ursaluna	月月熊	月月熊	ガチグマ		8	ground	normal	258	229	278	
+901	Ursaluna	月月熊	月月熊	ガチグマ	Bloodmoon	8	ground	normal	249	235	248	form
+902	Basculegion	幽尾玄鱼	幽尾玄魚	イダイトウ	Male	8	water	ghost	216	184	260	form
+902	Basculegion	幽尾玄鱼	幽尾玄魚	イダイトウ	Female	8	water	ghost	194	184	260	form
+903	Sneasler	大狃拉	大狃拉	オオニューラ		8	fighting	poison	258	160	190	
+904	Overqwil	万针鱼	萬針魚	ハリーマン		8	dark	poison	222	182	199	
+905	Enamorus	眷恋云	眷戀雲	ラブトロス	Incarnate Forme	8	fairy	flying	263	156	180	form
+905	Enamorus	眷恋云	眷戀雲	ラブトロス	Therian Forme	8	fairy	flying	248	193	180	form
+906	Sprigatito	新叶喵	新葉喵	ニャオハ		9	grass		123	98	120	
+907	Floragato	蒂蕾喵	蒂蕾喵	ニャローテ		9	grass		161	124	157	
+908	Meowscarada	魔幻假面喵	魔幻假面喵	マスカーニャ		9	grass	dark	223	144	183	
+909	Fuecoco	呆火鳄	呆火鱷	ホゲータ		9	fire		119	124	167	
+910	Crocalor	炙烫鳄	炙燙鱷	アチゲータ		9	fire		170	158	192	
+911	Skeledirge	骨纹巨声鳄	骨紋巨聲鱷	ラウドボーン		9	fire	ghost	209	203	232	
+912	Quaxly	润水鸭	潤水鴨	クワッス		9	water		126	98	146	
+913	Quaxwell	涌跃鸭	湧躍鴨	ウェルカモ		9	water		165	134	172	
+914	Quaquaval	狂欢浪舞鸭	狂歡浪舞鴨	ウェーニバル		9	water	fighting	231	164	199	
+915	Lechonk	爱吃豚	愛吃豚	グルトン		9	normal		88	97	144	
+916	Oinkologne	飘香豚	飄香豚	パフュートン	Male	9	normal		191	182	242	form
+916	Oinkologne	飘香豚	飄香豚	パフュートン	Female	9	normal		174	199	251	form
+917	Tarountula	团珠蛛	團珠蛛	タマンチュラ		9	bug		77	82	111	
+918	Spidops	操陷蛛	操陷蛛	ワナイダー		9	bug		147	160	155	
+919	Nymble	豆蟋蟀	豆蟋蟀	マメバッタ		9	bug		92	75	108	
+920	Lokix	烈腿蝗	烈腿蝗	エクスレッグ		9	bug	dark	202	151	174	
+921	Pawmi	布拨	布撥	パモ		9	electric		102	65	129	
+922	Pawmo	布土拨	布土撥	パモット		9	electric	fighting	152	95	155	
+923	Pawmot	巴布土拨	巴布土撥	パーモット		9	electric	fighting	228	140	172	
+924	Tandemaus	一对鼠	一對鼠	ワッカネズミ		9	normal		106	94	138	
+925	Maushold	一家鼠	一家鼠	イッカネズミ	Family of Four	9	normal		159	149	180	form
+925	Maushold	一家鼠	一家鼠	イッカネズミ	Family of Three	9	normal		159	149	180	form
+926	Fidough	狗仔包	狗仔包	パピモッチ		9	fairy		112	115	115	
+927	Dachsbun	麻花犬	麻花犬	バウッツェル		9	fairy		164	186	150	
+928	Smoliv	迷你芙	迷你芙	ミニーブ		9	grass	normal	109	94	122	
+929	Dolliv	奥利纽	奧利紐	オリーニョ		9	grass	normal	145	136	141	
+930	Arboliva	奥利瓦	奧利瓦	オリーヴァ		9	grass	normal	228	195	186	
+931	Squawkabilly	怒鹦哥	怒鸚哥	イキリンコ	Green Plumage	9	normal	flying	191	125	194	form
+931	Squawkabilly	怒鹦哥	怒鸚哥	イキリンコ	Blue Plumage	9	normal	flying	191	125	194	form
+931	Squawkabilly	怒鹦哥	怒鸚哥	イキリンコ	Yellow Plumage	9	normal	flying	191	125	194	form
+931	Squawkabilly	怒鹦哥	怒鸚哥	イキリンコ	White Plumage	9	normal	flying	191	125	194	form
+932	Nacli	盐石宝	鹽石寶	コジオ		9	rock		102	135	146	
+933	Naclstack	盐石垒	鹽石壘	ジオヅム		9	rock		114	170	155	
+934	Garganacl	盐石巨灵	鹽石巨靈	キョジオーン		9	rock		184	238	225	
+935	Charcadet	炭小侍	炭小侍	カルボウ		9	fire		96	80	120	
+936	Armarouge	红莲铠骑	紅蓮鎧騎	グレンアルマ		9	fire	psychic	238	189	199	
+937	Ceruledge	苍炎刃鬼	蒼炎刃鬼	ソウブレイズ		9	fire	ghost	240	181	181	
+938	Tadbulb	光蚪仔	光蚪仔	ズピカ		9	electric		114	97	157	
+939	Bellibolt	电肚蛙	電肚蛙	ハラバリー		9	electric		192	196	241	
+940	Wattrel	电海燕	電海燕	カイデン		9	electric	flying	114	80	120	
+941	Kilowattrel	大电海燕	大電海燕	タイカイデン		9	electric	flying	215	128	172	
+942	Maschiff	偶叫獒	偶叫獒	オラチフ		9	dark		149	120	155	
+943	Mabosstiff	獒教父	獒教父	マフィティフ		9	dark		231	172	190	
+944	Shroodle	滋汁鼹	滋汁鼴	シルシュルー		9	poison	normal	132	74	120	
+945	Grafaiai	涂标客	塗標客	タギングル		9	poison	normal	194	137	160	
+946	Bramblin	纳噬草	納噬草	アノクサ		9	grass	ghost	129	74	120	
+947	Brambleghast	怖纳噬草	怖納噬草	アノホラグサ		9	grass	ghost	224	129	146	
+948	Toedscool	原野水母	原野水母	ノノクラゲ		9	ground	grass	105	155	120	
+949	Toedscruel	陆地水母	陸地水母	リククラゲ		9	ground	grass	165	210	190	
+950	Klawf	毛崖蟹	毛崖蟹	ガケガニ		9	rock		194	196	172	
+951	Capsakid	热辣娃	熱辣娃	カプサイジ		9	grass		121	88	138	
+952	Scovillain	狠辣椒	狠辣椒	スコヴィラン		9	grass	fire	208	130	164	
+953	Rellor	虫滚泥	蟲滾泥	シガロコ		9	bug		95	106	122	
+954	Rabsca	虫甲圣	蟲甲聖	ベラカス		9	bug	psychic	212	181	181	
+955	Flittle	飘飘雏	飄飄雛	ヒラヒナ		9	psychic		115	60	102	
+956	Espathra	超能艳鸵	超能艷鴕	クエスパトラ		9	psychic		203	146	216	
+957	Tinkatink	小锻匠	小鍛匠	カヌチャン		9	fairy	steel	93	118	138	
+958	Tinkatuff	巧锻匠	巧鍛匠	ナカヌチャン		9	fairy	steel	116	151	164	
+959	Tinkaton	巨锻匠	巨鍛匠	デカヌチャン		9	fairy	steel	155	195	199	
+960	Wiglett	海地鼠	海地鼠	ウミディグダ		9	water		120	39	68	
+961	Wugtrio	三海地鼠	三海地鼠	ウミトリオ		9	water		205	114	111	
+962	Bombirdier	下石鸟	下石鳥	オトシドリ		9	flying	dark	201	159	172	
+963	Finizen	波普海豚	波普海豚	ナミイルカ		9	water		98	102	172	
+964	Palafin	海豚侠	海豚俠	イルカマン	Zero Form	9	water		148	165	225	form
+964	Palafin	海豚侠	海豚俠	イルカマン	Hero Form	9	water		305	196	225	form
+965	Varoom	噗隆隆	噗隆隆	ブロロン		9	steel	poison	134	112	129	
+966	Revavroom	普隆隆姆	普隆隆姆	ブロロローム		9	steel	poison	231	172	190	
+967	Cyclizar	摩托蜥	摩托蜥	モトトカゲ		9	dragon	normal	196	134	172	
+968	Orthworm	拖拖蚓	拖拖蚓	ミミズズ		9	steel		165	234	172	
+969	Glimmet	晶光芽	晶光芽	キラーメ		9	rock	poison	199	111	134	
+970	Glimmora	晶光花	晶光花	キラフロル		9	rock	poison	249	175	195	
+971	Greavard	墓仔狗	墓仔狗	ボチ		9	ghost		115	112	138	
+972	Houndstone	墓扬犬	墓揚犬	ハカドッグ		9	ghost		194	179	176	
+973	Flamigo	纏红鹤	纏紅鶴	カラミンゴ		9	flying	fighting	224	154	194	
+974	Cetoddle	走鲸	走鯨	アルクジラ		9	ice		130	137	239	
+975	Cetitan	浩大鲸	浩大鯨	ハルクジラ		9	ice		216	209	348	
+976	Veluza	轻身鳕	輕身鱈	ミガルーサ		9	water	psychic	196	159	208	
+977	Dondozo	吃吼霸	吃吼霸	ヘイラッシャ		9	water		184	256	312	
+978	Tatsugiri	米立龙	米立龍	シャリタツ	Curly Form	9	dragon	water	230	170	169	form
+978	Tatsugiri	米立龙	米立龍	シャリタツ	Droopy Form	9	dragon	water	230	170	169	form
+978	Tatsugiri	米立龙	米立龍	シャリタツ	Stretchy Form	9	dragon	water	230	170	169	form
+979	Annihilape	弃世猴	棄世猴	コノヨザル		9	fighting	ghost	224	195	242	
+980	Clodsire	土王	土王	ドオー		9	poison	ground	136	222	278	
+981	Farigiraf	奇麒麟	奇麒麟	リキキリン		9	normal	psychic	208	178	260	
+982	Dudunsparce	土龙节节	土龍節節	ノココッチ	Two-Segment Form	9	normal		189	194	269	form
+982	Dudunsparce	土龙节节	土龍節節	ノココッチ	Three-Segment Form	9	normal		189	194	269	form
+983	Kingambit	仆刀将军	仆刀將軍	ドドゲザン		9	dark	steel	249	225	225	
+984	Great Tusk	雄伟牙	雄偉牙	イダイナキバ		9	ground	fighting	251	250	251	
+985	Scream Tail	吼叫尾	吼叫尾	サケブシッポ		9	fairy	psychic	142	230	251	
+986	Brute Bonnet	猛恶菇	猛惡菇	アラブルタケ		9	grass	dark	236	207	244	
+987	Flutter Mane	振翼发	振翼髮	ハバタクカミ		9	ghost	fairy	270	210	146	
+988	Slither Wing	爬地翅	爬地翅	チヲハウハネ		9	bug	fighting	256	195	199	
+989	Sandy Shocks	沙铁皮	沙鐵皮	スナノケガワ		9	electric	ground	237	185	199	
+990	Iron Treads	铁轍迹	鐵轍跡	テツノワダチ		9	ground	steel	222	218	208	
+991	Iron Bundle	铁包袱	鐵包袱	テツノツツミ		9	ice	water	251	184	148	
+992	Iron Hands	铁臂膀	鐵臂膀	テツノカイナ		9	fighting	electric	258	250	320	
+993	Iron Jugulis	铁脖颈	鐵脖頸	テツノコウベ		9	dark	flying	240	178	214	
+994	Iron Moth	铁毒蛾	鐵毒蛾	テツノドクガ		9	fire	poison	272	198	190	
+995	Iron Thorns	铁荆棘	鐵荊棘	テツノイバラ		9	rock	electric	252	212	225	
+996	Frigibax	凉脊龙	涼脊龍	セビエ		9	dragon	ice	145	105	164	
+997	Arctibax	冻脊龙	凍脊龍	セゴール		9	dragon	ice	182	150	208	
+998	Baxcalibur	戟脊龙	戟脊龍	セグレイブ		9	dragon	ice	276	201	251	
+999	Gimmighoul	索财灵	索財靈	コレクレー	Chest Form	9	ghost		134	121	129	form
+999	Gimmighoul	索财灵	索財靈	コレクレー	Roaming Form	9	ghost		151	90	129	form
+1000	Gholdengo	赛富豪	賽富豪	サーフゴー		9	steel	ghost	254	184	202	
+1001	Wo-Chien	古简蜗	古簡蝸	チオンジェン		9	dark	grass	184	232	199	
+1002	Chien-Pao	古剑豹	古劍豹	パオジアン		9	dark	ice	244	160	190	
+1003	Ting-Lu	古鼎鹿	古鼎鹿	ディンルー		9	dark	ground	204	272	321	
+1004	Chi-Yu	古玉鱼	古玉魚	イーユイ		9	dark	fire	261	191	146	
+1005	Roaring Moon	轰鸣月	轟鳴月	トドロクツキ		9	dragon	dark	273	205	234	
+1006	Iron Valiant	铁武者	鐵武者	テツノブジン		9	fairy	fighting	256	168	180	
+1007	Koraidon	故勒顿	故勒頓	コライドン		9	fighting	dragon	270	219	225	
+1008	Miraidon	密勒顿	密勒頓	ミライドン		9	electric	dragon	270	219	225	
+1009	Walking Wake	波荡水	波盪水	ウネルミナモ		9	water	dragon	246	188	223	
+1010	Iron Leaves	铁斑叶	鐵斑葉	テツノイサハ		9	grass	psychic	254	202	208	
+1011	Dipplin	裹蜜虫	裹蜜蟲	カミッチュ		9	grass	dragon	176	198	190	
+1012	Poltchageist	斯魔茶	斯魔茶	チャデス		9	grass	ghost	142	98	120	
+1013	Sinistcha	来悲粗茶	來悲粗茶	ヤバソチャ		9	grass	ghost	229	186	174	
+1014	Okidogi	够赞狗	夠讚狗	イイネイヌ		9	poison	fighting	244	210	204	
+1015	Munkidori	愿增猿	願增猿	マシマシラ		9	poison	psychic	254	178	204	
+1016	Fezandipiti	吉雉鸡	吉雉雞	キチキギス		9	poison	fairy	184	222	204	
+1017	Ogerpon	厄诡椪	厄鬼椪	オーガポン	Teal Mask	9	grass		238	180	190	form
+1017	Ogerpon	厄诡椪	厄鬼椪	オーガポン	Wellspring Mask	9	grass	water	238	180	190	form
+1017	Ogerpon	厄诡椪	厄鬼椪	オーガポン	Hearthflame Mask	9	grass	fire	238	180	190	form
+1017	Ogerpon	厄诡椪	厄鬼椪	オーガポン	Cornerstone Mask	9	grass	rock	238	180	190	form
+1018	Archaludon	铝钢桥龙	鋁鋼橋龍	ブリジュラス		9	steel	dragon	240	230	208	
+1019	Hydrapple	蜜集大蛇	蜜集大蛇	カミツオロチ		9	grass	dragon	221	217	236	
+1020	Gouging Fire	破空焰	破空焰	ウガツホムラ		9	fire	dragon	224	230	234	
+1021	Raging Bolt	猛雷鼓	猛雷鼓	タケルライコ		9	electric	dragon	258	208	269	
+1022	Iron Boulder	鐵磐岩	铁磐岩	テツノイワオ		9	rock	psychic	241	202	208	
+1023	Iron Crown	鐵頭殼	铁头壳	テツノカシラ		9	steel	psychic	238	202	208	
+1024	Terapagos	太乐巴戈斯	太樂巴戈斯	テラパゴス	Normal Form	9	normal		129	174	208	form
+1024	Terapagos	太乐巴戈斯	太樂巴戈斯	テラパゴス	Terastal Form	9	normal		205	209	216	form
+1024	Terapagos	太乐巴戈斯	太樂巴戈斯	テラパゴス	Stellar Form	9	normal		249	258	330	form
+1025	Pecharunt	桃歹郎	桃歹郎	モモワロウ		9	poison	ghost	176	266	204	

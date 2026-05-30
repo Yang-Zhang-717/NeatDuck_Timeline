@@ -14,10 +14,10 @@
               viewMode:"linear", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, isDragging:false, dragStartX:0, dragStartRangeStart:0, dragStartRangeEnd:0, csvText:"", pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
 
   function timeZoneOptionsHTML(selected){ return LDT_Core.TIME_ZONE_OPTIONS.map(o=>`<option value="${LDT_Core.escapeHTML(o.value)}" ${selected===o.value?"selected":""}>${LDT_Core.escapeHTML(o.label)}</option>`).join(""); }
-  function updateTimeZoneSelect(){ const sel=document.getElementById("ld-tz-select"); if(sel){ sel.innerHTML=timeZoneOptionsHTML(state.displayTimeZone); sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); if(!sel.__ldtBound){ sel.addEventListener("change",()=>setDisplayTimeZone(sel.value)); sel.__ldtBound=true; } } }
+  function updateTimeZoneSelect(){ const sel=document.getElementById("ld-tz-select"); if(sel){ if(!sel.options.length) sel.innerHTML=timeZoneOptionsHTML(state.displayTimeZone); sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); } }
   async function setDisplayTimeZone(value){ state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(value); await LDT_Core.saveState({ld_display_timezone:state.displayTimeZone}); updateTimeZoneSelect(); updateViewMode(); }
   function ensureTopbarTimeZoneSelect(){
-    const row=document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
+    const row=document.querySelector("#ld-topbar .nd-calendar-tools") || document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
     const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
     wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
     row.insertBefore(wrap, row.firstChild);
@@ -26,12 +26,6 @@
   function eventDisplayStart(e){ return LDT_Core.dateForDisplayZone(e && e.start, e, state.displayTimeZone); }
   function eventDisplayEnd(e){ return LDT_Core.dateForDisplayZone(e && (e.endKnown || e.endInferred), e, state.displayTimeZone); }
 
-  function setTodayRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.beginOfDay(now); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,1); }
-  function setWeekRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.mondayOfWeek(now); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,7); }
-  function setMonthRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.monthStart(now); state.rangeStart=+start; state.rangeEnd=+LDT_Core.nextMonthStart(now); }
-  function exportLogFile(){ const log={version:"1.0.7", generatedAt:new Date().toISOString(), mode:state.viewMode, displayTimeZone:state.displayTimeZone, rangeStart:new Date(state.rangeStart||Date.now()).toISOString(), rangeEnd:new Date(state.rangeEnd||Date.now()).toISOString(), events:(state.events||[]).length, selectedIds:Array.from(state.selectedIds||[]), remoteUrl:state.remoteUrl||LDT_Core.DEFAULT_REMOTE_URL}; const url=URL.createObjectURL(new Blob([JSON.stringify(log,null,2)],{type:"application/json;charset=utf-8"})); const a=document.createElement("a"); a.href=url; a.download="neatduck-log.json"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
-
-
   function insertUIRoot(){
     if (document.getElementById(WRAP_ID)) return document.getElementById(WRAP_ID);
     const h = Array.from(document.querySelectorAll("h1, h2")).find(x=>/events/i.test(x.textContent||""));
@@ -39,36 +33,29 @@
     const wrap=document.createElement("div"); wrap.id=WRAP_ID;
     wrap.innerHTML = `
       <div id="ld-topbar">
-        <div class="row nd-top-main">
-          <div class="nd-tabs">
-            <button class="btn nd-tab active" data-nd-tab="calendar">📆 <span data-i18n="tabCalendar">活动日历</span></button>
-            <button class="btn nd-tab" data-nd-tab="types">⚔️ <span data-i18n="tabTypes">属性克制</span></button>
-            <button class="btn nd-tab" data-nd-tab="pokedex">🔎 <span data-i18n="tabPokedex">宝可梦图鉴</span></button>
-          </div>
-          <div class="nd-common-actions">
-            <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">打开独立页</span></button>
-            <select class="btn" id="ld-lang-select" title="Language">
-              <option value="zh-CN">简体中文</option>
-              <option value="zh-TW">繁體中文</option>
-              <option value="en">English</option>
-            </select>
-            <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">设置</span></button>
-          </div>
+        <div class="row nd-main-tabs">
+          <button class="btn nd-tab-active" data-act="calendar-tab">📅 <span data-i18n="eventCalendar">Event Calendar</span></button>
+          <button class="btn" data-info-mode="types">🧬 <span data-i18n="typeChart">Type Chart</span></button>
+          <button class="btn" data-info-mode="pokedex">📖 <span data-i18n="pokedex">Pokédex</span></button>
+          <span class="nd-public-controls"></span>
+          <select class="btn" id="ld-lang-select" title="Language"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option></select>
+          <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">Settings</span></button>
+          <button class="btn" data-act="theme-toggle">🌓 <span data-i18n="darkMode">Theme</span></button>
+          <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button>
+          <button class="btn" data-act="goto-leekduck">🦆 LeekDuck</button>
         </div>
-        <div class="row nd-tab-toolbar" data-toolbar="calendar">
-          <button class="btn" data-act="today">🎯 <span data-i18n="today">今天</span></button>
-          <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">本周</span></button>
-          <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">本月</span></button>
-          <button class="btn" data-act="toggle-mode">↔️ <span data-i18n="modeToggle">模式</span></button>
-          <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">时区</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select></label>
-          <button class="btn" data-act="rescan">🔄 <span data-i18n="pageUpdate">页面更新</span></button>
-          <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">云端更新</span></button>
-          <button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">导出活动CSV</span></button>
-          <button class="btn" data-act="export-log-file">🧾 <span data-i18n="exportLogFile">导出日志文件</span></button>
-          <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">清除选择</span></button>
+        <div class="row nd-tab-tools nd-calendar-tools">
+          <button class="btn" data-act="today">🎯 <span data-i18n="today">Today</span></button>
+          <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">This Week</span></button>
+          <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">This Month</span></button>
+          <button class="btn" data-act="switch-mode">↔️ <span data-i18n="mode">Mode</span></button>
+          <button class="btn" data-act="rescan">🔄 <span data-i18n="dataUpdate">Page Update</span></button>
+          <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button>
+          <button class="btn" data-act="export-events-tsv">📤 <span data-i18n="exportCSVEvents">Export Events TSV</span></button>
+          <button class="btn" data-act="email-log">📨 <span data-i18n="emailLog">Export Log</span></button>
+          <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button>
         </div>
-        <div class="row nd-tab-toolbar" data-toolbar="types" style="display:none;"></div>
-        <div class="row nd-tab-toolbar" data-toolbar="pokedex" style="display:none;"></div>
+        <div class="row nd-tab-spacer" aria-hidden="true"></div>
       </div>
       <div id="ld-left"><svg id="${LEGEND_ID}" viewBox="0 0 ${C.LEGEND_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin"></svg></div>
       <div id="ld-right">
@@ -204,11 +191,9 @@
       clearTimeout(hideTimer);
       hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 600);
     }
-    function hide(){ clearTimeout(hideTimer); if(el) el.style.display="none"; }
-    return { show, scheduleHide, hide, hideNow: hide };
+    function hide(){ if(el) el.style.display="none"; }
+    return { show, scheduleHide, hide };
   })();
-
-  window.ND_Tooltip = tooltip;
 
   function bindTooltipHover(el, eobj, stageEl){
     function handler(ev){
@@ -327,7 +312,7 @@
     document.documentElement.style.setProperty("--nd-item-font-size", state.settings.fontSize + "px");
     document.documentElement.style.setProperty("--nd-item-font-weight", state.settings.fontWeight);
     const wrap=document.getElementById(WRAP_ID);
-    if(wrap){ wrap.style.marginLeft = "auto"; wrap.style.marginRight = "auto"; }
+    if(wrap) wrap.style.marginLeft = wrap.style.marginRight = state.settings.outerMarginX + "px";
   }
 
   function approxTextWidth(text){
@@ -480,8 +465,8 @@
           labelBoxEnd = Math.min(nextLimit, visibleStart + Math.min(desiredW, (visibleBaseEnd - visibleStart) + cfg.shadeMaxWidth));
           if (labelBoxEnd > visibleBaseEnd + 1){
             shadeRect=document.createElementNS("http://www.w3.org/2000/svg","rect");
-            shadeRect.setAttribute("x", visibleStart); shadeRect.setAttribute("y", y);
-            shadeRect.setAttribute("width", labelBoxEnd - visibleStart); shadeRect.setAttribute("height", C.ITEM_H);
+            shadeRect.setAttribute("x", visibleBaseEnd); shadeRect.setAttribute("y", y);
+            shadeRect.setAttribute("width", labelBoxEnd - visibleBaseEnd); shadeRect.setAttribute("height", C.ITEM_H);
             shadeRect.setAttribute("rx", cfg.itemRadius); shadeRect.setAttribute("ry", cfg.itemRadius);
             shadeRect.setAttribute("fill", fillColor); shadeRect.setAttribute("fill-opacity", "0.50");
             shadeRect.setAttribute("class", "ld-item-shade");
@@ -609,11 +594,10 @@
     while(+wk<+last){
       const weekStart=new Date(wk), weekEnd=LDT_Core.addDays(weekStart,7);
       const row=document.createElement("div"); row.className="nd-week-row";
-      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell" + (LDT_Core._dayKey(day)===LDT_Core._dayKey(new Date()) ? " today" : ""); cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
+      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"; cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
       const segs=[];
       visible.forEach(x=>{ if(+x.d<+weekStart || +x.s>=+weekEnd) return; const a=Math.max(0, Math.floor((Math.max(+x.s,+weekStart)-+weekStart)/86400000)); const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000)); segs.push({e:x.e,a,b,s:+x.s}); });
-      const rank=(ev)=>{ const lanes=LDT_Core.LANES_SPEC||[]; for(let li=0;li<lanes.length;li++){ const subs=lanes[li].sub||[lanes[li].key]; for(let si=0;si<subs.length;si++){ if(lanes[li].key===ev.lane && subs[si]===ev.sub) return li*100+si; } } return 9999; };
-      segs.sort((a,b)=>rank(a.e)-rank(b.e) || a.a-b.a || a.s-b.s);
+      segs.sort((a,b)=>a.a-b.a || a.s-b.s);
       const lanes=[]; segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
       row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
       segs.forEach(seg=>{
@@ -628,14 +612,12 @@
   }
 
   function updateViewMode(){
-    if(window.ND_Info && window.ND_Info.mode && window.ND_Info.mode !== "calendar") return;
+    if(window.ND_Info && window.ND_Info.mode){ return; }
     const svg=document.getElementById(SVG_ID);
     const mg=document.getElementById("ld-monthgrid");
     if (state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); }
     else { renderMonthGrid(); }
   }
-
-  window.ND_renderCalendar = function(){ if(window.ND_Info) window.ND_Info.mode="calendar"; updateViewMode(); };
 
   function attachTimelineInteractions(){
     const stage=document.getElementById("ld-right");
@@ -662,8 +644,8 @@
       panByPixels(dx);
     });
     stage.addEventListener("wheel", (ev)=>{
-      if(window.ND_Info && window.ND_Info.mode && window.ND_Info.mode !== "calendar") return;
-      if(window.ND_Tooltip && window.ND_Tooltip.hideNow) window.ND_Tooltip.hideNow();
+      if(window.ND_Info && window.ND_Info.mode) return;
+      tooltip.hide();
       if(state.viewMode!=="linear") return;
       ev.preventDefault();
       const rect=stage.getBoundingClientRect();
@@ -728,7 +710,7 @@
       // merge updates into csv
       const saved = await LDT_Core.saveEventsToHistory(updated, { force:true, detailsCache: state.detailsCache });
       const merged = (saved && saved.events) ? saved.events : LDT_Core.dedupeEvents((state.events || []).concat(updated));
-      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToCSV(merged);
+      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToTSV(merged);
       state.events = merged; closeModal("updates"); updateViewMode();
     };
     modal.querySelector("[data-close='updates']").onclick = ()=> closeModal("updates");
@@ -862,7 +844,18 @@
       const act=b.getAttribute("data-act");
       if (act==="settings"){ buildSettingsModal(); }
       if (act==="colors"){ buildColorsModal(); }
-      if (act==="today"){ setTodayRange(); updateViewMode(); }
+      if (act==="today"){
+        const span = state.rangeEnd - state.rangeStart;
+        if (isFinite(span) && span > 0){
+          const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart = +nowD - span * 0.25;
+          state.rangeEnd = state.rangeStart + span;
+          updateViewMode();
+        }
+      }
+      if (act==="calendar-tab"){ if(window.ND_Info) window.ND_Info.hide(); state.viewMode = state.viewMode || "linear"; updateViewMode(); }
+      if (act==="goto-leekduck"){ window.location.href="https://leekduck.com/events/"; }
+      if (act==="theme-toggle"){ document.getElementById(WRAP_ID)?.classList.toggle("nd-dark"); }
+      if (act==="switch-mode"){ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); }
       if (act==="open-standalone"){
         // Open immediately while the click is still a user gesture; then save.
         // Waiting for chrome.storage first can make Chrome treat this as a blocked popup.
@@ -871,25 +864,23 @@
         if (!opened){ alert("Chrome blocked the standalone page. Please allow popups for this site or click the extension icon."); return; }
         try{
           const saved = await LDT_Core.saveEventsToHistory(state.events || [], { detailsCache: state.detailsCache });
-          if (saved && saved.events) { state.events = saved.events; state.csvText = saved.csv || LDT_Core.eventsToCSV(saved.events); }
+          if (saved && saved.events) { state.events = saved.events; state.csvText = saved.csv || LDT_Core.eventsToTSV(saved.events); }
         }catch(err){ console.error("LDT: failed to save cache before opening standalone", err); }
       }
       if (act==="rescan"){ scheduleRescan(0); }
-      if (act==="remote-update"){ const resp=await refreshRemoteData(true); if(resp && resp.ok){ const st=await LDT_Core.loadState(); state.events=LDT_Core.dedupeEvents(st.events || state.events); state.csvText=st.eventsCsv || LDT_Core.eventsToCSV(state.events); LDT_Core.assignThemeRows(state.events); updateViewMode(); } }
+      if (act==="remote-update"){ const resp=await refreshRemoteData(true); if(resp && resp.ok){ const st=await LDT_Core.loadState(); state.events=LDT_Core.dedupeEvents(st.events || state.events); state.csvText=st.eventsCsv || LDT_Core.eventsToTSV(state.events); LDT_Core.assignThemeRows(state.events); updateViewMode(); } }
       if (act==="export-ics"){ exportSelectedICS(); }
       if (act==="email-log"){ emailSelectedLog(); }
-      if (act==="export-log-file"){ exportLogFile(); }
       if (act==="clear-selection"){ state.selectedIds.clear(); updateViewMode(); }
-      if (act==="export-events-csv"){
-        const text = LDT_Core.eventsToCSV(state.events);
-        const url = URL.createObjectURL(new Blob([text],{type:"text/csv"}));
-        const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      if (act==="export-events-tsv"){
+        const text = LDT_Core.eventsToTSV(exportEventsForUser());
+        const url = URL.createObjectURL(new Blob([text],{type:"text/tab-separated-values"}));
+        const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.tsv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
       }
-      if (act==="toggle-mode"){ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); }
       if (act==="switch-linear"){ state.viewMode="linear"; updateViewMode(); }
       if (act==="switch-monthgrid"){ state.viewMode="month"; updateViewMode(); }
-      if (act==="reset-week"){ setWeekRange(); updateViewMode(); }
-      if (act==="reset-month"){ setMonthRange(); updateViewMode(); }
+      if (act==="reset-week"){ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7); updateViewMode(); }
+      if (act==="reset-month"){ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-7); state.rangeEnd=+LDT_Core.addDays(now,21); updateViewMode(); }
     });
     const mask=document.getElementById("ld-mask");
     mask.addEventListener("click",()=>{ Array.from(document.querySelectorAll(".ld-modal")).forEach(m=>m.style.display="none"); mask.style.display="none"; });
@@ -913,7 +904,7 @@
       }
       const saved = await LDT_Core.saveEventsToHistory(fresh, { detailsCache: state.detailsCache });
       state.events = (saved && saved.events) ? saved.events : LDT_Core.dedupeEvents((state.events || []).concat(fresh));
-      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToCSV(state.events);
+      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToTSV(state.events);
       LDT_Core.assignThemeRows(state.events);
       updateViewMode();
     }, delay);
@@ -925,9 +916,9 @@
     const st=await LDT_Core.loadState();
     state.lang=st.lang; state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(st.displayTimeZone||state.displayTimeZone); state.colors=st.colors; state.settings=LDT_Core.normalizeSettings(st.settings); state.csvText=st.eventsCsv||""; state.detailsCache=st.detailsCache||{}; state.remoteUrl=LDT_Core.normalizeRemoteUrl(st.remoteUrl); applyRenderSettings();
     try {
-      const pkURL = chrome.runtime.getURL("assets/pokemon_go.json");
+      const pkURL = chrome.runtime.getURL("assets/pokemon.json");
       state.pokemonDB = await (await fetch(pkURL)).json();
-    } catch(e) { console.warn("pokemon_go.json unavailable", e); }
+    } catch(e) { console.warn("pokemon.json unavailable", e); }
     setLang(state.lang);
     ensureTopbarTimeZoneSelect();
     if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang});
@@ -936,16 +927,30 @@
     // Storage-first: use the normalized long-term history if present, CSV as fallback.
     if (st.events && st.events.length){
       state.events = LDT_Core.dedupeEvents(st.events);
-      state.csvText = LDT_Core.eventsToCSV(state.events);
+      state.csvText = LDT_Core.eventsToTSV(state.events);
       LDT_Core.assignThemeRows(state.events);
     } else if (state.csvText){
-      state.events = LDT_Core.dedupeEvents(LDT_Core.csvToEvents(state.csvText));
+      state.events = LDT_Core.dedupeEvents(LDT_Core.tsvToEvents(state.csvText));
       LDT_Core.assignThemeRows(state.events);
     } else {
       state.events = [];
     }
-    // default range: current week, without changing the current view mode.
-    setWeekRange();
+    // default range
+    const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    if (state.events.length){
+      const has = state.events.filter(e=>e.start && (e.endKnown||e.endInferred));
+      if (has.length){
+        const starts=has.map(e=>eventDisplayStart(e)).filter(Boolean).map(d=>+d);
+        const ends=has.map(e=>eventDisplayEnd(e)).filter(Boolean).map(d=>+d);
+        const min = Math.min.apply(null, starts);
+        const max = Math.max.apply(null, ends);
+        state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7);
+      }else{
+        state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7);
+      }
+    } else {
+      state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7);
+    }
 
     attachControls();
     attachTimelineInteractions();

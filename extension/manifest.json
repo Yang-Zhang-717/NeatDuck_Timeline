@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "NeatDuck_Timeline v1.0",
   "version": "1.0.7",
-  "description": "A compact, configurable timeline and Pokémon reference panel for Pokémon GO event planning with GitHub-backed public data.",
+  "description": "NeatDuck: timeline, type chart, Pokédex and Dynamax/Gigantamax helper panels for Pokémon GO planning with GitHub-backed data.",
   "icons": {
     "128": "icon128.png"
   },
@@ -30,22 +30,29 @@
   ],
   "host_permissions": [
     "https://leekduck.com/*",
+    "https://pokemon-go-api.github.io/*",
+    "https://raw.githubusercontent.com/PokeMiners/*",
     "https://raw.githubusercontent.com/Yang-Zhang-717/*",
+    "https://raw.githubusercontent.com/pvpoke/*",
+    "https://snacknap.com/*",
     "https://yang-zhang-717.github.io/*"
   ],
   "action": {
-    "default_title": "NeatDuck_Timeline"
+    "default_title": "NeatDuck",
+    "default_popup": "popup.html"
   },
   "web_accessible_resources": [
     {
       "resources": [
+        "assets/*",
+        "core.js",
+        "data/*",
+        "info.js",
+        "popup.html",
+        "popup.js",
         "standalone.html",
         "standalone.js",
-        "info.js",
-        "core.js",
-        "timeline.css",
-        "data/*",
-        "assets/*"
+        "timeline.css"
       ],
       "matches": [
         "<all_urls>"

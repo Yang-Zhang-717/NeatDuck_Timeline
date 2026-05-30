@@ -2,13 +2,12 @@
 """
 NeatDuck_Timeline public data updater.
 
-v1.0.7 / data v1.8 fixes:
+v1.0.6 / data v1.7 fixes:
 - Time-zone metadata is exported so browser extension and GitHub scraper agree.
 - Detail-page text fallback for pages whose Starts/Ends widgets say "Calculating...".
 - URL-based identity to remove duplicate rows, especially cards shown in both Happening Now and Upcoming.
 - Extension-compatible lane/sub values so theme events do not disappear from the timeline.
 - Stable table order: active/future first, historical rows below.
-- Avoid Max/Mega title contamination and preserve fixed time-zone metadata.
 """
 from __future__ import annotations
 
@@ -251,7 +250,7 @@ def infer_end(title: str, category: str, sub: str, start_iso: str) -> str:
 
 def choose_lane_sub(title: str, category: str) -> Tuple[str, str]:
     hay = f"{category} {title}".lower()
-    if "max monday" in hay or "max mondays" in hay:
+    if "max monday" in hay or "dynamax" in hay or "gigantamax" in hay:
         return "weekly", "Max Mondays"
     if "spotlight" in hay:
         return "weekly", "Pokémon Spotlight Hour"
@@ -305,9 +304,6 @@ def short_title(title: str, category: str, sub: str) -> str:
         return name if name.lower().startswith("max ") else f"Max {name}"
     if "mega raid" in sub_l:
         name = pokemonish_title_part(title)
-        name = re.sub(r"^(Mega\s+){2,}", "Mega ", name, flags=re.I).strip()
-        if re.search(r"\bMega\s+Mega\b", name, re.I):
-            name = re.sub(r"\bMega\s+Mega\b", "Mega", name, flags=re.I).strip()
         return name if re.match(r"^(Mega|超级|超級)\b", name, re.I) else f"Mega {name}"
     if "raid" in sub_l:
         return pokemonish_title_part(title)
@@ -505,9 +501,6 @@ def extract_title_category(card) -> Tuple[str, str]:
         title = clean_text(title[len(category):])
     title = DATE_RE.sub(" ", title)
     title = clean_text(title)
-    title = re.sub(r"^(Mega\s+){2,}", "Mega ", title, flags=re.I).strip()
-    if re.search(r"\bMega\s+Mega\b", title, re.I):
-        return "", category
     return title, category
 
 
@@ -735,7 +728,7 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
         "updatedAt": latest,
         "totalEvents": len(events),
         "activeEvents": len(fresh),
-        "schema": "events.csv/v1.8-timezone-compatible",
+        "schema": "events.csv/v1.7-timezone-compatible",
         "coreColumns": CORE_COLUMNS,
         "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
     }

@@ -15,7 +15,7 @@
   }
   function updateTimeZoneSelect(){
     const sel=document.getElementById("ld-tz-select");
-    if(sel) sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone);
+    if(sel){ sel.innerHTML = timeZoneOptionsHTML(state.displayTimeZone); sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); if(!sel.__ldtBound){ sel.addEventListener("change",()=>setDisplayTimeZone(sel.value)); sel.__ldtBound=true; } }
   }
   async function setDisplayTimeZone(value){
     state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(value);
@@ -23,7 +23,7 @@
     updateTimeZoneSelect(); updateViewMode();
   }
   function ensureTopbarTimeZoneSelect(){
-    const row=document.getElementById("nd-calendar-controls") || document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
+    const row=document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
     const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
     wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
     row.insertBefore(wrap, row.firstChild);
@@ -31,6 +31,12 @@
   }
   function eventDisplayStart(e){ return LDT_Core.dateForDisplayZone(e && e.start, e, state.displayTimeZone); }
   function eventDisplayEnd(e){ return LDT_Core.dateForDisplayZone(e && (e.endKnown || e.endInferred), e, state.displayTimeZone); }
+
+  function setTodayRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.beginOfDay(now); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,1); }
+  function setWeekRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.mondayOfWeek(now); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,7); }
+  function setMonthRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.monthStart(now); state.rangeStart=+start; state.rangeEnd=+LDT_Core.nextMonthStart(now); }
+  function exportLogFile(){ const log={version:"1.0.7", generatedAt:new Date().toISOString(), mode:state.viewMode, displayTimeZone:state.displayTimeZone, rangeStart:new Date(state.rangeStart||Date.now()).toISOString(), rangeEnd:new Date(state.rangeEnd||Date.now()).toISOString(), events:(state.events||[]).length, selectedIds:Array.from(state.selectedIds||[]), remoteUrl:state.remoteUrl||LDT_Core.DEFAULT_REMOTE_URL}; const url=URL.createObjectURL(new Blob([JSON.stringify(log,null,2)],{type:"application/json;charset=utf-8"})); const a=document.createElement("a"); a.href=url; a.download="neatduck-log.json"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+
 
   function laneLayout(){
     let y=C.TIMELINE_TOP_PAD || 58; const map={};
@@ -167,7 +173,7 @@
     document.documentElement.style.setProperty("--nd-item-font-size", state.settings.fontSize + "px");
     document.documentElement.style.setProperty("--nd-item-font-weight", state.settings.fontWeight);
     const wrap=document.getElementById("ld-timeline-wrapper");
-    if(wrap){ wrap.style.marginLeft = wrap.style.marginRight = state.settings.outerMarginX ? (state.settings.outerMarginX + "px") : "auto"; }
+    if(wrap){ wrap.style.marginLeft = "auto"; wrap.style.marginRight = "auto"; }
   }
   function approxTextWidth(text){
     const fs=(state.settings && state.settings.fontSize)||11; let n=0;
@@ -191,7 +197,8 @@
   function emailSelectedLog(){
     const list=selectedOrVisibleEvents();
     if(!list.length){ alert(LDT_Core.t(state.lang, "noEmailEvents")); return; }
-    saveBlob("neatduck-event-log.txt", LDT_Core.eventsToTextLog(list, state.lang, state.pokemonDB), "text/plain;charset=utf-8");
+    const body=LDT_Core.eventsToTextLog(list, state.lang, state.pokemonDB);
+    window.open("mailto:?subject="+encodeURIComponent("NeatDuck_Timeline Event Log")+"&body="+encodeURIComponent(body), "_blank");
   }
   function refreshRemoteData(showAlert){
     if(!(typeof chrome!=="undefined" && chrome.runtime && chrome.runtime.sendMessage)) return Promise.resolve(null);
@@ -338,11 +345,11 @@
     const head=document.createElement("div"); head.className="nd-month-head"; head.innerHTML=days.map(d=>`<div>${d}</div>`).join(""); mg.appendChild(head);
     const rangeStart=new Date(state.rangeStart), rangeEnd=new Date(state.rangeEnd);
     let wk=LDT_Core.mondayOfWeek(rangeStart); const last=LDT_Core.addDays(LDT_Core.mondayOfWeek(rangeEnd),7);
-    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e)})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd).sort((a,b)=>(LDT_Core.LANE_ORDER.indexOf(a.e.lane)-LDT_Core.LANE_ORDER.indexOf(b.e.lane))||(+a.s-+b.s)||String(a.e.sub||"").localeCompare(String(b.e.sub||"")));
+    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e)})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd);
     while(+wk<+last){
       const weekStart=new Date(wk), weekEnd=LDT_Core.addDays(weekStart,7);
       const row=document.createElement("div"); row.className="nd-week-row";
-      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"; const today=LDT_Core._dayKey(new Date())===LDT_Core._dayKey(day); if(today) cell.classList.add("today"); cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
+      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell" + (LDT_Core._dayKey(day)===LDT_Core._dayKey(new Date()) ? " today" : ""); cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
       const segs=[];
       visible.forEach(x=>{
         if(+x.d<+weekStart || +x.s>=+weekEnd) return;
@@ -350,7 +357,8 @@
         const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000));
         segs.push({e:x.e,a,b,s:+x.s});
       });
-      segs.sort((a,b)=>a.a-b.a || a.s-b.s);
+      const rank=(ev)=>{ const lanes=LDT_Core.LANES_SPEC||[]; for(let li=0;li<lanes.length;li++){ const subs=lanes[li].sub||[lanes[li].key]; for(let si=0;si<subs.length;si++){ if(lanes[li].key===ev.lane && subs[si]===ev.sub) return li*100+si; } } return 9999; };
+      segs.sort((a,b)=>rank(a.e)-rank(b.e) || a.a-b.a || a.s-b.s);
       const lanes=[];
       segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
       row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
@@ -368,23 +376,24 @@
   }
 
   function updateViewMode(){
-    if(window.ND_Info && window.ND_Info.mode) return;
+    if(window.ND_Info && window.ND_Info.mode && window.ND_Info.mode !== "calendar") return;
     const svg=document.getElementById("ld-timeline-svg"); const mg=document.getElementById("ld-monthgrid");
     if(state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); } else renderMonthGrid();
   }
 
-  function setTodayRange(){ const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.beginOfDay(nowD); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,1); }
-  function setWeekRange(){ const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=LDT_Core.mondayOfWeek(nowD); state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,7); }
-  function setMonthRange(){ const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const start=new Date(nowD.getFullYear(), nowD.getMonth(), 1); state.rangeStart=+start; state.rangeEnd=+new Date(nowD.getFullYear(), nowD.getMonth()+1, 1); }
-  function fitRangeToEvents(){ setWeekRange(); }
+  window.ND_renderCalendar = function(){ if(window.ND_Info) window.ND_Info.mode="calendar"; updateViewMode(); };
+
+  function fitRangeToEvents(){
+    setWeekRange();
+  }
 
   function attachInteractions(){
     const stage=document.getElementById("ld-right"); if(!stage || stage.__ldtBound) return; stage.__ldtBound=true;
     let dragging=false,lastX=0;
-    stage.addEventListener("mousedown", ev=>{ if(window.ND_Info && window.ND_Info.mode) return; if(state.viewMode!=="linear" || ev.button!==0) return; dragging=true; lastX=ev.clientX; stage.style.cursor="grabbing"; ev.preventDefault(); });
+    stage.addEventListener("mousedown", ev=>{ if(state.viewMode!=="linear" || ev.button!==0) return; dragging=true; lastX=ev.clientX; stage.style.cursor="grabbing"; ev.preventDefault(); });
     window.addEventListener("mouseup", ()=>{ dragging=false; stage.style.cursor=""; });
     window.addEventListener("mousemove", ev=>{ if(!dragging || state.viewMode!=="linear") return; const dx=ev.clientX-lastX; lastX=ev.clientX; const span=state.rangeEnd-state.rangeStart; const delta=(dx/C.TL_W)*span; state.rangeStart-=delta; state.rangeEnd-=delta; updateViewMode(); });
-    stage.addEventListener("wheel", ev=>{ document.querySelectorAll(".ld-tooltip").forEach(x=>x.remove()); if(window.ND_Info && window.ND_Info.mode) return; if(state.viewMode!=="linear") return; ev.preventDefault(); const rect=stage.getBoundingClientRect(); const x=Math.max(0, Math.min(C.TL_W, (ev.clientX-rect.left)*(C.TL_W/Math.max(1,rect.width)))); const span=state.rangeEnd-state.rangeStart; const center=state.rangeStart+(x/C.TL_W)*span; const factor=ev.deltaY<0?0.82:1.22; const newSpan=Math.max(6*3600000, Math.min(240*86400000, span*factor)); const ratio=x/C.TL_W; state.rangeStart=center-ratio*newSpan; state.rangeEnd=state.rangeStart+newSpan; updateViewMode(); }, {passive:false});
+    stage.addEventListener("wheel", ev=>{ if(window.ND_Info && window.ND_Info.mode && window.ND_Info.mode !== "calendar") return; if(window.ND_Tooltip && window.ND_Tooltip.hideNow) window.ND_Tooltip.hideNow(); if(state.viewMode!=="linear") return; ev.preventDefault(); const rect=stage.getBoundingClientRect(); const x=Math.max(0, Math.min(C.TL_W, (ev.clientX-rect.left)*(C.TL_W/Math.max(1,rect.width)))); const span=state.rangeEnd-state.rangeStart; const center=state.rangeStart+(x/C.TL_W)*span; const factor=ev.deltaY<0?0.82:1.22; const newSpan=Math.max(6*3600000, Math.min(240*86400000, span*factor)); const ratio=x/C.TL_W; state.rangeStart=center-ratio*newSpan; state.rangeEnd=state.rangeStart+newSpan; updateViewMode(); }, {passive:false});
   }
 
   function showStandaloneMessage(message){
@@ -412,10 +421,10 @@
     state.lang=st.lang||state.lang; state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(st.displayTimeZone||state.displayTimeZone); applyI18n(); state.colors=st.colors||state.colors; state.settings=LDT_Core.normalizeSettings(st.settings); state.detailsCache=st.detailsCache||{}; state.remoteUrl=LDT_Core.normalizeRemoteUrl(st.remoteUrl); applyRenderSettings(); updateTimeZoneSelect();
     if(!state.pokemonDB){
       try{
-        const res = await fetch(chrome.runtime.getURL("assets/pokemon.json"));
+        const res = await fetch(chrome.runtime.getURL("assets/pokemon_go.json"));
         const txt = await res.text();
         state.pokemonDB = txt.trim() ? JSON.parse(txt) : {rows:[]};
-      }catch(e){ state.pokemonDB = {rows:[]}; console.warn("pokemon.json unavailable", e); }
+      }catch(e){ state.pokemonDB = {rows:[]}; console.warn("pokemon_go.json unavailable", e); }
     }
     let csv = st.eventsCsv || "";
     if(!csv){
@@ -447,23 +456,26 @@
     });
   }
 
-  window.ND_renderCalendarTab = function(){ updateViewMode(); };
-
   async function init(){
     attachStorageListener();
     ensureTopbarTimeZoneSelect();
-    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang, db:state.pokemonDB, showCalendar:()=>updateViewMode()});
+    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang});
     await refreshRemoteData(false);
     await loadAndRenderFromStorage({preserveRange:false});
-    const langSel=document.getElementById("ld-lang-select"); if(langSel && !langSel.__ldtBound){ langSel.value=state.lang; langSel.addEventListener("change", async()=>{ state.lang=langSel.value; await LDT_Core.saveState({ld_lang:state.lang}); applyI18n(); updateViewMode(); }); langSel.__ldtBound=true; }
     const exportBtn = document.querySelector('[data-act="export-events-csv"]');
     if(exportBtn && !exportBtn.__ldtBound) exportBtn.addEventListener("click", ()=>{
       const text=LDT_Core.eventsToCSV(state.events); const url=URL.createObjectURL(new Blob([text],{type:"text/csv;charset=utf-8"})); const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     });
     if(exportBtn) exportBtn.__ldtBound = true;
+    const logBtn = document.querySelector('[data-act="export-log-file"]');
+    if(logBtn && !logBtn.__ldtBound) logBtn.addEventListener("click", exportLogFile);
+    if(logBtn) logBtn.__ldtBound = true;
     const settingsBtn = document.querySelector('[data-act="settings"]');
     if(settingsBtn && !settingsBtn.__ldtBound) settingsBtn.addEventListener("click", buildSettingsModal);
     if(settingsBtn) settingsBtn.__ldtBound = true;
+    const pageBtn = document.querySelector('[data-act="page-update"]');
+    if(pageBtn && !pageBtn.__ldtBound) pageBtn.addEventListener("click", async ()=>{ await loadAndRenderFromStorage({preserveRange:false}); });
+    if(pageBtn) pageBtn.__ldtBound = true;
     const remoteBtn = document.querySelector('[data-act="remote-update"]');
     if(remoteBtn && !remoteBtn.__ldtBound) remoteBtn.addEventListener("click", async ()=>{ const resp=await refreshRemoteData(true); if(resp && resp.ok) await loadAndRenderFromStorage({preserveRange:true}); });
     if(remoteBtn) remoteBtn.__ldtBound = true;
@@ -488,9 +500,15 @@
     const monthBtn = document.querySelector('[data-act="reset-month"]');
     if(monthBtn && !monthBtn.__ldtBound) monthBtn.addEventListener("click", ()=>{ setMonthRange(); updateViewMode(); });
     if(monthBtn) monthBtn.__ldtBound = true;
-    const modeBtn = document.querySelector('[data-act="switch-mode"]');
-    if(modeBtn && !modeBtn.__ldtBound) modeBtn.addEventListener("click", ()=>{ state.viewMode = state.viewMode==="linear" ? "month" : "linear"; updateViewMode(); });
+    const modeBtn = document.querySelector('[data-act="toggle-mode"]');
+    if(modeBtn && !modeBtn.__ldtBound) modeBtn.addEventListener("click", ()=>{ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); });
     if(modeBtn) modeBtn.__ldtBound = true;
+    const linearBtn = document.querySelector('[data-act="switch-linear"]');
+    if(linearBtn && !linearBtn.__ldtBound) linearBtn.addEventListener("click", ()=>{ state.viewMode="linear"; updateViewMode(); });
+    if(linearBtn) linearBtn.__ldtBound = true;
+    const gridBtn = document.querySelector('[data-act="switch-monthgrid"]');
+    if(gridBtn && !gridBtn.__ldtBound) gridBtn.addEventListener("click", ()=>{ state.viewMode="month"; updateViewMode(); });
+    if(gridBtn) gridBtn.__ldtBound = true;
     attachInteractions();
   }
   if (document.readyState==="complete" || document.readyState==="interactive") init(); else window.addEventListener("DOMContentLoaded", init);

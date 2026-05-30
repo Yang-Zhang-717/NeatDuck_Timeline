@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NeatDuck_Timeline v1.0.7",
+  "name": "NeatDuck v1.0.7",
   "version": "1.0.7",
-  "description": "A compact, configurable timeline and Pokémon reference panel for Pokémon GO event planning with GitHub-backed public data.",
+  "description": "NeatDuck Pokémon GO event calendar, type matchup, Pokédex, and CP calculator with GitHub-backed data.",
   "icons": {
     "128": "icon128.png"
   },
@@ -34,8 +34,7 @@
     "https://yang-zhang-717.github.io/*"
   ],
   "action": {
-    "default_title": "NeatDuck_Timeline",
-    "default_popup": "popup.html"
+    "default_title": "NeatDuck_Timeline"
   },
   "web_accessible_resources": [
     {
@@ -46,9 +45,7 @@
         "core.js",
         "timeline.css",
         "data/*",
-        "assets/*",
-        "popup.html",
-        "popup.js"
+        "assets/*"
       ],
       "matches": [
         "<all_urls>"

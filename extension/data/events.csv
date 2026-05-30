@@ -1,1 +1,1 @@
-uid,title,shortTitle,category,lane,sub,start,endKnown,endInferred,href,timeZone,timeZoneLabel,isFixedTimeZone,source,firstSeenAt,lastSeenAt,lastScrapedAt,status
+uid,source,title,shortTitle,category,lane,sub,overlay,overlayTargetSub,start,endKnown,endInferred,href,timeZone,timeZoneLabel,isFixedTimeZone,isLocal,status,firstSeenAt,lastSeenAt,rawText

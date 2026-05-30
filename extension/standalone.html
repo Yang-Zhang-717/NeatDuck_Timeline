@@ -1,1 +1,67 @@
-<!doctype html><html><head><meta charset="utf-8"><title>NeatDuck_Timeline v1.0.7</title><meta name="viewport" content="width=1320, initial-scale=1"><link rel="stylesheet" href="timeline.css"></head><body style="background:#f6f8fa; margin:20px; font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;"><div id="ld-timeline-wrapper"><div id="ld-topbar"><div id="nd-tabbar" class="row nd-tabbar"><button class="btn nd-tab active" data-tab="calendar">📅 <span data-i18n="eventCalendar">活动日历</span></button><button class="btn nd-tab" data-tab="types">🧬 <span data-i18n="typeMatchup">属性克制</span></button><button class="btn nd-tab" data-tab="pokedex">📖 <span data-i18n="pokedex">宝可梦图鉴</span></button></div><div id="nd-commonbar" class="row nd-commonbar"><select class="btn" id="ld-lang-select" title="Language"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option></select><button class="btn" data-act="settings">⚙️ <span data-i18n="settings">设置</span></button></div><div id="nd-calendar-controls" class="row nd-tab-controls active" data-tab-controls="calendar"><button class="btn" data-act="today">🎯 <span data-i18n="today">今天</span></button><button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">本周</span></button><button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">本月</span></button><button class="btn" data-act="switch-mode">↔️ <span data-i18n="switchMode">模式</span></button><button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">云端更新</span></button><button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">导出活动CSV</span></button><button class="btn" data-act="email-log">📨 <span data-i18n="emailLog">导出日志文件</span></button><button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">清除选择</span></button></div><div id="nd-info-controls" class="row nd-tab-controls" data-tab-controls="info"></div></div><div id="ld-left"><svg id="ld-legend-svg" viewBox="0 0 240 642" preserveAspectRatio="xMinYMin"></svg></div><div id="ld-right"><svg id="ld-timeline-svg" viewBox="0 0 1040 642" preserveAspectRatio="xMinYMin"><g id="ld-month-bgs"></g><g id="ld-weekend-bgs"></g><g id="ld-period-blocks"></g><g id="ld-ruler-top" class="ld-ruler"></g><g id="ld-ruler-bottom" class="ld-ruler"></g><g id="ld-lane-seps"></g><g id="ld-items"></g><g id="ld-now"><line class="ld-now" y1="0" y2="642"/></g></svg><div id="ld-extenders"></div><div id="ld-monthgrid" style="display:none"></div></div><div id="ld-mask" class="ld-mask"></div><div id="ld-settings-modal" class="ld-modal"><h3>Settings</h3><div id="ld-settings-rows"></div><div class="row" style="justify-content:flex-end"><button class="btn" data-close="settings" data-i18n="close">Close</button></div></div></div><script src="core.js"></script><script src="info.js"></script><script src="standalone.js"></script></body></html>
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NeatDuck_Timeline v1.0.7</title>
+  <meta name="viewport" content="width=1320, initial-scale=1">
+  <link rel="stylesheet" href="timeline.css">
+</head>
+<body style="background:#f6f8fa; margin:20px; font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;">
+  <div id="ld-timeline-wrapper">
+    <div id="ld-topbar">
+      <div class="row nd-top-main">
+        <div class="nd-tabs">
+          <button class="btn nd-tab active" data-nd-tab="calendar">📆 <span data-i18n="tabCalendar">活动日历</span></button>
+          <button class="btn nd-tab" data-nd-tab="types">⚔️ <span data-i18n="tabTypes">属性克制</span></button>
+          <button class="btn nd-tab" data-nd-tab="pokedex">🔎 <span data-i18n="tabPokedex">宝可梦图鉴</span></button>
+        </div>
+        <div class="nd-common-actions">
+          <select class="btn" id="ld-lang-select" title="Language">
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁體中文</option>
+            <option value="en">English</option>
+          </select>
+          <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">设置</span></button>
+        </div>
+      </div>
+      <div class="row nd-tab-toolbar" data-toolbar="calendar">
+        <button class="btn" data-act="today">🎯 <span data-i18n="today">今天</span></button>
+        <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">本周</span></button>
+        <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">本月</span></button>
+        <button class="btn" data-act="toggle-mode">↔️ <span data-i18n="modeToggle">模式</span></button>
+        <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">时区</span> <select class="btn" id="ld-tz-select"></select></label>
+        <button class="btn" data-act="page-update">🔄 <span data-i18n="pageUpdate">页面更新</span></button>
+        <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">云端更新</span></button>
+        <button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">导出活动CSV</span></button>
+        <button class="btn" data-act="export-log-file">🧾 <span data-i18n="exportLogFile">导出日志文件</span></button>
+        <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">清除选择</span></button>
+      </div>
+      <div class="row nd-tab-toolbar" data-toolbar="types" style="display:none;"></div>
+      <div class="row nd-tab-toolbar" data-toolbar="pokedex" style="display:none;"></div>
+    </div>
+    <div id="ld-left"><svg id="ld-legend-svg" viewBox="0 0 240 642" preserveAspectRatio="xMinYMin"></svg></div>
+    <div id="ld-right">
+      <svg id="ld-timeline-svg" viewBox="0 0 1040 642" preserveAspectRatio="xMinYMin">
+        <g id="ld-month-bgs"></g>
+        <g id="ld-weekend-bgs"></g>
+        <g id="ld-period-blocks"></g>
+        <g id="ld-ruler-top" class="ld-ruler"></g>
+        <g id="ld-ruler-bottom" class="ld-ruler"></g>
+        <g id="ld-lane-seps"></g>
+        <g id="ld-items"></g>
+        <g id="ld-now"><line class="ld-now" y1="0" y2="642"/></g>
+      </svg>
+      <div id="ld-extenders"></div>
+      <div id="ld-monthgrid" style="display:none;"></div>
+    </div>
+    <div class="ld-modal-mask" id="ld-mask"></div>
+    <div class="ld-modal" id="ld-colors-modal"><h3 data-i18n="colors">颜色</h3><div id="ld-colors-rows"></div><div class="footer"><button class="btn" data-close="colors"><span data-i18n="ok">确定</span></button></div></div>
+    <div class="ld-modal" id="ld-settings-modal"><h3 data-i18n="settings">设置</h3><div id="ld-settings-body"></div><div class="footer"><button class="btn" data-save="settings"><span data-i18n="apply">应用</span></button><button class="btn" data-close="settings"><span data-i18n="ok">确定</span></button></div></div>
+    <div class="ld-modal" id="ld-updates-modal"><h3 data-i18n="updates">检测到更新</h3><div id="ld-updates-body"></div><div class="footer"><button class="btn" data-apply="updates"><span data-i18n="apply">应用</span></button><button class="btn" data-close="updates"><span data-i18n="ignore">忽略</span></button></div></div>
+  </div>
+  <script src="core.js"></script>
+  <script src="info.js"></script>
+  <script src="standalone.js"></script>
+</body>
+</html>

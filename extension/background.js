@@ -44,11 +44,14 @@ async function refreshRemoteEvents(){
 function ensureAlarm(){
   chrome.alarms.create(ALARM_NAME, { delayInMinutes: 1, periodInMinutes: 720 });
 }
-chrome.runtime.onInstalled.addListener(() => { ensureAlarm(); refreshRemoteEvents(); });
-chrome.runtime.onStartup.addListener(() => { ensureAlarm(); refreshRemoteEvents(); });
+chrome.runtime.onInstalled.addListener(ensureAlarm);
+chrome.runtime.onStartup.addListener(ensureAlarm);
 chrome.alarms.onAlarm.addListener(alarm => { if (alarm && alarm.name === ALARM_NAME) refreshRemoteEvents(); });
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || message.type !== "nd_refresh_remote_events") return false;
   refreshRemoteEvents().then(sendResponse);
   return true;
+});
+chrome.action.onClicked.addListener(() => {
+  chrome.tabs.create({ url: chrome.runtime.getURL(`standalone.html?source=action&ts=${Date.now()}`) });
 });

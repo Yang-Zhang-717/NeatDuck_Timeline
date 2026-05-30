@@ -44,11 +44,9 @@ MAX_DETAIL_PAGES = int(os.environ.get("MAX_DETAIL_PAGES", "140"))
 DETAIL_SLEEP_SECONDS = float(os.environ.get("DETAIL_SLEEP_SECONDS", "0.20"))
 
 CSV_COLUMNS = [
-    "uid",
-    "title", "shortTitle", "category", "lane", "sub",
-    "start", "endKnown", "endInferred", "href",
-    "timeZone", "timeZoneLabel", "isFixedTimeZone",
-    "source", "firstSeenAt", "lastSeenAt", "lastScrapedAt", "status",
+    "uid", "source", "title", "shortTitle", "category", "lane", "sub", "overlay", "overlayTargetSub",
+    "start", "endKnown", "endInferred", "href", "timeZone", "timeZoneLabel", "isFixedTimeZone",
+    "isLocal", "status", "firstSeenAt", "lastSeenAt", "rawText",
 ]
 CORE_COLUMNS = ["title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href"]
 
@@ -125,10 +123,14 @@ class EventRecord:
     timeZone: str = "local"
     timeZoneLabel: str = "Local Time"
     isFixedTimeZone: str = ""
+    isLocal: str = "1"
     uid: str = ""
     source: str = "leekduck"
     firstSeenAt: str = ""
     lastSeenAt: str = ""
+    rawText: str = ""
+    overlay: str = ""
+    overlayTargetSub: str = ""
     lastScrapedAt: str = ""
     status: str = "active"
 
@@ -270,10 +272,6 @@ def choose_lane_sub(title: str, category: str) -> Tuple[str, str]:
         return "city", "City Safari"
     if "shadow" in hay and "raid" in hay:
         return "raids", "Shadow Raid Battles"
-    if "raid day" in hay:
-        return "raids", "Raid Day"
-    if "raid weekend" in hay:
-        return "raids", "Raid Weekend"
     if "mega" in hay and "raid" in hay:
         return "raids", "Mega Raid Battles"
     if "raid" in hay:
@@ -302,15 +300,14 @@ def pokemonish_title_part(title: str) -> str:
 
 def short_title(title: str, category: str, sub: str) -> str:
     title = clean_text(title)
-    title = re.sub(r"^Mega\s+Mega\s+Raid\s+(Day|Weekend)$", r"Mega Raid \1", title, flags=re.I)
     sub_l = (sub or "").lower()
-    if re.match(r"^(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*(?:Mega\s+)?Raid\s+(Day|Weekend)$", title, re.I):
-        return title.strip()
     if "max monday" in sub_l:
         name = pokemonish_title_part(title)
         return name if name.lower().startswith("max ") else f"Max {name}"
     if "mega raid" in sub_l:
         name = pokemonish_title_part(title)
+        if not name or re.search(r"^mega\s+raid\s+(day|weekend)$", name, re.I):
+            return title
         return name if re.match(r"^(Mega|超级|超級)\b", name, re.I) else f"Mega {name}"
     if "raid" in sub_l:
         return pokemonish_title_part(title)
@@ -360,16 +357,6 @@ def parse_detail_text_dates(raw: str) -> Tuple[Optional[datetime], Optional[date
     text = clean_text(raw)
     if not text:
         return None, None
-
-    # "Starts March 3, 2026 10:00 AM Local Time Ends June 2, 2026 10:00 AM Local Time"
-    m = re.search(r"Starts\s+(.+?)\s+Ends\s+(.+?)(?:\.|$)", text, re.I)
-    if m:
-        tz_name = inherited_tz(m.group(1), m.group(2))
-        y = year_of(m.group(1), m.group(2))
-        start = parse_dt(m.group(1), y, tz_name)
-        end = parse_dt(m.group(2), y or (start.year if start else None), tz_name)
-        if start or end:
-            return start, end
 
     # "Dates: May 29-June 1, 2026 Time: 10:00 AM - 8:00 PM JST"
     # This must run before the generic "from ... to ..." matcher, or bonus-hour text can steal the event range.
@@ -745,7 +732,7 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
         "updatedAt": latest,
         "totalEvents": len(events),
         "activeEvents": len(fresh),
-        "schema": "events.csv/v1.7-timezone-compatible",
+        "schema": "events.csv/v1.0.7-canonical-timezone",
         "coreColumns": CORE_COLUMNS,
         "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
     }

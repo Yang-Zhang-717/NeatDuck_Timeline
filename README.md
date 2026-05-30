@@ -1,211 +1,218 @@
-# NeatDuck Timeline / NeatDuck 时间轴
+# NeatDuck v1.0.7
 
-NeatDuck is a GitHub-backed Chrome extension for Pokémon GO event planning. The extension can run as an overlay on LeekDuck Events or as its own standalone page. The GitHub repo is the public data source; the extension reads `data/events.csv` on startup and can also refresh it from the cloud on demand, because apparently calendars now need cloud rituals too.
+NeatDuck is a Chrome extension for Pokémon GO planning. It provides three independent tabs in one compact UI:
 
-NeatDuck 是一个基于 GitHub 数据源的 Pokémon GO 活动规划插件。它既可以作为 LeekDuck Events 页面的 overlay 使用，也可以通过插件按钮打开独立页。插件启动时会读取 GitHub 的 `data/events.csv`，也支持手动云端更新。
+1. **Event Calendar**: GitHub-backed LeekDuck event timeline and month view.
+2. **属性克制 / Type Matchup**: Pokémon GO type chart heatmap with attack and defense summaries.
+3. **宝可梦图鉴 / Pokédex**: searchable Pokémon GO-oriented Pokédex plus a CP calculator.
 
-## v1.0.7 更新重点
+The project is intentionally small. Apparently that is now a feature because the previous version had enough duplicated data files to qualify as a tiny bureaucracy.
 
-- 插件按钮现在先打开一个小弹窗，可分别跳转到 **Standalone / 独立页** 或 **LeekDuck Events**。
-- 默认进入 **Event Calendar** 的本周 linear timeline；`Today / This Week / This Month` 只改变时间范围，不再偷偷切换视图。
-- 默认 tooltip 停留时间改为 **600 ms**；滚轮触发时立即关闭悬停窗。
-- LeekDuck overlay 在页面中水平居中，不再偏右到像是网页自己在躲你。
-- 顶部左侧改为三个互不干扰的 tab：**Event Calendar / Type Matchup / Pokédex**；其它 tab 下不会显示 calendar 和左侧 legend。
-- 顶部右侧保留公共按钮：语言、设置；tab 专属按钮只出现在对应 tab 上方。
-- Event Calendar 增加 UTC-12 到 UTC+14 的显示时区选择，每个 offset 给出 3 个代表地点。
-- Shading 从活动开始位置对齐；月视图按 timeline lane 顺序排版，强化 today 标记，并加粗相邻日期行边框。
-- LeekDuck 解析器增强：处理 `Calculating...`、本地时间、固定时区、地点型 GO Fest、泛称 Mega Raid Day 等情况，避免 “Mega Mega” 这类假活动幽灵混进 timeline。
-- Type Matchup 页精简为 heatmap + 攻击/防御视角，删除多余说明文字。
-- Pokédex 页加入中文搜索、世代筛选、特殊类别筛选、分页和 CP 计算器。
-- 极巨化/超极巨化参考内容已移除。若 LeekDuck 发布真实日程类活动，calendar 仍会按事件显示，不再作为独立资料页或图鉴筛选内容维护。
-- Pokémon 数据去重：插件只使用 `assets/pokemon.json`；`data/pokemon.csv` 只是给人看的导出表。
-
-## 三个 tab 怎么用
-
-### 1. Event Calendar
-
-按钮：
-
-- **Today / This Week / This Month**：只改变当前显示时间范围。
-- **Mode**：在 linear timeline 和 month view 之间切换。
-- **Time Zone**：按 UTC offset 显示活动时间，范围 UTC-12 到 UTC+14。
-- **Page Update**：从当前 LeekDuck 页面扫描活动。
-- **Cloud Update**：从 GitHub raw CSV 拉取活动数据。
-- **Export Event CSV**：导出当前可见或已选择活动。
-- **Export Log File**：导出当前活动日志。
-- **Clear Selection**：清除活动选择。
-
-默认进入本周 linear timeline。月视图的活动顺序与 timeline lane 顺序一致。滚轮会立即清除悬停窗，避免 tooltip 像粘在鞋底的口香糖一样跟着你。
-
-### 2. Type Matchup / 属性克制
-
-- 左侧是 Pokémon GO 倍率 heatmap。
-- 单元格列宽 40 px、行高 35 px，倍率最多显示 2 位小数。
-- 点击一行选择攻击属性；点击 1 或 2 列选择防御属性，防御列不能重复。
-- 被选中的行/列会高亮边框。
-- 右侧上 1/3 是攻击视角，显示选中攻击属性打选中防御组合的复合倍率。
-- 右侧下 2/3 是防御视角，把所有攻击属性按超级有效 / 有效 / 一般 / 抗性 / 超级抗性分组显示。
-- 按钮只保留 **Export Type CSV**。
-
-### 3. Pokédex / 宝可梦图鉴
-
-- 支持中文、英文、编号、属性搜索。
-- 一级筛选为世代，并补齐对应游戏版本。
-- 二级筛选为特殊类别：Mega capable、Legendary、Mythical、Form-changing、Fusion。极巨化/超极巨化已删除。
-- 表格可显示 50 / 100 / 200 / 500 / 全部。
-- GO 种族值缺省的行明确标注 `GO stats missing`，不再假装数据库比现实更完整。
-- 右侧 CP 计算器：先在表格选择 Pokémon，再设置 IV 三角玫瑰图和等级，自动计算 CP。
-
-CP 公式：
+## Repository layout
 
 ```text
-CP = floor((BaseAttack + IVAttack) × sqrt(BaseDefense + IVDefense) × sqrt(BaseStamina + IVStamina) × CPM² / 10)
-```
-
-其中 CPM 使用 Pokémon GO 的 Combat Power Multiplier。Lv50 使用 `0.84029999`。
-
-已验证样例：
-
-| Pokémon | IV / Lv | CP |
-|---|---:|---:|
-| 酋雷姆·捷克罗姆合体 / Black Kyurem | 15/15/15 Lv50 | 5206 |
-| 藏玛然特 王盾形态 / Zamazenta Crowned Shield | 13/15/15 Lv50 | 4681 |
-| 藏玛然特 百战勇者形态 / Zamazenta Hero | 13/15/15 Lv50 | 4297 |
-| 凤王 / Ho-Oh | 15/15/15 Lv50 | 4367 |
-| 巨金怪 / Metagross | 15/15/15 Lv50 | 4286 |
-| 盖欧卡 / Kyogre | 15/15/15 Lv50 | 4652 |
-| 超甲狂犀 / Rhyperior | 15/15/15 Lv50 | 4221 |
-| 三首恶龙 / Hydreigon | 15/15/15 Lv50 | 4098 |
-
-注意：`13/15/15 Lv50 = 4681` 对应的是 Zamazenta **Crowned Shield / 王盾形态**，不是 Hero of Many Battles / 百战勇者形态。名字像神话谜语，但公式本身很无辜。
-
-## Repository layout / 仓库结构
-
-```text
-.
-├── assets/
-│   └── pokemon.json            # canonical Pokémon asset for extension + repo / 唯一图鉴资源
+NeatDuck_Timeline/
 ├── data/
-│   ├── events.csv              # public event library read by extension / GitHub 活动库
-│   ├── events.manual.csv       # optional manual additions, kept separate / 可选手动补充
-│   ├── manifest.json           # data manifest / 数据元信息
-│   ├── pokemon.csv             # human-readable Pokémon export table / 给人看的图鉴 CSV
-│   └── snapshot-latest.json    # latest active scrape snapshot / 最近抓取快照
-├── extension/                  # unpacked Chrome extension source / 已解压插件源码
-├── dist/                       # packaged extension zip only / 打包产物，不是源码源头
+│   ├── events.csv              # canonical public event CSV consumed by the extension
+│   ├── events.manual.csv       # optional manually reviewed events
+│   ├── pokemon_go.csv          # unified, non-redundant Pokédex CSV export
+│   └── manifest.json           # data build metadata
+├── assets/
+│   └── pokemon_go.json         # unified type chart + Pokédex + CPM + CP verification data
 ├── scripts/
-│   ├── update_data.py          # LeekDuck scraper + merger / 抓取与合并
-│   ├── validate_parsers.py     # parser regression tests / 解析回归测试
-│   ├── validate_cp.py          # CP formula regression tests / CP 公式回归测试
-│   ├── export_extension_csv.js # extension-side CSV normalization / 插件侧 CSV 标准化
-│   ├── export_extension_csv.py # Python-side CSV normalization / Python 侧 CSV 标准化
-│   └── CompareCSV.java         # strict byte/char CSV comparator / Java 严格比较器
-├── schema/events.schema.json   # event row schema / 活动行结构
-└── .github/workflows/          # scheduled data refresh / GitHub 自动更新
+│   ├── update_data.py          # LeekDuck scraper / CSV updater
+│   ├── normalize_event_fixture.py
+│   ├── js_event_csv_runner.mjs
+│   └── CompareCsv.java         # strict byte-for-byte CSV comparator
+├── extension/
+│   ├── manifest.json
+│   ├── background.js
+│   ├── core.js
+│   ├── content.js
+│   ├── standalone.html
+│   ├── standalone.js
+│   ├── info.js
+│   ├── timeline.css
+│   ├── assets/pokemon_go.json
+│   └── data/pokemon_go.csv
+├── packed_extension/
+│   └── NeatDuck_Timeline_v1.0.7_extension.zip
+└── tests/fixtures/events_fixture.json
 ```
 
-`extension/` 和 `dist/` 的区别：`extension/` 是 Chrome “加载已解压扩展程序”使用的源码目录；`dist/` 只是把 `extension/` 压成 zip 后的发布包。不要在 `dist/` 里改源码，除非你也喜欢把书写在密封罐头上。
+Removed duplicated runtime data files:
 
-## Install the extension / 安装插件
-
-### 从 zip 安装
-
-1. 解压 `NeatDuck_Timeline_v1.0.7_extension.zip`。
-2. 打开 `chrome://extensions`。
-3. 开启 **Developer mode / 开发者模式**。
-4. 点击 **Load unpacked / 加载已解压的扩展程序**。
-5. 选择解压后的 extension 文件夹。
-6. 点击插件图标，选择打开独立页或 LeekDuck Events 页。
-
-### 从 repo 安装
-
-```bash
-cd NeatDuck_Timeline
-# Chrome 里选择这个目录：
-# extension/
+```text
+assets/pokemon.json
+assets/pokemon_extra.json
+data/pokemon.csv
+extension/assets/pokemon.json
+extension/assets/pokemon_extra.json
+extension/data/pokemon.csv
 ```
 
-## Update event data locally / 本地更新活动数据
+The extension now reads `assets/pokemon_go.json` and `data/pokemon_go.csv` only for Pokédex/type/CP data.
+
+## Install the extension
+
+1. Download or clone this repository.
+2. Open Chrome and go to `chrome://extensions`.
+3. Enable **Developer mode**.
+4. Click **Load unpacked**.
+5. Select the `extension/` folder.
+6. Click the NeatDuck extension icon to open the standalone page, or open `https://leekduck.com/events/` and use the embedded panel.
+
+## Event Calendar tab
+
+The calendar tab opens by default in **linear timeline / this week** mode.
+
+Toolbar controls:
+
+- **Today / This Week / This Month**: changes only the visible date range. It does not switch between timeline and month view.
+- **Mode**: toggles between linear timeline and month view.
+- **Time Zone**: choose Browser Local, UTC, or UTC-12 through UTC+14. Each offset label includes at least three representative cities.
+- **Page Update**: scans the current LeekDuck page and merges results into local history.
+- **Cloud Update**: pulls the canonical CSV from GitHub.
+- **Export Events CSV**: exports the current event cache using the canonical CSV schema.
+- **Export Log File**: exports a small diagnostic JSON file.
+- **Clear Selection**: clears selected events.
+
+Behavior changes in v1.0.7:
+
+- Hover popup hide delay defaults to **600 ms**.
+- Mouse wheel immediately hides any hover popup.
+- Shading begins at the event start edge, not after the visible event block.
+- The month view follows the same lane/category ordering as the linear timeline.
+- Today is highlighted with a stronger border in month view.
+- Switching to Type Matchup or Pokédex hides the calendar and legend. Scroll/click inside those tabs no longer jumps back to the calendar.
+- The LeekDuck embedded view is centered across the whole page instead of being biased to the right.
+
+### Event/time robustness
+
+`core.js` and `scripts/update_data.py` now write the same canonical CSV columns:
+
+```csv
+uid,source,title,shortTitle,category,lane,sub,overlay,overlayTargetSub,start,endKnown,endInferred,href,timeZone,timeZoneLabel,isFixedTimeZone,isLocal,status,firstSeenAt,lastSeenAt,rawText
+```
+
+The parser keeps fixed-timezone events, such as Copenhagen events in CEST, distinct from local-time events. Generic future events with undecided content, such as a placeholder “Mega Raid Day”, stay generic and no longer become fake titles like “Mega Mega”. Civilization inches forward.
+
+## Type Matchup tab
+
+The Type Matchup tab has one tab-specific toolbar action: **Export Type CSV**.
+
+Layout:
+
+- Left: Pokémon GO type heatmap.
+  - Column width: 40 px.
+  - Row height: 35 px.
+  - Multipliers are shown with at most two decimals.
+  - Type labels use same-size centered badges.
+  - Click a row/cell to choose the attacking type.
+  - Click one or two defense columns to choose defending type(s). The two defense columns cannot be the same.
+  - Selected row and columns are highlighted.
+- Right top third: attack view, showing the selected attack type against the selected single/dual defense combination.
+- Right bottom two thirds: defense view, grouping incoming attack types into:
+  - 超级有效 / Double super effective
+  - 有效 / Super effective
+  - 一般 / Neutral
+  - 抗性 / Resisted
+  - 超级抗性 / Double resisted
+
+The previous explanatory joke sentence was removed to save space. Mourning period: zero seconds.
+
+## Pokédex tab
+
+Toolbar controls:
+
+- Search box: accepts Chinese, English, Japanese, number, form, type, and category text.
+- Generation filter: includes generation number and representative game versions.
+- Special category filter:
+  - Can Mega
+  - Legendary
+  - Mythical
+  - Form change
+  - Fusion
+  - Verified Pokémon GO CP data
+- Row count: 50 / 100 / 200 / 500 / all.
+- Export Pokédex CSV.
+
+Removed from the UI/data pages:
+
+- Dynamax
+- Gigantamax
+- the old Max-info tab
+
+### CP calculator
+
+Select a Pokémon from the table, then set:
+
+- Level, including half-level steps from 1 to 50.
+- IV Attack / Defense / Stamina using sliders or the triangular IV selector.
+
+Formula:
+
+```text
+CP = floor((BaseAttack + IVAttack) × sqrt(BaseDefense + IVDefense) × sqrt(BaseStamina + IVStamina) × CPM(Level)^2 / 10)
+minimum CP = 10
+```
+
+The CPM table is embedded in `assets/pokemon_go.json`.
+
+Verification cases included in `assets/pokemon_go.json`:
+
+| Case | Expected | Computed |
+|---|---:|---:|
+| Black Kyurem, 15/15/15, Lv50 | 5206 | 5206 |
+| Zamazenta Crowned Shield, 13/15/15, Lv50 | 4681 | 4681 |
+| Ho-Oh, 15/15/15, Lv50 | 4367 | 4367 |
+| Metagross, 15/15/15, Lv50 | 4286 | 4286 |
+| Kyogre, 15/15/15, Lv50 | 4652 | 4652 |
+| Rhyperior, 15/15/15, Lv50 | 4221 | 4221 |
+| Hydreigon, 15/15/15, Lv50 | 4098 | 4098 |
+
+Note: the requested “13/15/15 Lv50 Zamazenta Hero of Many Battles = 4681” conflicts with current public Pokémon GO stats. The calculator labels the matching case as **Crowned Shield** because 4681 matches the Crowned Shield stats used by the verification table.
+
+## Updating event data
+
+Run the updater in a network-enabled environment:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
 python scripts/update_data.py
 ```
 
-脚本会抓取 LeekDuck Events、读取详情页时间、合并历史 CSV 与 `data/events.manual.csv`。它不会因为网页临时隐藏某个活动就把历史库直接扔进虚空，虽然现代网页显然很想这么干。
-
-## Local validation / 本地验证
-
-```bash
-# Python detail parser fixtures
-TZ=UTC python scripts/validate_parsers.py
-
-# CP formula fixtures
-python scripts/validate_cp.py
-
-# Extension JS CSV vs Python CSV, compared by Java
-TZ=UTC python scripts/export_extension_csv.py tests/fixtures/events_extension_input.csv > /tmp/neatduck_py.csv
-TZ=UTC node scripts/export_extension_csv.js tests/fixtures/events_extension_input.csv > /tmp/neatduck_js.csv
-javac scripts/CompareCSV.java
-java -cp scripts CompareCSV /tmp/neatduck_py.csv /tmp/neatduck_js.csv
-```
-
-Expected output includes:
+The updater writes:
 
 ```text
-Python detail parser fixtures OK
-CP formula fixtures OK
-CSV identical
+data/events.csv
+data/manifest.json
+data/snapshot-latest.json
+data/detail_cache.json
 ```
 
-## Reset GitHub repo from the delivered zip / 用交付压缩包重置仓库
+The extension uses GitHub raw CSV by default:
 
-Assuming the delivered reset package is saved at `~/Downloads/NeatDuck_Timeline_github_repo_reset_v1.0.7.zip`:
+```text
+https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv
+```
+
+## Strict CSV comparison test
+
+The extension parser is JavaScript, not Java. The test harness runs:
+
+1. Python normalization through `scripts/normalize_event_fixture.py`.
+2. JavaScript extension serialization through Node.js and `extension/core.js`.
+3. Java byte-for-byte comparison through `scripts/CompareCsv.java`.
 
 ```bash
-mkdir -p ~/00_self_defined/1_gits
-cd ~/00_self_defined/1_gits
-
-git clone git@github.com:Yang-Zhang-717/NeatDuck_Timeline.git NeatDuck_Timeline
-cd NeatDuck_Timeline
-
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-unzip ~/Downloads/NeatDuck_Timeline_github_repo_reset_v1.0.7.zip -d .
-
-python3 -m py_compile scripts/update_data.py scripts/validate_parsers.py scripts/validate_cp.py
-python3 -m json.tool data/manifest.json >/dev/null
-python3 -m json.tool assets/pokemon.json >/dev/null
-TZ=UTC python3 scripts/validate_parsers.py
-python3 scripts/validate_cp.py
-
-git status
-git add -A
-git commit -m "Reset NeatDuck Timeline v1.0.7"
-git push origin main
+python scripts/normalize_event_fixture.py tests/fixtures/events_fixture.json tmp_test/python_events.csv
+node scripts/js_event_csv_runner.mjs tests/fixtures/events_fixture.json tmp_test/js_events.csv
+javac scripts/CompareCsv.java
+java -cp scripts CompareCsv tmp_test/python_events.csv tmp_test/js_events.csv
 ```
 
-HTTPS remote alternative:
+Expected output:
 
-```bash
-git clone https://github.com/Yang-Zhang-717/NeatDuck_Timeline.git NeatDuck_Timeline
+```text
+CSV byte-for-byte match: tmp_test/python_events.csv == tmp_test/js_events.csv
 ```
-
-## GitHub Actions / 自动更新
-
-`.github/workflows/update-data.yml` runs twice daily and can also be triggered manually. If data changes, it commits updated files under `data/`.
-
-## Data notes / 数据说明
-
-- `timeZone = local` means the activity happens in each viewer’s local time.
-- Fixed-zone activities, such as location-specific GO Fest events, keep an IANA zone like `Europe/Copenhagen` and show `timeZoneLabel` such as `CEST`.
-- Generic scheduled events with unknown Pokémon content remain generic. Example: `Mega Raid Day` stays `Mega Raid Day`; it is not converted into a fake Pokémon named “Mega Mega.” Civilization may yet recover.
-- Type matchup uses Pokémon GO multipliers: `1.6`, `1`, `0.625`, `0.390625`; dual defending types multiply the two single-type results.
-- `assets/pokemon.json` is canonical. `assets/pokemon_extra.json`, `extension/assets/pokemon_extra.json`, and `extension/data/pokemon.csv` were removed.
-
-## Disclaimer / 声明
-
-This project is not affiliated with, endorsed by, or sponsored by Leek Duck, Niantic, Nintendo, The Pokémon Company, or Game Freak.
-
-本项目与 Leek Duck、Niantic、Nintendo、The Pokémon Company、Game Freak 均无官方关联、认可或赞助关系。

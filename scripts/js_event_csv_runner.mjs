@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+const [fixturePath, outPath] = process.argv.slice(2);
+if (!fixturePath || !outPath) throw new Error('Usage: node scripts/js_event_csv_runner.mjs fixture.json out.csv');
+const sandbox = { window:{}, console, Intl, Date, URL, location:{origin:'https://leekduck.com'}, btoa:(s)=>Buffer.from(s,'binary').toString('base64'), unescape, encodeURIComponent };
+vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync('extension/core.js','utf8'), sandbox, {filename:'core.js'});
+const core = sandbox.window.LDT_Core;
+const events = JSON.parse(fs.readFileSync(fixturePath,'utf8'));
+fs.writeFileSync(outPath, core.eventsToCSV(events), 'utf8');

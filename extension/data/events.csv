@@ -1,3 +1,1 @@
 uid,title,shortTitle,category,lane,sub,start,endKnown,endInferred,href,timeZone,timeZoneLabel,isFixedTimeZone,source,firstSeenAt,lastSeenAt,lastScrapedAt,status
-leekduck-season-22-memories-in-motion,Memories in Motion,Memories in Motion,Season,season,Season,2026-03-03T10:00:00,2026-06-02T10:00:00,,https://leekduck.com/events/season-22-memories-in-motion,local,Local Time,,manual-seed/leekduck,2026-05-30T00:00:00Z,2026-05-30T00:00:00Z,2026-05-30T00:00:00Z,active
-leekduck-season-23-forever-forward,Forever Forward,Forever Forward,Season,season,Season,2026-06-02T10:00:00,2026-09-08T10:00:00,,https://leekduck.com/events/season-23-forever-forward,local,Local Time,,manual-seed/leekduck,2026-05-30T00:00:00Z,2026-05-30T00:00:00Z,2026-05-30T00:00:00Z,active

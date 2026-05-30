@@ -270,6 +270,10 @@ def choose_lane_sub(title: str, category: str) -> Tuple[str, str]:
         return "city", "City Safari"
     if "shadow" in hay and "raid" in hay:
         return "raids", "Shadow Raid Battles"
+    if "raid day" in hay:
+        return "raids", "Raid Day"
+    if "raid weekend" in hay:
+        return "raids", "Raid Weekend"
     if "mega" in hay and "raid" in hay:
         return "raids", "Mega Raid Battles"
     if "raid" in hay:
@@ -298,7 +302,10 @@ def pokemonish_title_part(title: str) -> str:
 
 def short_title(title: str, category: str, sub: str) -> str:
     title = clean_text(title)
+    title = re.sub(r"^Mega\s+Mega\s+Raid\s+(Day|Weekend)$", r"Mega Raid \1", title, flags=re.I)
     sub_l = (sub or "").lower()
+    if re.match(r"^(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*(?:Mega\s+)?Raid\s+(Day|Weekend)$", title, re.I):
+        return title.strip()
     if "max monday" in sub_l:
         name = pokemonish_title_part(title)
         return name if name.lower().startswith("max ") else f"Max {name}"
@@ -353,6 +360,16 @@ def parse_detail_text_dates(raw: str) -> Tuple[Optional[datetime], Optional[date
     text = clean_text(raw)
     if not text:
         return None, None
+
+    # "Starts March 3, 2026 10:00 AM Local Time Ends June 2, 2026 10:00 AM Local Time"
+    m = re.search(r"Starts\s+(.+?)\s+Ends\s+(.+?)(?:\.|$)", text, re.I)
+    if m:
+        tz_name = inherited_tz(m.group(1), m.group(2))
+        y = year_of(m.group(1), m.group(2))
+        start = parse_dt(m.group(1), y, tz_name)
+        end = parse_dt(m.group(2), y or (start.year if start else None), tz_name)
+        if start or end:
+            return start, end
 
     # "Dates: May 29-June 1, 2026 Time: 10:00 AM - 8:00 PM JST"
     # This must run before the generic "from ... to ..." matcher, or bonus-hour text can steal the event range.

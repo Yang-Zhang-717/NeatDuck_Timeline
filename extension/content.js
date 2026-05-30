@@ -17,7 +17,7 @@
   function updateTimeZoneSelect(){ const sel=document.getElementById("ld-tz-select"); if(sel) sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); }
   async function setDisplayTimeZone(value){ state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(value); await LDT_Core.saveState({ld_display_timezone:state.displayTimeZone}); updateTimeZoneSelect(); updateViewMode(); }
   function ensureTopbarTimeZoneSelect(){
-    const row=document.querySelector("#ld-topbar [data-tab-controls=\"calendar\"]") || document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
+    const row=document.getElementById("nd-calendar-controls") || document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
     const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
     wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
     row.insertBefore(wrap, row.firstChild);
@@ -32,57 +32,8 @@
     if (!h) return null;
     const wrap=document.createElement("div"); wrap.id=WRAP_ID;
     wrap.innerHTML = `
-      <div id="ld-topbar">
-        <div class="nd-top-left">
-          <button class="btn nd-tab active" data-info-mode="calendar">📅 <span data-i18n="tabCalendar">Event Calendar</span></button>
-          <button class="btn nd-tab" data-info-mode="types">🧬 <span data-i18n="tabTypes">属性克制</span></button>
-          <button class="btn nd-tab" data-info-mode="pokedex">📖 <span data-i18n="tabPokedex">宝可梦图鉴</span></button>
-          <button class="btn nd-tab" data-info-mode="max">🛡️ <span data-i18n="tabMax">极巨化</span></button>
-        </div>
-        <div class="nd-top-right">
-          <select class="btn" id="ld-lang-select" title="Language">
-            <option value="zh-CN">简体中文</option>
-            <option value="zh-TW">繁體中文</option>
-            <option value="en">English</option>
-          </select>
-          <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">Settings</span></button>
-        </div>
-        <div class="nd-tab-controls" data-tab-controls="calendar">
-          <button class="btn" data-act="today">🎯 <span data-i18n="today">Today</span></button>
-          <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">This Week</span></button>
-          <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">This Month</span></button>
-          <button class="btn" data-act="switch-mode">↔️ <span data-i18n="switchMode">模式</span></button>
-          <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">Time Zone</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select></label>
-          <button class="btn" data-act="rescan">🔄 <span data-i18n="dataUpdate">Page Update</span></button>
-          <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button>
-          <button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">Export Events CSV</span></button>
-          <button class="btn" data-act="export-log">🧾 <span data-i18n="exportLog">Export Log</span></button>
-          <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button>
-          <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button>
-        </div>
-        <div class="nd-tab-controls" data-tab-controls="types" style="display:none;"><button class="btn" data-info-export="types">📤 导出CSV</button></div>
-        <div class="nd-tab-controls" data-tab-controls="pokedex" style="display:none;"><button class="btn" data-info-export="pokedex">📤 导出CSV</button></div>
-        <div class="nd-tab-controls" data-tab-controls="max" style="display:none;"><button class="btn" data-info-export="max">📤 导出CSV</button></div>
-      </div>
-      <div id="ld-left"><svg id="${LEGEND_ID}" viewBox="0 0 ${C.LEGEND_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin"></svg></div>
-      <div id="ld-right">
-        <svg id="${SVG_ID}" viewBox="0 0 ${C.TL_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin">
-          <g id="ld-month-bgs"></g>
-          <g id="ld-weekend-bgs"></g>
-          <g id="ld-period-blocks"></g>
-          <g id="ld-ruler-top" class="ld-ruler"></g>
-          <g id="ld-ruler-bottom" class="ld-ruler"></g>
-          <g id="ld-lane-seps"></g>
-          <g id="ld-items"></g>
-          <g id="ld-now"><line class="ld-now" y1="0" y2="${C.HEIGHT-78}"/></g>
-        </svg>
-        <div id="ld-extenders"></div>
-        <div id="ld-monthgrid" style="display:none;"></div>
-      </div>
-      <div class="ld-modal-mask" id="ld-mask"></div>
-      <div class="ld-modal" id="ld-colors-modal"><h3 data-i18n="editingColors">Editing category colors</h3><div id="ld-colors-rows"></div><div class="footer"><button class="btn" data-close="colors">OK</button></div></div>
-      <div class="ld-modal" id="ld-settings-modal"><h3 data-i18n="settings">Settings</h3><div id="ld-settings-body"></div><div class="footer"><button class="btn" data-save="settings"><span data-i18n="apply">Apply</span></button><button class="btn" data-close="settings">OK</button></div></div>
-      <div class="ld-modal" id="ld-updates-modal"><h3 data-i18n="updates">Updates detected</h3><div id="ld-updates-body"></div><div class="footer"><button class="btn" data-apply="updates"><span data-i18n="apply">Apply</span></button><button class="btn" data-close="updates"><span data-i18n="ignore">Ignore</span></button></div></div>
+      <div id="ld-topbar"><div id="nd-tabbar" class="row nd-tabbar"><button class="btn nd-tab active" data-tab="calendar">📅 <span data-i18n="eventCalendar">Event Calendar</span></button><button class="btn nd-tab" data-tab="types">🧬 <span data-i18n="typeMatchup">Type Matchup</span></button><button class="btn nd-tab" data-tab="pokedex">📖 <span data-i18n="pokedex">Pokédex</span></button></div><div id="nd-commonbar" class="row nd-commonbar"><select class="btn" id="ld-lang-select" title="Language"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option></select><button class="btn" data-act="settings">⚙️ <span data-i18n="settings">Settings</span></button></div><div id="nd-calendar-controls" class="row nd-tab-controls active" data-tab-controls="calendar"><button class="btn" data-act="today">🎯 <span data-i18n="today">Today</span></button><button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">This Week</span></button><button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">This Month</span></button><button class="btn" data-act="switch-mode">↔️ <span data-i18n="switchMode">Mode</span></button><button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button><button class="btn" data-act="open-leekduck">🦆 <span data-i18n="openLeekDuck">Open LeekDuck</span></button><button class="btn" data-act="rescan">🔄 <span data-i18n="pageUpdate">Page Update</span></button><button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button><button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">Export Events CSV</span></button><button class="btn" data-act="email-log">📨 <span data-i18n="emailLog">Export Log File</span></button><button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button></div><div id="nd-info-controls" class="row nd-tab-controls" data-tab-controls="info"></div></div>
+      <div id="ld-left"><svg id="${LEGEND_ID}" viewBox="0 0 ${C.LEGEND_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin"></svg></div><div id="ld-right"><svg id="${SVG_ID}" viewBox="0 0 ${C.TL_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin"><g id="ld-month-bgs"></g><g id="ld-weekend-bgs"></g><g id="ld-period-blocks"></g><g id="ld-ruler-top" class="ld-ruler"></g><g id="ld-ruler-bottom" class="ld-ruler"></g><g id="ld-lane-seps"></g><g id="ld-items"></g><g id="ld-now"><line class="ld-now" y1="0" y2="${C.HEIGHT-78}"/></g></svg><div id="ld-extenders"></div><div id="ld-monthgrid" style="display:none"></div></div><div id="ld-mask" class="ld-mask"></div><div id="ld-colors-modal" class="ld-modal"><h3 data-i18n="editingColors">Editing category colors</h3><div id="ld-colors-rows"></div><div class="row" style="justify-content:flex-end"><button class="btn" data-close="colors" data-i18n="close">Close</button></div></div><div id="ld-settings-modal" class="ld-modal"><h3>Settings</h3><div id="ld-settings-rows"></div><div class="row" style="justify-content:flex-end"><button class="btn" data-close="settings" data-i18n="close">Close</button></div></div>
     `;
     h.insertAdjacentElement("afterend", wrap);
     return wrap;
@@ -196,7 +147,7 @@
     }
     function scheduleHide(){
       clearTimeout(hideTimer);
-      hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 600);
+      hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 2400);
     }
     function hide(){ if(el) el.style.display="none"; }
     return { show, scheduleHide, hide };
@@ -319,7 +270,7 @@
     document.documentElement.style.setProperty("--nd-item-font-size", state.settings.fontSize + "px");
     document.documentElement.style.setProperty("--nd-item-font-weight", state.settings.fontWeight);
     const wrap=document.getElementById(WRAP_ID);
-    if(wrap) wrap.style.marginLeft = wrap.style.marginRight = state.settings.outerMarginX + "px";
+    if(wrap){ wrap.style.marginLeft = wrap.style.marginRight = state.settings.outerMarginX ? (state.settings.outerMarginX + "px") : "auto"; }
   }
 
   function approxTextWidth(text){
@@ -349,9 +300,7 @@
   function emailSelectedLog(){
     const list = selectedOrVisibleEvents();
     if(!list.length){ alert(LDT_Core.t(state.lang, "noEmailEvents")); return; }
-    const body = LDT_Core.eventsToTextLog(list, state.lang, state.pokemonDB);
-    const url = "mailto:?subject=" + encodeURIComponent("NeatDuck_Timeline Event Log") + "&body=" + encodeURIComponent(body);
-    window.open(url, "_blank");
+    saveBlob("neatduck-event-log.txt", LDT_Core.eventsToTextLog(list, state.lang, state.pokemonDB), "text/plain;charset=utf-8");
   }
 
   function refreshRemoteData(showAlert){
@@ -589,24 +538,42 @@
     renderNowLine(svg, state.rangeStart, state.rangeEnd);
   }
 
+  function setTodayRange(){
+    const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    const start=LDT_Core.beginOfDay(nowD);
+    state.rangeStart=+start;
+    state.rangeEnd=+LDT_Core.addDays(start,1);
+  }
+  function setWeekRange(){
+    const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    const start=LDT_Core.mondayOfWeek(nowD);
+    state.rangeStart=+start;
+    state.rangeEnd=+LDT_Core.addDays(start,7);
+  }
+  function setMonthRange(){
+    const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    const start=new Date(nowD.getFullYear(), nowD.getMonth(), 1);
+    state.rangeStart=+start;
+    state.rangeEnd=+new Date(nowD.getFullYear(), nowD.getMonth()+1, 1);
+  }
+  function fitRangeToEvents(){ setWeekRange(); }
+
   function renderMonthGrid(){
     const svg = document.getElementById(SVG_ID);
     const mg  = document.getElementById("ld-monthgrid");
     svg.style.display = "none"; mg.style.display = "block"; mg.innerHTML = "";
     const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-    const todayKey=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone).toDateString();
-    const laneRank={}; LANES_SPEC.forEach((l,i)=>{ (l.sub&&l.sub.length?l.sub:[l.key]).forEach((sub,j)=>laneRank[sub]=i*100+j); });
     const head=document.createElement("div"); head.className="nd-month-head"; head.innerHTML=days.map(d=>`<div>${d}</div>`).join(""); mg.appendChild(head);
     const rangeStart=new Date(state.rangeStart), rangeEnd=new Date(state.rangeEnd);
     let wk=LDT_Core.mondayOfWeek(rangeStart); const last=LDT_Core.addDays(LDT_Core.mondayOfWeek(rangeEnd),7);
-    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e)})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd);
+    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e)})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd).sort((a,b)=>(LDT_Core.LANE_ORDER.indexOf(a.e.lane)-LDT_Core.LANE_ORDER.indexOf(b.e.lane))||(+a.s-+b.s)||String(a.e.sub||"").localeCompare(String(b.e.sub||"")));
     while(+wk<+last){
       const weekStart=new Date(wk), weekEnd=LDT_Core.addDays(weekStart,7);
       const row=document.createElement("div"); row.className="nd-week-row";
-      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"+(day.toDateString()===todayKey?" today":""); cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
+      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"; const today=LDT_Core._dayKey(new Date())===LDT_Core._dayKey(day); if(today) cell.classList.add("today"); cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
       const segs=[];
       visible.forEach(x=>{ if(+x.d<+weekStart || +x.s>=+weekEnd) return; const a=Math.max(0, Math.floor((Math.max(+x.s,+weekStart)-+weekStart)/86400000)); const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000)); segs.push({e:x.e,a,b,s:+x.s}); });
-      segs.sort((a,b)=>(laneRank[a.e.sub]??laneRank[a.e.lane]??9999)-(laneRank[b.e.sub]??laneRank[b.e.lane]??9999) || a.a-b.a || a.s-b.s);
+      segs.sort((a,b)=>a.a-b.a || a.s-b.s);
       const lanes=[]; segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
       row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
       segs.forEach(seg=>{
@@ -621,7 +588,7 @@
   }
 
   function updateViewMode(){
-    if(window.ND_Info && window.ND_Info.isInfoMode && window.ND_Info.isInfoMode()) return;
+    if(window.ND_Info && window.ND_Info.mode) return;
     const svg=document.getElementById(SVG_ID);
     const mg=document.getElementById("ld-monthgrid");
     if (state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); }
@@ -642,21 +609,20 @@
       updateViewMode();
     }
     stage.addEventListener("mousedown", (ev)=>{
-      if(window.ND_Info && window.ND_Info.isInfoMode && window.ND_Info.isInfoMode()) return;
+      if(window.ND_Info && window.ND_Info.mode) return;
       if(state.viewMode!=="linear" || ev.button!==0) return;
-      if(ev.target.closest && ev.target.closest(".ld-tooltip,.ld-modal,#ld-topbar,#ld-info-panel")) return;
+      if(ev.target.closest && ev.target.closest(".ld-tooltip,.ld-modal,#ld-topbar")) return;
       dragging=true; lastX=ev.clientX; stage.style.cursor="grabbing"; ev.preventDefault();
     });
     window.addEventListener("mouseup", ()=>{ dragging=false; stage.style.cursor=""; });
     window.addEventListener("mousemove", (ev)=>{
-      if(window.ND_Info && window.ND_Info.isInfoMode && window.ND_Info.isInfoMode()) return;
       if(!dragging || state.viewMode!=="linear") return;
       const dx=ev.clientX-lastX; lastX=ev.clientX;
       panByPixels(dx);
     });
     stage.addEventListener("wheel", (ev)=>{
-      tooltip.hide();
-      if(window.ND_Info && window.ND_Info.isInfoMode && window.ND_Info.isInfoMode()) return;
+      document.querySelectorAll(".ld-tooltip").forEach(x=>x.remove());
+      if(window.ND_Info && window.ND_Info.mode) return;
       if(state.viewMode!=="linear") return;
       ev.preventDefault();
       const rect=stage.getBoundingClientRect();
@@ -793,7 +759,7 @@
         const titleEl=w.querySelector('h2,h3,.event-title');
         let title=titleEl?titleEl.textContent.trim():"";
         title = LDT_Core.cleanTitle(title);
-        if (!title || /^Happening\s+Now$/i.test(title) || /^Mega\s+Mega(?:\s+(?:Raid|Raids|Battles))?$/i.test(title)) continue;
+        if (!title || /^Happening\s+Now$/i.test(title)) continue;
         const a=w.querySelector('a.event-item-link, a[href]');
         const href=a ? (new URL(a.getAttribute('href'), location.origin)).toString() : "";
         const categoryEl=w.querySelector('p.badge, .badge, .label, .category, .event-type, .event-item-wrapper > p, p');
@@ -855,14 +821,7 @@
       const act=b.getAttribute("data-act");
       if (act==="settings"){ buildSettingsModal(); }
       if (act==="colors"){ buildColorsModal(); }
-      if (act==="today"){
-        const span = state.rangeEnd - state.rangeStart;
-        if (isFinite(span) && span > 0){
-          const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart = +nowD - span * 0.25;
-          state.rangeEnd = state.rangeStart + span;
-          updateViewMode();
-        }
-      }
+      if (act==="today"){ setTodayRange(); updateViewMode(); }
       if (act==="open-standalone"){
         // Open immediately while the click is still a user gesture; then save.
         // Waiting for chrome.storage first can make Chrome treat this as a blocked popup.
@@ -878,25 +837,23 @@
       if (act==="remote-update"){ const resp=await refreshRemoteData(true); if(resp && resp.ok){ const st=await LDT_Core.loadState(); state.events=LDT_Core.dedupeEvents(st.events || state.events); state.csvText=st.eventsCsv || LDT_Core.eventsToCSV(state.events); LDT_Core.assignThemeRows(state.events); updateViewMode(); } }
       if (act==="export-ics"){ exportSelectedICS(); }
       if (act==="email-log"){ emailSelectedLog(); }
-      if (act==="export-log"){ saveBlob("neatduck-timeline-log.txt", LDT_Core.eventsToTextLog(currentLogEvents(), state.lang, state.pokemonDB), "text/plain;charset=utf-8"); }
       if (act==="clear-selection"){ state.selectedIds.clear(); updateViewMode(); }
       if (act==="export-events-csv"){
         const text = LDT_Core.eventsToCSV(state.events);
         const url = URL.createObjectURL(new Blob([text],{type:"text/csv"}));
         const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
       }
-      if (act==="switch-mode"){ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); }
+      if (act==="switch-mode"){ state.viewMode = state.viewMode==="linear" ? "month" : "linear"; updateViewMode(); }
       if (act==="switch-linear"){ state.viewMode="linear"; updateViewMode(); }
       if (act==="switch-monthgrid"){ state.viewMode="month"; updateViewMode(); }
-      if (act==="reset-week"){ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5); updateViewMode(); }
-      if (act==="reset-month"){ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-7); state.rangeEnd=+LDT_Core.addDays(now,21); updateViewMode(); }
+      if (act==="reset-week"){ setWeekRange(); updateViewMode(); }
+      if (act==="reset-month"){ setMonthRange(); updateViewMode(); }
+      if (act==="open-leekduck"){ window.open("https://leekduck.com/events/", "_blank"); }
     });
     const mask=document.getElementById("ld-mask");
     mask.addEventListener("click",()=>{ Array.from(document.querySelectorAll(".ld-modal")).forEach(m=>m.style.display="none"); mask.style.display="none"; });
     const langSel=document.getElementById("ld-lang-select");
     if (langSel) langSel.addEventListener("change", async ()=>{ await LDT_Core.saveState({ld_lang: langSel.value}); setLang(langSel.value); });
-    const tzSel=document.getElementById("ld-tz-select");
-    if (tzSel) tzSel.addEventListener("change", ()=>setDisplayTimeZone(tzSel.value));
     document.querySelectorAll("[data-close='colors']").forEach(b=> b.addEventListener("click", ()=> closeModal("colors") ));
     document.querySelectorAll("[data-close='settings']").forEach(b=> b.addEventListener("click", ()=> closeModal("settings") ));
     document.querySelectorAll("[data-close='updates']").forEach(b=> b.addEventListener("click", ()=> closeModal("updates") ));
@@ -921,6 +878,8 @@
     }, delay);
   }
 
+  window.ND_renderCalendarTab = function(){ updateViewMode(); };
+
   async function init(){
     const wrap=insertUIRoot(); if (!wrap) return;
     await refreshRemoteData(false);
@@ -932,7 +891,7 @@
     } catch(e) { console.warn("pokemon.json unavailable", e); }
     setLang(state.lang);
     ensureTopbarTimeZoneSelect();
-    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang, renderCalendar:()=>updateViewMode()});
+    if(window.ND_Info) window.ND_Info.init({getLang:()=>state.lang, db:state.pokemonDB, showCalendar:()=>updateViewMode()});
     updateTimeZoneSelect();
 
     // Storage-first: use the normalized long-term history if present, CSV as fallback.
@@ -946,14 +905,8 @@
     } else {
       state.events = [];
     }
-    // 默认本周视图：按钮“今日/本周/本月”只改范围，不偷偷切模式。
-    const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
-    state.rangeStart=+LDT_Core.addDays(now,-2);
-    state.rangeEnd=+LDT_Core.addDays(now,5);
-
-    attachControls();
-    attachTimelineInteractions();
-    state.viewMode = "linear";
+    // default range
+    fitRangeToEvents();
     updateViewMode();
 
     // GitHub data is preferred. Page scraping now runs only when the Data Update button is clicked.

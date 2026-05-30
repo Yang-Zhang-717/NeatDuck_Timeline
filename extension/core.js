@@ -16,48 +16,47 @@
   Core.DEFAULT_DISPLAY_TIME_ZONE = "local";
   Core.TIME_ZONE_OPTIONS = [
     {value:"local", label:"Browser / Local"},
-    {value:"UTC-12:00", label:"UTC-12 — Baker Island / Howland Island / US Outlying Islands"},
+    {value:"UTC-12:00", label:"UTC-12 — Baker Island / Howland Island / Alofi"},
     {value:"UTC-11:00", label:"UTC-11 — Pago Pago / Niue / Midway"},
     {value:"UTC-10:00", label:"UTC-10 — Honolulu / Tahiti / Rarotonga"},
-    {value:"UTC-09:00", label:"UTC-09 — Anchorage / Juneau / Gambier"},
-    {value:"UTC-08:00", label:"UTC-08 — Los Angeles / Vancouver / Tijuana"},
-    {value:"UTC-07:00", label:"UTC-07 — Denver / Phoenix / Calgary"},
-    {value:"UTC-06:00", label:"UTC-06 — Chicago / Mexico City / Winnipeg"},
-    {value:"UTC-05:00", label:"UTC-05 — New York / Toronto / Lima"},
-    {value:"UTC-04:00", label:"UTC-04 — Santiago / Caracas / La Paz"},
-    {value:"UTC-03:00", label:"UTC-03 — Buenos Aires / São Paulo / Montevideo"},
-    {value:"UTC-02:00", label:"UTC-02 — South Georgia / Fernando de Noronha / Nuuk"},
-    {value:"UTC-01:00", label:"UTC-01 — Azores / Cape Verde / Scoresbysund"},
-    {value:"UTC", label:"UTC — London / Lisbon / Reykjavik"},
-    {value:"UTC+01:00", label:"UTC+01 — Paris / Berlin / Copenhagen"},
-    {value:"UTC+02:00", label:"UTC+02 — Athens / Cairo / Johannesburg"},
-    {value:"UTC+03:00", label:"UTC+03 — Moscow / Istanbul / Nairobi"},
-    {value:"UTC+04:00", label:"UTC+04 — Dubai / Baku / Yerevan"},
-    {value:"UTC+05:00", label:"UTC+05 — Karachi / Tashkent / Maldives"},
-    {value:"UTC+06:00", label:"UTC+06 — Dhaka / Almaty / Thimphu"},
-    {value:"UTC+07:00", label:"UTC+07 — Bangkok / Jakarta / Hanoi"},
-    {value:"UTC+08:00", label:"UTC+08 — Beijing / Singapore / Perth"},
-    {value:"UTC+09:00", label:"UTC+09 — Tokyo / Seoul / Osaka"},
-    {value:"UTC+10:00", label:"UTC+10 — Sydney / Brisbane / Guam"},
-    {value:"UTC+11:00", label:"UTC+11 — Nouméa / Solomon Islands / Magadan"},
-    {value:"UTC+12:00", label:"UTC+12 — Auckland / Fiji / Kamchatka"},
-    {value:"UTC+13:00", label:"UTC+13 — Apia / Tonga / Tokelau"},
-    {value:"UTC+14:00", label:"UTC+14 — Kiritimati / Line Islands / Samoa DST"},
+    {value:"UTC-09:00", label:"UTC-9 — Anchorage / Gambier / Juneau"},
+    {value:"UTC-08:00", label:"UTC-8 — Los Angeles / Vancouver / Tijuana"},
+    {value:"UTC-07:00", label:"UTC-7 — Denver / Phoenix / Calgary"},
+    {value:"UTC-06:00", label:"UTC-6 — Chicago / Mexico City / Winnipeg"},
+    {value:"UTC-05:00", label:"UTC-5 — New York / Toronto / Lima"},
+    {value:"UTC-04:00", label:"UTC-4 — Santiago / Halifax / La Paz"},
+    {value:"UTC-03:00", label:"UTC-3 — São Paulo / Buenos Aires / Montevideo"},
+    {value:"UTC-02:00", label:"UTC-2 — South Georgia / Noronha / Mid-Atlantic"},
+    {value:"UTC-01:00", label:"UTC-1 — Azores / Cabo Verde / Scoresbysund"},
+    {value:"UTC+00:00", label:"UTC±0 — London / Accra / Reykjavík"},
+    {value:"UTC+01:00", label:"UTC+1 — Paris / Berlin / Lagos"},
+    {value:"UTC+02:00", label:"UTC+2 — Copenhagen / Cairo / Johannesburg"},
+    {value:"UTC+03:00", label:"UTC+3 — Istanbul / Moscow / Riyadh"},
+    {value:"UTC+04:00", label:"UTC+4 — Dubai / Baku / Tbilisi"},
+    {value:"UTC+05:00", label:"UTC+5 — Karachi / Tashkent / Maldives"},
+    {value:"UTC+06:00", label:"UTC+6 — Dhaka / Almaty / Thimphu"},
+    {value:"UTC+07:00", label:"UTC+7 — Bangkok / Hanoi / Jakarta"},
+    {value:"UTC+08:00", label:"UTC+8 — Beijing / Singapore / Perth"},
+    {value:"UTC+09:00", label:"UTC+9 — Tokyo / Seoul / Palau"},
+    {value:"UTC+10:00", label:"UTC+10 — Sydney / Brisbane / Port Moresby"},
+    {value:"UTC+11:00", label:"UTC+11 — Nouméa / Honiara / Magadan"},
+    {value:"UTC+12:00", label:"UTC+12 — Auckland / Fiji / Nauru"},
+    {value:"UTC+13:00", label:"UTC+13 — Apia / Nukualofa / Fakaofo"},
+    {value:"UTC+14:00", label:"UTC+14 — Kiritimati / Tabuaeran / Teraina"}
   ];
-  Core.fixedOffsetMinutes = function(value){
-    const s=String(value||"").trim().toUpperCase();
-    if(s==="UTC" || s==="GMT") return 0;
-    const m=s.match(/^(?:UTC|GMT)?([+-])(\d{1,2})(?::?(\d{2}))?$/);
-    if(!m) return null;
-    const mins=(Number(m[2])*60)+Number(m[3]||0);
-    return (m[1]==="-" ? -mins : mins);
+  Core.formatUtcOffset = function(minutes){
+    const sign = minutes < 0 ? "-" : "+";
+    const abs = Math.abs(minutes);
+    return `UTC${sign}${String(Math.floor(abs/60)).padStart(2,"0")}:${String(abs%60).padStart(2,"0")}`;
   };
-  Core.fixedOffsetLabel = function(value){
-    const off=Core.fixedOffsetMinutes(value);
-    if(off==null) return "";
-    if(off===0) return "UTC";
-    const sign=off<0?"-":"+", abs=Math.abs(off), hh=String(Math.floor(abs/60)).padStart(2,"0"), mm=String(abs%60).padStart(2,"0");
-    return `UTC${sign}${hh}:${mm}`;
+  Core.parseUtcOffsetMinutes = function(value){
+    const q=String(value||"").trim().toUpperCase();
+    if(q==="UTC" || q==="GMT" || q==="UTC+00:00" || q==="UTC-00:00") return 0;
+    const m=q.match(/^(?:UTC|GMT)?([+-])(\d{1,2})(?::?(\d{2}))?$/);
+    if(!m) return null;
+    const hh=Number(m[2]), mm=Number(m[3]||0);
+    if(hh>14 || mm>=60) return null;
+    return (m[1]==="-"?-1:1)*(hh*60+mm);
   };
   Core.namedZoneToIANA = function(z){
     const t=String(z||"").toUpperCase();
@@ -65,22 +64,22 @@
     if(t==="PT"||t==="PDT"||t==="PST") return "America/Los_Angeles";
     if(t==="CEST"||t==="CET") return "Europe/Copenhagen";
     if(t==="BST") return "Europe/London";
-    if(t==="UTC"||t==="GMT") return "UTC";
-    if(/^[-+]?\d/.test(t)) return "UTC";
+    if(t==="UTC"||t==="GMT") return "UTC+00:00";
+    const off=Core.parseUtcOffsetMinutes(t); if(off!=null) return Core.formatUtcOffset(off);
     return "";
   };
   Core.normalizeDisplayTimeZone = function(value){
     const v=String(value||Core.DEFAULT_DISPLAY_TIME_ZONE).trim();
     if(!v || v==="local") return "local";
     if(Core.TIME_ZONE_OPTIONS.some(x=>x.value===v)) return v;
-    if(Core.fixedOffsetMinutes(v) != null) return Core.fixedOffsetLabel(v);
+    const off=Core.parseUtcOffsetMinutes(v); if(off!=null) return Core.formatUtcOffset(off);
     try{ new Intl.DateTimeFormat("en-US", {timeZone:v}).format(new Date()); return v; }
     catch(_){ return "local"; }
   };
   Core.detectTimeZone = function(text){
     const s=String(text||"");
     if(/\bLocal\s+Time\b/i.test(s)) return {timeZone:"local", label:"Local Time", fixed:false};
-    const m=s.match(/\b(JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b/i);
+    const m=s.match(/\b(JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT|UTC[+-]\d{1,2}(?::?\d{2})?)\b/i);
     if(m){ const label=m[1].toUpperCase(); return {timeZone:Core.namedZoneToIANA(label)||label, label, fixed:true}; }
     return {timeZone:"local", label:"Local Time", fixed:false};
   };
@@ -88,10 +87,10 @@
     const d=Core.parseLocalDateString(date); if(!d) return null;
     const tz=Core.normalizeDisplayTimeZone(timeZone);
     if(tz==="local") return {year:d.getFullYear(), month:d.getMonth()+1, day:d.getDate(), hour:d.getHours(), minute:d.getMinutes(), second:d.getSeconds()};
-    const fixedOff = Core.fixedOffsetMinutes(tz);
-    if(fixedOff != null){
-      const z = new Date(d.getTime() + fixedOff*60000);
-      return {year:z.getUTCFullYear(), month:z.getUTCMonth()+1, day:z.getUTCDate(), hour:z.getUTCHours(), minute:z.getUTCMinutes(), second:z.getUTCSeconds()};
+    const offset=Core.parseUtcOffsetMinutes(tz);
+    if(offset!=null){
+      const shifted=new Date(d.getTime()+offset*60000);
+      return {year:shifted.getUTCFullYear(), month:shifted.getUTCMonth()+1, day:shifted.getUTCDate(), hour:shifted.getUTCHours(), minute:shifted.getUTCMinutes(), second:shifted.getUTCSeconds()};
     }
     const fmt=new Intl.DateTimeFormat("en-CA", {timeZone:tz, year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hourCycle:"h23"});
     const out={};
@@ -128,7 +127,7 @@
     }catch(_){ return Core.DEFAULT_REMOTE_URL; }
   };
   Core.DEFAULT_SETTINGS = {
-    outerMarginX: 4,
+    outerMarginX: 0,
     labelPaddingX: 6,
     itemBorderWidth: 1,
     itemRadius: 4,
@@ -157,8 +156,6 @@
     const t = String(tzName || "").toUpperCase();
     if (t === "JST") return 9 * 60;
     if (t === "UTC" || t === "GMT") return 0;
-    const fixed = Core.fixedOffsetMinutes(t);
-    if (fixed != null) return fixed;
     if (t === "CEST") return 2 * 60;
     if (t === "CET") return 1 * 60;
     if (t === "BST") return 1 * 60;
@@ -180,21 +177,24 @@
 
   /* i18n */
   Core.I18N = {
-    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","exportLog":"Export Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local","tabCalendar":"Event Calendar","tabTypes":"Type Matchups","tabPokedex":"Pokédex","tabMax":"Dynamax","switchMode":"Mode"},
-    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","exportLog":"导出日志文件","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地","tabCalendar":"Event Calendar","tabTypes":"属性克制","tabPokedex":"宝可梦图鉴","tabMax":"极巨化","switchMode":"模式"},
-    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","exportLog":"匯出日誌檔","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地","tabCalendar":"Event Calendar","tabTypes":"屬性克制","tabPokedex":"寶可夢圖鑑","tabMax":"極巨化","switchMode":"模式"}
+    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Export Log File","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
+    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"导出日志文件","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
+    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"匯出日誌檔案","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
   };
   Core.DEFAULT_LANG = "zh-CN";
 
+  Object.assign(Core.I18N.en, {eventCalendar:"Event Calendar", typeMatchup:"Type Matchup", pokedex:"Pokédex", switchMode:"Mode", pageUpdate:"Page Update", openLeekDuck:"Open LeekDuck", exportTypeCSV:"Export type CSV", exportPokedexCSV:"Export Pokédex CSV", search:"Search"});
+  Object.assign(Core.I18N["zh-CN"], {eventCalendar:"活动日历", typeMatchup:"属性克制", pokedex:"宝可梦图鉴", switchMode:"模式", pageUpdate:"页面更新", openLeekDuck:"打开 LeekDuck", exportTypeCSV:"导出属性CSV", exportPokedexCSV:"导出图鉴CSV", search:"搜索"});
+  Object.assign(Core.I18N["zh-TW"], {eventCalendar:"活動日曆", typeMatchup:"屬性克制", pokedex:"寶可夢圖鑑", switchMode:"模式", pageUpdate:"頁面更新", openLeekDuck:"打開 LeekDuck", exportTypeCSV:"匯出屬性CSV", exportPokedexCSV:"匯出圖鑑CSV", search:"搜尋"});
 
   Object.assign(Core.I18N.en, {
-    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote CSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK"
+    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote CSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to export. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK"
   });
   Object.assign(Core.I18N["zh-CN"], {
-    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 CSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定"
+    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 CSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可导出的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定"
   });
   Object.assign(Core.I18N["zh-TW"], {
-    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 CSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
+    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 CSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可匯出的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
   });
   Core.t = function(lang, key){ const dict = Core.I18N[lang] || Core.I18N.en; return dict[key] || Core.I18N.en[key] || key; };
 
@@ -351,13 +351,14 @@
 
   Core.shortenRaids = function(raw){
     let s = Core.cleanTitle(raw||"");
-    // "Mega XXX in Mega Raids" -> "Mega XXX"
+    s = s.replace(/^Mega\s+Mega\s+Raid\s+(Day|Weekend)$/i, "Mega Raid $1");
+    if (/^(?:Mega\s+)?Raid\s+(?:Day|Weekend)$/i.test(s)) return s;
+    if (/^(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+Mega\s+Raid\s+(?:Day|Weekend)$/i.test(s)) return s;
     s = s.replace(/\s+in\s+Mega\s+Raids?/i, "");
     s = s.replace(/\s+in\s+Shadow\s+(?:Raids?|Raid\s+Battles?)/i, "");
-    // "... in 5-Star Raid Battles" -> "..."
     s = s.replace(/\s+in\s+5-?\s*Star\s+Raid\s+Battles/i, "");
-    // Mega Raid Day/Weekend suffixes
-    s = s.replace(/\s*Mega\s+Raid\s+(Day|Weekend)\s*:?\s*(.*)$/i, "Mega $2".trim());
+    const m=s.match(/^(.+?)\s+Mega\s+Raid\s+(Day|Weekend)$/i);
+    if(m && m[1] && !/^(?:Mega\s+)?Raid$/i.test(m[1].trim())) return /^Mega\s+/i.test(m[1].trim()) ? m[1].trim() : "Mega " + m[1].trim();
     return s.trim();
   };
 
@@ -620,6 +621,9 @@
 
   Core.extractPokemonName = function(title){
     let s = Core.cleanTitle(title||"");
+    s = s.replace(/^Mega\s+Mega\s+Raid\s+(Day|Weekend)$/i, "Mega Raid $1");
+    if (/^(?:Mega\s+)?Raid\s+(?:Day|Weekend)$/i.test(s)) return s;
+    if (/^(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+Mega\s+Raid\s+(?:Day|Weekend)$/i.test(s)) return s;
     s = s.replace(/\s*\|\s*.*$/i, "");
     s = s.replace(/\s+in\s+(?:5[- ]?star|five[- ]?star|legendary|mega|shadow)\s+(?:raid|raids|raid battles|battles).*$/i, "");
     s = s.replace(/\s+(?:5[- ]?star|legendary|mega|shadow)\s+(?:raid|raids|raid battles|battles).*$/i, "");
@@ -638,6 +642,8 @@
     const isPokemonOnly = /^(5-Star Raid Battles|Mega Raid Battles|Shadow Raid Battles|Max Mondays|Pokémon Spotlight Hour|Raid Hour|PokéStop Showcase)$/i.test(sub);
     if (isPokemonOnly){
       let pokemon = Core.extractPokemonName(e.title || raw);
+      if (/^Mega\s+Mega\s+Raid\s+(Day|Weekend)$/i.test(pokemon)) return raw.replace(/^Mega\s+Mega\s+Raid/i, "Mega Raid");
+      if (/^(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+)?(?:Mega\s+)?Raid\s+(?:Day|Weekend)$/i.test(pokemon)) return raw;
       if (sub === "Mega Raid Battles" && !/^Mega\s+/i.test(pokemon)) pokemon = "Mega " + pokemon;
       const local = (l === "en") ? pokemon.replace(/^Dynamax\s+/i, "") : (Core.translatePokemonName(pokemon, l, pokemonDB) || pokemon);
       if (sub === "Max Mondays") return /^Max\b/i.test(local) ? local : "Max " + local;
@@ -698,6 +704,16 @@
     function finish(a,b){ if(a) out.start=a; if(b) out.end=b; return out; }
     function inheritedTZ(a,b){ return (((a || "") + " " + (b || "")).match(/\b(JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b/i) || [])[1] || null; }
     function yearOf(a,b){ const m = (((a || "") + " " + (b || "")).match(/\b(20\d{2})\b/) || [])[1]; return m ? +m : null; }
+
+    // "Starts March 3, 2026 10:00 AM Local Time Ends June 2, 2026 10:00 AM Local Time"
+    let startsEnds = text.match(/Starts\s+(.+?)\s+Ends\s+(.+?)(?:\.|$)/i);
+    if (startsEnds){
+      const tz = inheritedTZ(startsEnds[1], startsEnds[2]);
+      const y = yearOf(startsEnds[1], startsEnds[2]);
+      const a = Core._parseDetailPhraseDate(startsEnds[1], y, tz);
+      const b = Core._parseDetailPhraseDate(startsEnds[2], y || (a ? a.getFullYear() : null), tz);
+      if (a || b) return finish(a,b);
+    }
 
     // "Dates: May 29-June 1, 2026 Time: 10:00 AM - 8:00 PM JST"
     // Check this before generic "from ... to ..." snippets so ticket-bonus hours do not override the real event range.
@@ -795,75 +811,36 @@
   };
 
   /* CSV <-> events */
-  Core.CSV_COLUMNS = ["uid","title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone","source","firstSeenAt","lastSeenAt","lastScrapedAt","status"];
-
-  Core._eventISO = function(v, event, forceUTC){
-    const d = Core.parseLocalDateString(v);
-    if (!d) return "";
-    const isFloatingLocal = !forceUTC && event && !event.isFixedTimeZone && Core.normalizeDisplayTimeZone(event.timeZone || "local") === "local";
-    if (isFloatingLocal){
-      const pad=n=>String(n).padStart(2,"0");
-      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    }
-    return d.toISOString().replace(/\.\d{3}Z$/, "Z");
-  };
-
-  Core._csvEscape = function(value){
-    const s = String(value == null ? "" : value);
-    return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
-  };
-
   Core.eventsToCSV = function(events){
-    const cols = Core.CSV_COLUMNS;
-    const now = "";
-    const rows = (events || []).map(e => {
-      const n = Core.normalizeLegacyEvent(e) || e || {};
-      const row = {
-        uid: n.uid || e.uid || n.id || e.id || Core.makeEventId(n),
-        title: n.title || "",
-        shortTitle: n.shortTitle || "",
-        category: n.category || "",
-        lane: n.lane || "",
-        sub: n.sub || "",
-        start: Core._eventISO(n.start, n),
-        endKnown: Core._eventISO(n.endKnown, n),
-        endInferred: Core._eventISO(n.endInferred, n),
-        href: n.href || "",
-        timeZone: n.timeZone || "local",
-        timeZoneLabel: n.timeZoneLabel || "Local Time",
-        isFixedTimeZone: n.isFixedTimeZone ? "1" : "",
-        source: n.source || e.source || "extension",
-        firstSeenAt: Core._eventISO(n.firstSeenAt || e.firstSeenAt, null, true) || now,
-        lastSeenAt: Core._eventISO(n.lastSeenAt || e.lastSeenAt, null, true) || now,
-        lastScrapedAt: Core._eventISO(n.lastScrapedAt || e.lastScrapedAt, null, true) || now,
-        status: n.status || e.status || "saved"
-      };
-      return cols.map(k => Core._csvEscape(row[k])).join(",");
-    });
-    return [cols.join(",")].concat(rows).join("\n") + "\n";
+    const header = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone"].join(",");
+    const rows = (events || []).map(e => [
+      JSON.stringify(e.title||""), JSON.stringify(e.shortTitle||""), JSON.stringify(e.category||""),
+      JSON.stringify(e.lane||""), JSON.stringify(e.sub||""),
+      JSON.stringify(e.start? new Date(e.start).toISOString():""),
+      JSON.stringify(e.endKnown? new Date(e.endKnown).toISOString():""),
+      JSON.stringify(e.endInferred? new Date(e.endInferred).toISOString():""),
+      JSON.stringify(e.href||""),
+      JSON.stringify(e.timeZone||"local"),
+      JSON.stringify(e.timeZoneLabel||"Local Time"),
+      JSON.stringify(e.isFixedTimeZone?"1":"")
+    ].join(","));
+    return [header].concat(rows).join("\n");
   };
 
   Core._splitCsvLine = function(line){
     const cols=[];
-    let cur="", inQuote=false;
-    line=String(line==null?"":line);
+    let cur="", inQuote=false, escaped=false;
     for (let i=0;i<line.length;i++){
       const ch=line[i];
-      if (inQuote){
-        if (ch==='"'){
-          if (line[i+1]==='"'){ cur+='"'; i++; }
-          else inQuote=false;
-        } else cur += ch;
-      } else {
-        if (ch==='"') inQuote=true;
-        else if (ch===",") { cols.push(cur); cur=""; }
-        else cur += ch;
-      }
+      if (escaped){ cur += ch; escaped=false; continue; }
+      if (inQuote && ch==="\\"){ cur += ch; escaped=true; continue; }
+      if (ch==='"'){ inQuote=!inQuote; cur += ch; continue; }
+      if (ch==="," && !inQuote){ cols.push(cur); cur=""; continue; }
+      cur += ch;
     }
     cols.push(cur);
     return cols;
   };
-
 
   Core._safeJsonField = function(v, fallback=""){
     if (v==null || v==="") return fallback;
@@ -907,13 +884,7 @@
           href: Core._safeJsonField(cols[idx["href"]], ""),
           timeZone: Object.prototype.hasOwnProperty.call(idx,"timeZone") ? Core._safeJsonField(cols[idx["timeZone"]], "local") : "local",
           timeZoneLabel: Object.prototype.hasOwnProperty.call(idx,"timeZoneLabel") ? Core._safeJsonField(cols[idx["timeZoneLabel"]], "Local Time") : "Local Time",
-          isFixedTimeZone: Object.prototype.hasOwnProperty.call(idx,"isFixedTimeZone") ? !!String(Core._safeJsonField(cols[idx["isFixedTimeZone"]], "")).trim() : false,
-          uid: Object.prototype.hasOwnProperty.call(idx,"uid") ? Core._safeJsonField(cols[idx["uid"]], "") : "",
-          source: Object.prototype.hasOwnProperty.call(idx,"source") ? Core._safeJsonField(cols[idx["source"]], "") : "",
-          firstSeenAt: Object.prototype.hasOwnProperty.call(idx,"firstSeenAt") ? Core._safeJsonField(cols[idx["firstSeenAt"]], "") : "",
-          lastSeenAt: Object.prototype.hasOwnProperty.call(idx,"lastSeenAt") ? Core._safeJsonField(cols[idx["lastSeenAt"]], "") : "",
-          lastScrapedAt: Object.prototype.hasOwnProperty.call(idx,"lastScrapedAt") ? Core._safeJsonField(cols[idx["lastScrapedAt"]], "") : "",
-          status: Object.prototype.hasOwnProperty.call(idx,"status") ? Core._safeJsonField(cols[idx["status"]], "") : ""
+          isFixedTimeZone: Object.prototype.hasOwnProperty.call(idx,"isFixedTimeZone") ? !!String(Core._safeJsonField(cols[idx["isFixedTimeZone"]], "")).trim() : false
         };
         if (!e.title && !e.href) continue;
         const normalized = Core.normalizeLegacyEvent(e);
@@ -979,7 +950,7 @@
 
   Core.toISODate = function(v){
     const d = Core.parseLocalDateString(v);
-    return d ? d.toISOString().replace(/\.\d{3}Z$/, "Z") : null;
+    return d ? d.toISOString() : null;
   };
 
   Core.normalizeLegacyEvent = function(e){
@@ -996,7 +967,6 @@
       const endInferred = Core.parseLocalDateString(e.endInferred);
       const href = Core.normalizeHref(e.href || e.url || "");
       const out = {
-        uid: e.uid || "",
         title: Core.cleanTitle(title),
         category,
         rawText: e.rawText || [title, category, e.categoryKey || ""].join(" "),
@@ -1007,14 +977,11 @@
         isLocal: e.isLocal !== false,
         firstSeenAt: e.firstSeenAt || e.createdAt || null,
         lastSeenAt: e.lastSeenAt || e.updatedAt || null,
-        lastScrapedAt: e.lastScrapedAt || null,
-        source: e.source || "",
         status: e.status || "saved",
         timeZone: e.timeZone || e.tz || "local",
         timeZoneLabel: e.timeZoneLabel || e.tzLabel || (e.isFixedTimeZone ? (e.timeZone || "Fixed TZ") : "Local Time"),
         isFixedTimeZone: !!(e.isFixedTimeZone || (e.timeZone && e.timeZone !== "local" && e.timeZone !== "Local Time"))
       };
-      if (/^Mega\s+Mega(?:\s+(?:Raid|Raids|Battles))?$/i.test(out.title || "")) return null;
       let mapped = null;
       if (e.categoryKey){
         const m = {
@@ -1035,8 +1002,7 @@
       else if (out.lane === "raids") out.shortTitle = Core.shortenRaids(out.title);
       else if (out.lane === "gbl") out.shortTitle = Core.shortenGBL(out.title);
       else out.shortTitle = Core.cleanTitle(out.title);
-      out.id = e.id || Core.makeEventId(out);
-      if(!out.uid) out.uid = e.uid || out.id;
+      out.id = Core.makeEventId(out) || e.id;
       return out;
     }catch(err){
       console.warn("LDT: failed to normalize cached event", err, e);
@@ -1062,6 +1028,9 @@
       endKnown: Core.toISODate(n.endKnown),
       endInferred: Core.toISODate(n.endInferred),
       isLocal: n.isLocal !== false,
+      timeZone: n.timeZone || "local",
+      timeZoneLabel: n.timeZoneLabel || "Local Time",
+      isFixedTimeZone: !!n.isFixedTimeZone,
       firstSeenAt: n.firstSeenAt || null,
       lastSeenAt: n.lastSeenAt || null,
       status: n.status || "saved"
@@ -1072,15 +1041,14 @@
     if (!prev) return next;
     if (!next) return prev;
     const out = {...prev};
-    for (const k of ["uid","title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status","timeZone","timeZoneLabel","source"]){
+    for (const k of ["title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status","timeZone","timeZoneLabel"]){
       if (next[k] != null && next[k] !== "") out[k] = next[k];
     }
     for (const k of ["start","endKnown","endInferred"]){
       if (next[k]) out[k] = next[k];
     }
     out.isLocal = next.isLocal !== false;
-    out.isFixedTimeZone = !!next.isFixedTimeZone;
-    out.lastScrapedAt = next.lastScrapedAt || prev.lastScrapedAt || null;
+    out.isFixedTimeZone = !!(next.isFixedTimeZone || out.isFixedTimeZone);
     out.firstSeenAt = prev.firstSeenAt || next.firstSeenAt || null;
     out.lastSeenAt = next.lastSeenAt || prev.lastSeenAt || null;
     out.id = Core.makeEventId(out) || next.id || prev.id;
@@ -1121,7 +1089,7 @@
   Core.fingerprintEvents = function(events){
     return Core.dedupeEvents(events).map(e => {
       const s = Core.serializeEvent(e) || {};
-      return [s.id,s.title,s.category,s.lane,s.sub,s.href,s.start,s.endKnown,s.endInferred].join("|");
+      return [s.id,s.title,s.category,s.lane,s.sub,s.href,s.start,s.endKnown,s.endInferred,s.timeZone,s.timeZoneLabel,s.isFixedTimeZone?"1":""].join("|");
     }).sort().join("\n");
   };
 

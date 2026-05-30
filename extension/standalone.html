@@ -3,28 +3,28 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>NeatDuck_Timeline v1.1.0</title>
+  <title>NeatDuck_Timeline v1.0.7</title>
   <meta name="viewport" content="width=1320, initial-scale=1">
   <link rel="stylesheet" href="timeline.css">
 </head>
 <body style="background:#f6f8fa; margin:20px; font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;">
   <div id="ld-timeline-wrapper">
     <div id="ld-topbar">
-      <div class="row">
-        <button class="btn nd-tab active" data-nd-tab="timeline"><span data-i18n="tabTimeline">活动 Timeline</span></button>
-        <button class="btn nd-tab" data-nd-tab="types"><span data-i18n="tabTypes">属性克制</span></button>
-        <button class="btn nd-tab" data-nd-tab="pokedex"><span data-i18n="tabPokedex">Pokémon 图鉴</span></button>
-        <button class="btn nd-tab" data-nd-tab="max"><span data-i18n="tabMax">极巨化</span></button>
+      <div class="row nd-main-tabs">
+        <button class="btn nd-tab active" data-main-tab="calendar">🗓️ <span>Activity Calendar</span></button>
+        <button class="btn nd-tab" data-main-tab="types">🧬 <span>属性克制</span></button>
+        <button class="btn nd-tab" data-main-tab="pokedex">📖 <span>宝可梦图鉴</span></button>
+        <button class="btn nd-tab" data-main-tab="max">🛡️ <span>极巨化</span></button>
+      </div>
+      <div class="row nd-calendar-controls">
         <button class="btn" data-act="today">🎯 <span data-i18n="today">今天</span></button>
         <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">本周</span></button>
         <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">本月</span></button>
-        <button class="btn" data-act="toggle-view">↔️ <span data-i18n="toggleView">切换视图</span></button>
+        <button class="btn" data-act="toggle-view">↔️ <span data-i18n="switchMonthGrid">月视图</span></button>
+        <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">时区</span> <select class="btn" id="ld-tz-select"></select></label>
         <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">云端更新</span></button>
       </div>
-      <div class="row">
-        <label class="nd-inline-label"><span data-i18n="timezone">时区</span>
-          <select class="btn" id="ld-timezone-select"></select>
-        </label>
+      <div class="row nd-secondary-controls">
         <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">设置</span></button>
         <button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">导出活动CSV</span></button>
         <button class="btn" data-act="export-ics">🗓️ <span data-i18n="exportICS">导出日历ICS</span></button>
@@ -32,9 +32,9 @@
         <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">清除选择</span></button>
       </div>
     </div>
-    <div id="ld-left"><svg id="ld-legend-svg" viewBox="0 0 240 642" preserveAspectRatio="xMinYMin"></svg></div>
+    <div id="ld-left"><svg id="ld-legend-svg" viewBox="0 0 240 650" preserveAspectRatio="xMinYMin"></svg></div>
     <div id="ld-right">
-      <svg id="ld-timeline-svg" viewBox="0 0 1040 642" preserveAspectRatio="xMinYMin">
+      <svg id="ld-timeline-svg" viewBox="0 0 1040 650" preserveAspectRatio="xMinYMin">
         <g id="ld-month-bgs"></g>
         <g id="ld-weekend-bgs"></g>
         <g id="ld-period-blocks"></g>
@@ -42,7 +42,7 @@
         <g id="ld-ruler-bottom" class="ld-ruler"></g>
         <g id="ld-lane-seps"></g>
         <g id="ld-items"></g>
-        <g id="ld-now"><line class="ld-now" y1="0" y2="642"/></g>
+        <g id="ld-now"><line class="ld-now" y1="0" y2="650"/></g>
       </svg>
       <div id="ld-extenders"></div>
       <div id="ld-monthgrid" style="display:none;"></div>
@@ -53,6 +53,7 @@
     <div class="ld-modal" id="ld-updates-modal"><h3 data-i18n="updates">检测到更新</h3><div id="ld-updates-body"></div><div class="footer"><button class="btn" data-apply="updates"><span data-i18n="apply">应用</span></button><button class="btn" data-close="updates"><span data-i18n="ignore">忽略</span></button></div></div>
   </div>
   <script src="core.js"></script>
+  <script src="info.js"></script>
   <script src="standalone.js"></script>
 </body>
 </html>

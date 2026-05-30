@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NeatDuck_Timeline v1.1",
-  "version": "1.1.0",
-  "description": "A compact Pokémon GO event timeline with GitHub-backed data, timezone-aware rendering, type matchups, Pokédex, and Max info.",
+  "name": "NeatDuck_Timeline v1.0",
+  "version": "1.0.7",
+  "description": "A compact, configurable timeline and Pokémon reference panel for Pokémon GO event planning with GitHub-backed public data.",
   "icons": {
     "128": "icon128.png"
   },
@@ -14,6 +14,7 @@
       ],
       "js": [
         "core.js",
+        "info.js",
         "content.js"
       ],
       "css": [
@@ -40,6 +41,7 @@
       "resources": [
         "standalone.html",
         "standalone.js",
+        "info.js",
         "core.js",
         "timeline.css",
         "data/*",

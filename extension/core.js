@@ -15,51 +15,38 @@
   Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv";
   Core.DEFAULT_DISPLAY_TIME_ZONE = "local";
   Core.TIME_ZONE_OPTIONS = [
-    {value:"local", label:"浏览器本地 / Browser Local"},
-    {value:"Etc/GMT+12", label:"UTC−12 Baker Island"},
-    {value:"Pacific/Pago_Pago", label:"UTC−11 Pago Pago"},
-    {value:"Pacific/Honolulu", label:"UTC−10 Honolulu"},
-    {value:"America/Anchorage", label:"UTC−09 Anchorage"},
-    {value:"America/Los_Angeles", label:"UTC−08 Los Angeles"},
-    {value:"America/Denver", label:"UTC−07 Denver"},
-    {value:"America/Chicago", label:"UTC−06 Chicago"},
-    {value:"America/New_York", label:"UTC−05 New York"},
-    {value:"America/Halifax", label:"UTC−04 Halifax"},
-    {value:"America/Sao_Paulo", label:"UTC−03 São Paulo"},
-    {value:"Atlantic/South_Georgia", label:"UTC−02 South Georgia"},
-    {value:"Atlantic/Azores", label:"UTC−01 Azores"},
-    {value:"UTC", label:"UTC±00 London / UTC"},
-    {value:"Europe/Paris", label:"UTC+01 Paris"},
-    {value:"Europe/Athens", label:"UTC+02 Athens"},
-    {value:"Europe/Moscow", label:"UTC+03 Moscow"},
-    {value:"Asia/Tehran", label:"UTC+03:30 Tehran"},
-    {value:"Asia/Dubai", label:"UTC+04 Dubai"},
-    {value:"Asia/Kabul", label:"UTC+04:30 Kabul"},
-    {value:"Asia/Karachi", label:"UTC+05 Karachi"},
-    {value:"Asia/Kolkata", label:"UTC+05:30 Delhi"},
-    {value:"Asia/Kathmandu", label:"UTC+05:45 Kathmandu"},
-    {value:"Asia/Dhaka", label:"UTC+06 Dhaka"},
-    {value:"Asia/Yangon", label:"UTC+06:30 Yangon"},
-    {value:"Asia/Bangkok", label:"UTC+07 Bangkok"},
-    {value:"Asia/Shanghai", label:"UTC+08 Beijing"},
-    {value:"Australia/Eucla", label:"UTC+08:45 Eucla"},
-    {value:"Asia/Tokyo", label:"UTC+09 Tokyo"},
-    {value:"Australia/Adelaide", label:"UTC+09:30 Adelaide"},
-    {value:"Australia/Sydney", label:"UTC+10 Sydney"},
-    {value:"Australia/Lord_Howe", label:"UTC+10:30 Lord Howe"},
-    {value:"Pacific/Noumea", label:"UTC+11 Nouméa"},
-    {value:"Pacific/Auckland", label:"UTC+12 Auckland"},
-    {value:"Pacific/Chatham", label:"UTC+12:45 Chatham"},
-    {value:"Pacific/Tongatapu", label:"UTC+13 Nukuʻalofa"},
-    {value:"Pacific/Kiritimati", label:"UTC+14 Kiritimati"}
+    {value:"local", label:"Browser / Local"},
+    {value:"Etc/GMT+12", label:"UTC-12 / Baker Island"},
+    {value:"Pacific/Honolulu", label:"UTC-10 / Honolulu"},
+    {value:"America/Anchorage", label:"UTC-09 / Anchorage"},
+    {value:"America/Los_Angeles", label:"UTC-08/-07 / Los Angeles"},
+    {value:"America/Denver", label:"UTC-07/-06 / Denver"},
+    {value:"America/Chicago", label:"UTC-06/-05 / Chicago"},
+    {value:"America/New_York", label:"UTC-05/-04 / New York"},
+    {value:"America/Halifax", label:"UTC-04/-03 / Halifax"},
+    {value:"America/Sao_Paulo", label:"UTC-03 / São Paulo"},
+    {value:"Atlantic/South_Georgia", label:"UTC-02 / South Georgia"},
+    {value:"Atlantic/Azores", label:"UTC-01/+00 / Azores"},
+    {value:"UTC", label:"UTC+00 / London"},
+    {value:"Europe/Paris", label:"UTC+01/+02 / Paris"},
+    {value:"Europe/Copenhagen", label:"UTC+01/+02 / Copenhagen"},
+    {value:"Europe/Athens", label:"UTC+02/+03 / Athens"},
+    {value:"Europe/Moscow", label:"UTC+03 / Moscow"},
+    {value:"Asia/Dubai", label:"UTC+04 / Dubai"},
+    {value:"Asia/Karachi", label:"UTC+05 / Karachi"},
+    {value:"Asia/Dhaka", label:"UTC+06 / Dhaka"},
+    {value:"Asia/Bangkok", label:"UTC+07 / Bangkok"},
+    {value:"Asia/Shanghai", label:"UTC+08 / Shanghai"},
+    {value:"Asia/Tokyo", label:"UTC+09 / Tokyo"},
+    {value:"Australia/Sydney", label:"UTC+10/+11 / Sydney"},
+    {value:"Pacific/Noumea", label:"UTC+11 / Nouméa"},
+    {value:"Pacific/Auckland", label:"UTC+12/+13 / Auckland"},
+    {value:"Pacific/Kiritimati", label:"UTC+14 / Kiritimati"}
   ];
   Core.namedZoneToIANA = function(z){
     const t=String(z||"").toUpperCase();
     if(t==="JST") return "Asia/Tokyo";
     if(t==="PT"||t==="PDT"||t==="PST") return "America/Los_Angeles";
-    if(t==="ET"||t==="EDT"||t==="EST") return "America/New_York";
-    if(t==="CT"||t==="CDT"||t==="CST") return "America/Chicago";
-    if(t==="MT"||t==="MDT"||t==="MST") return "America/Denver";
     if(t==="CEST"||t==="CET") return "Europe/Copenhagen";
     if(t==="BST") return "Europe/London";
     if(t==="UTC"||t==="GMT") return "UTC";
@@ -76,9 +63,7 @@
   Core.detectTimeZone = function(text){
     const s=String(text||"");
     if(/\bLocal\s+Time\b/i.test(s)) return {timeZone:"local", label:"Local Time", fixed:false};
-    const off=s.match(/\b(?:UTC|GMT)\s*([+-])\s*(\d{1,2})(?::?(\d{2}))?\b/i);
-    if(off){ const hh=String(Number(off[2])).padStart(2,"0"), mm=String(Number(off[3]||0)).padStart(2,"0"), label=`UTC${off[1]}${hh}:${mm}`; return {timeZone:label, label, fixed:true}; }
-    const m=s.match(/\b(JST|PDT|PST|PT|EDT|EST|ET|CDT|CST|CT|MDT|MST|MT|CEST|CET|BST|UTC|GMT)\b/i);
+    const m=s.match(/\b(JST|PDT|PST|PT|CEST|CET|BST|UTC|GMT)\b/i);
     if(m){ const label=m[1].toUpperCase(); return {timeZone:Core.namedZoneToIANA(label)||label, label, fixed:true}; }
     return {timeZone:"local", label:"Local Time", fixed:false};
   };
@@ -121,7 +106,7 @@
     }catch(_){ return Core.DEFAULT_REMOTE_URL; }
   };
   Core.DEFAULT_SETTINGS = {
-    outerMarginX: 4,
+    outerMarginX: 0,
     labelPaddingX: 6,
     itemBorderWidth: 1,
     itemRadius: 4,
@@ -171,21 +156,21 @@
 
   /* i18n */
   Core.I18N = {
-    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
-    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
-    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
+    "en": {"activityCalendar":"Activity Calendar","typeTab":"Type Chart","pokedexTab":"Pokédex","maxTab":"Dynamax","calendarView":"Calendar view","week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export CSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import CSV","exportCSVEvents":"Export Events CSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
+    "zh-CN":{"activityCalendar":"Activity Calendar","typeTab":"属性克制","pokedexTab":"宝可梦图鉴","maxTab":"极巨化","calendarView":"日历视图","week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出CSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入CSV","exportCSVEvents":"导出活动CSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
+    "zh-TW":{"activityCalendar":"Activity Calendar","typeTab":"屬性克制","pokedexTab":"寶可夢圖鑑","maxTab":"極巨化","calendarView":"日曆視圖","week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出CSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入CSV","exportCSVEvents":"匯出活動CSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
   };
   Core.DEFAULT_LANG = "zh-CN";
 
 
   Object.assign(Core.I18N.en, {
-    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote CSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK", tabCalendar:"Activity Calendar", tabTypes:"Type Matchup", tabPokedex:"Pokédex", tabMax:"Dynamax", toggleCalendarView:"Timeline / Month", currentViewLinear:"Current: Timeline", currentViewMonth:"Current: Month"
+    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote CSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK"
   });
   Object.assign(Core.I18N["zh-CN"], {
-    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 CSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定", tabCalendar:"Activity Calendar", tabTypes:"属性克制", tabPokedex:"宝可梦图鉴", tabMax:"极巨化", toggleCalendarView:"时间轴 / 月视图", currentViewLinear:"当前：直线时间轴", currentViewMonth:"当前：月视图"
+    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 CSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定"
   });
   Object.assign(Core.I18N["zh-TW"], {
-    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 CSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定", tabCalendar:"Activity Calendar", tabTypes:"屬性克制", tabPokedex:"寶可夢圖鑑", tabMax:"極巨化", toggleCalendarView:"時間軸 / 月視圖", currentViewLinear:"目前：時間軸", currentViewMonth:"目前：月視圖"
+    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 CSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
   });
   Core.t = function(lang, key){ const dict = Core.I18N[lang] || Core.I18N.en; return dict[key] || Core.I18N.en[key] || key; };
 
@@ -321,8 +306,6 @@
     t = t.replace(/^(Update|Event|Research|Raid Battles|Raid Hour|Raid Day|Max Mondays|Community Day|GO Battle League|GO Pass|Season|Pokémon GO Fest|Pokemon GO Fest)\s+(?=\S)/i, (m) => m.trim() + " ");
     t = t.replace(/\bCalculating\.\.\./ig, "");
     t = t.replace(/\b(?:Starts|Ends):\s*\d+\s*days?\s*\d+\s*hours?\s*\d+\s*min\b/ig, "");
-    t = t.replace(/\bMega\s+Mega\b/ig, "Mega");
-    t = t.replace(/\bMax\s+Max\b/ig, "Max");
     t = t.replace(/\s{2,}/g, " ").trim();
     t = t.replace(/[:\-–—]\s*$/," ").trim();
     return t;
@@ -620,6 +603,7 @@
     s = s.replace(/\s+(?:Spotlight\s+Hour|Raid\s+Hour|Raid\s+Day|Raid\s+Weekend|Pok[eé]Stop\s+Showcases?).*$/i, "");
     s = s.replace(/\s+Battles?$/i, "");
     s = s.replace(/^Dynamax\s+/i, "");
+    s = s.replace(/^(Mega\s+){2,}/i, "Mega ");
     return s.trim();
   };
 
@@ -631,6 +615,7 @@
     const isPokemonOnly = /^(5-Star Raid Battles|Mega Raid Battles|Shadow Raid Battles|Max Mondays|Pokémon Spotlight Hour|Raid Hour|PokéStop Showcase)$/i.test(sub);
     if (isPokemonOnly){
       let pokemon = Core.extractPokemonName(e.title || raw);
+      pokemon = pokemon.replace(/^(Mega\s+){2,}/i, "Mega ");
       if (sub === "Mega Raid Battles" && !/^Mega\s+/i.test(pokemon)) pokemon = "Mega " + pokemon;
       const local = (l === "en") ? pokemon.replace(/^Dynamax\s+/i, "") : (Core.translatePokemonName(pokemon, l, pokemonDB) || pokemon);
       if (sub === "Max Mondays") return /^Max\b/i.test(local) ? local : "Max " + local;
@@ -1004,10 +989,10 @@
       start: Core.toISODate(n.start),
       endKnown: Core.toISODate(n.endKnown),
       endInferred: Core.toISODate(n.endInferred),
-      isLocal: n.isLocal !== false,
       timeZone: n.timeZone || "local",
-      timeZoneLabel: n.timeZoneLabel || (n.isFixedTimeZone ? (n.timeZone || "Fixed TZ") : "Local Time"),
+      timeZoneLabel: n.timeZoneLabel || "Local Time",
       isFixedTimeZone: !!n.isFixedTimeZone,
+      isLocal: n.isLocal !== false,
       firstSeenAt: n.firstSeenAt || null,
       lastSeenAt: n.lastSeenAt || null,
       status: n.status || "saved"
@@ -1024,8 +1009,8 @@
     for (const k of ["start","endKnown","endInferred"]){
       if (next[k]) out[k] = next[k];
     }
+    out.isFixedTimeZone = !!(next.isFixedTimeZone || out.isFixedTimeZone);
     out.isLocal = next.isLocal !== false;
-    out.isFixedTimeZone = !!(next.isFixedTimeZone || prev.isFixedTimeZone || (out.timeZone && out.timeZone !== "local" && out.timeZone !== "Local Time"));
     out.firstSeenAt = prev.firstSeenAt || next.firstSeenAt || null;
     out.lastSeenAt = next.lastSeenAt || prev.lastSeenAt || null;
     out.id = Core.makeEventId(out) || next.id || prev.id;
@@ -1066,7 +1051,7 @@
   Core.fingerprintEvents = function(events){
     return Core.dedupeEvents(events).map(e => {
       const s = Core.serializeEvent(e) || {};
-      return [s.id,s.title,s.category,s.lane,s.sub,s.href,s.start,s.endKnown,s.endInferred,s.timeZone,s.timeZoneLabel,s.isFixedTimeZone?"1":""].join("|");
+      return [s.id,s.title,s.category,s.lane,s.sub,s.href,s.start,s.endKnown,s.endInferred,s.timeZone,s.timeZoneLabel,s.isFixedTimeZone].join("|");
     }).sort().join("\n");
   };
 

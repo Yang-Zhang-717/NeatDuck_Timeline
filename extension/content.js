@@ -11,13 +11,13 @@
   const LEGEND_ID= "ld-legend-svg";
 
   let state={ lang:DEFAULT_LANG, colors:{...DEFAULT_COLORS}, settings:LDT_Core.normalizeSettings({}), events:[], rangeStart:null, rangeEnd:null,
-              viewMode:"linear", activeTab:"calendar", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, isDragging:false, dragStartX:0, dragStartRangeStart:0, dragStartRangeEnd:0, csvText:"", pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
+              viewMode:"linear", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, isDragging:false, dragStartX:0, dragStartRangeStart:0, dragStartRangeEnd:0, csvText:"", pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL, activeTab:"calendar" };
 
   function timeZoneOptionsHTML(selected){ return LDT_Core.TIME_ZONE_OPTIONS.map(o=>`<option value="${LDT_Core.escapeHTML(o.value)}" ${selected===o.value?"selected":""}>${LDT_Core.escapeHTML(o.label)}</option>`).join(""); }
   function updateTimeZoneSelect(){ const sel=document.getElementById("ld-tz-select"); if(sel) sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); }
   async function setDisplayTimeZone(value){ state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(value); await LDT_Core.saveState({ld_display_timezone:state.displayTimeZone}); updateTimeZoneSelect(); updateViewMode(); }
   function ensureTopbarTimeZoneSelect(){
-    const row=document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
+    const row=document.querySelector("#ld-common-controls") || document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
     const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
     wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
     row.insertBefore(wrap, row.firstChild);
@@ -26,72 +26,44 @@
   function eventDisplayStart(e){ return LDT_Core.dateForDisplayZone(e && e.start, e, state.displayTimeZone); }
   function eventDisplayEnd(e){ return LDT_Core.dateForDisplayZone(e && (e.endKnown || e.endInferred), e, state.displayTimeZone); }
 
-  function applyActiveTabUI(){
-    const wrap=document.getElementById(WRAP_ID); if(!wrap) return;
-    wrap.setAttribute("data-active-tab", state.activeTab || "calendar");
-    wrap.classList.toggle("nd-non-calendar", state.activeTab !== "calendar");
-    document.querySelectorAll("[data-main-tab]").forEach(btn=>{
-      const on=btn.getAttribute("data-main-tab") === state.activeTab;
-      btn.classList.toggle("active", on);
-      btn.setAttribute("aria-selected", on ? "true" : "false");
-    });
-    refreshViewLabel();
-  }
-  function refreshViewLabel(){
-    const pill=document.getElementById("ld-current-view"); if(!pill) return;
-    const key=state.viewMode === "month" ? "currentViewMonth" : "currentViewLinear";
-    pill.setAttribute("data-i18n", key);
-    pill.textContent=LDT_Core.t(state.lang, key);
-  }
-  function displayNow(){ return LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone) || new Date(); }
-  function setTodayRange(render=true){ const d=LDT_Core.beginOfDay(displayNow()); state.rangeStart=+d; state.rangeEnd=+LDT_Core.addDays(d,1); if(render) updateViewMode(); }
-  function setWeekRange(render=true){ const d=LDT_Core.mondayOfWeek(displayNow()); state.rangeStart=+d; state.rangeEnd=+LDT_Core.addDays(d,7); if(render) updateViewMode(); }
-  function setMonthRange(render=true){ const d=LDT_Core.monthStart(displayNow()); state.rangeStart=+d; state.rangeEnd=+LDT_Core.nextMonthStart(d); if(render) updateViewMode(); }
-  function setActiveTab(tab){
-    state.activeTab = tab || "calendar";
-    applyActiveTabUI();
-    if(state.activeTab === "calendar") updateViewMode();
-    else if(window.ND_Info) window.ND_Info.show(state.activeTab);
-  }
-
   function insertUIRoot(){
     if (document.getElementById(WRAP_ID)) return document.getElementById(WRAP_ID);
     const h = Array.from(document.querySelectorAll("h1, h2")).find(x=>/events/i.test(x.textContent||""));
     if (!h) return null;
     const wrap=document.createElement("div"); wrap.id=WRAP_ID;
-    wrap.setAttribute("data-active-tab", "calendar");
     wrap.innerHTML = `
       <div id="ld-topbar">
-        <div class="row nd-tabs" role="tablist" aria-label="NeatDuck tabs">
-          <button class="btn nd-main-tab active" data-main-tab="calendar"><span data-i18n="tabCalendar">Activity Calendar</span></button>
-          <button class="btn nd-main-tab" data-main-tab="types"><span data-i18n="tabTypes">属性克制</span></button>
-          <button class="btn nd-main-tab" data-main-tab="pokedex"><span data-i18n="tabPokedex">宝可梦图鉴</span></button>
-          <button class="btn nd-main-tab" data-main-tab="max"><span data-i18n="tabMax">极巨化</span></button>
+        <div class="nd-tabs" id="ld-tabs">
+          <button class="btn nd-tab is-active" data-tab="calendar">📅 <span data-i18n="activityCalendar">Activity Calendar</span></button>
+          <button class="btn nd-tab" data-tab="types">🧬 <span data-i18n="typeTab">属性克制</span></button>
+          <button class="btn nd-tab" data-tab="pokedex">📖 <span data-i18n="pokedexTab">宝可梦图鉴</span></button>
+          <button class="btn nd-tab" data-tab="max">🛡️ <span data-i18n="maxTab">极巨化</span></button>
         </div>
-        <div class="row nd-control-row">
-          <div class="nd-left-controls" data-calendar-controls>
+        <div class="nd-toolbar">
+          <div class="row nd-tab-controls" id="ld-tab-controls">
             <button class="btn" data-act="today">🎯 <span data-i18n="today">Today</span></button>
             <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">This Week</span></button>
             <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">This Month</span></button>
-            <button class="btn" data-act="toggle-calendar-view">↔️ <span data-i18n="toggleCalendarView">Timeline / Month</span></button>
-            <span class="nd-view-pill" id="ld-current-view" data-i18n="currentViewLinear">Current: Timeline</span>
+            <span class="nd-seg" title="Calendar view">
+              <button class="btn" data-act="switch-linear">↔️ <span data-i18n="switchLinear">Timeline</span></button>
+              <button class="btn" data-act="switch-monthgrid">📅 <span data-i18n="switchMonthGrid">Month View</span></button>
+            </span>
             <button class="btn" data-act="rescan">🔄 <span data-i18n="dataUpdate">Data Update</span></button>
+            <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button>
           </div>
-          <div class="nd-common-controls">
+          <div class="row nd-common-controls" id="ld-common-controls">
             <select class="btn" id="ld-lang-select" title="Language">
               <option value="zh-CN">简体中文</option>
               <option value="zh-TW">繁體中文</option>
               <option value="en">English</option>
             </select>
-            <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">Time Zone</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select></label>
             <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">Settings</span></button>
             <button class="btn" data-act="colors">🎨 <span data-i18n="colors">Colors</span></button>
+            <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button>
+            <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button>
             <button class="btn" data-act="export-events-csv">📤 <span data-i18n="exportCSVEvents">Export Events CSV</span></button>
             <button class="btn" data-act="export-ics">🗓️ <span data-i18n="exportICS">Export ICS</span></button>
             <button class="btn" data-act="email-log">📨 <span data-i18n="emailLog">Email Log</span></button>
-            <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button>
-            <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button>
-            <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button>
           </div>
         </div>
       </div>
@@ -227,7 +199,7 @@
     }
     function scheduleHide(){
       clearTimeout(hideTimer);
-      hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 2400);
+      hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 600);
     }
     function hide(){ if(el) el.style.display="none"; }
     return { show, scheduleHide, hide };
@@ -315,7 +287,7 @@
       while (+t<rangeEnd){
         const next=LDT_Core.nextMonthStart(t);
         const x=xScale(+t); const w=xScale(+next)-x;
-        if (isFinite(x) && isFinite(w) && w > 0){
+        if (isFinite(x) && isFinite(w)){
           const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
           r.setAttribute("x", x); r.setAttribute("y", 0); r.setAttribute("width", w); r.setAttribute("height", (C.HEIGHT-78));
           r.setAttribute("class","ld-month-bg");
@@ -330,7 +302,7 @@
         if (LDT_Core.isWeekend(t)){
           const dayEnd=LDT_Core.endOfDay(t);
           const x=xScale(Math.max(+t, rangeStart)); const w=xScale(Math.min(+dayEnd, rangeEnd)) - x;
-          if (isFinite(x) && isFinite(w) && w > 0){
+          if (isFinite(x) && isFinite(w)){
             const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
             r.setAttribute("x", x); r.setAttribute("y", 0); r.setAttribute("width", w); r.setAttribute("height", (C.HEIGHT-78));
             r.setAttribute("class","ld-weekend-bg");
@@ -349,6 +321,8 @@
     document.documentElement.style.setProperty("--nd-outer-margin-x", state.settings.outerMarginX + "px");
     document.documentElement.style.setProperty("--nd-item-font-size", state.settings.fontSize + "px");
     document.documentElement.style.setProperty("--nd-item-font-weight", state.settings.fontWeight);
+    const wrap=document.getElementById(WRAP_ID);
+    if(wrap){ wrap.style.marginLeft = "auto"; wrap.style.marginRight = "auto"; wrap.style.transform = "translateX(-12px)"; }
   }
 
   function approxTextWidth(text){
@@ -493,20 +467,20 @@
         const rawTitle = LDT_Core.localizeEventTitle(e, state.lang, state.pokemonDB).trim();
         const desiredW = approxTextWidth(rawTitle) + pad * 2;
         const baseEnd = Math.max(x2, x1 + blockW);
-        const visibleStart = Math.max(0, Math.min(C.TL_W, x1));
-        const visibleBaseEnd = Math.max(visibleStart, Math.min(C.TL_W, baseEnd));
+        const visibleStart = Math.max(0, x1);
+        const visibleBaseEnd = Math.min(C.TL_W, baseEnd);
         let labelBoxEnd = visibleBaseEnd;
         let shadeRect=null;
         if (desiredW > Math.max(0, visibleBaseEnd - visibleStart) && cfg.shadeMaxWidth > 0){
-          const proposedEnd = visibleStart + Math.min(desiredW, (visibleBaseEnd - visibleStart) + cfg.shadeMaxWidth);
-          labelBoxEnd = Math.max(visibleBaseEnd, Math.min(nextLimit, proposedEnd, C.TL_W));
-          const shadeW = Math.max(0, labelBoxEnd - visibleStart);
+          labelBoxEnd = Math.min(nextLimit, visibleStart + Math.min(desiredW, (visibleBaseEnd - visibleStart) + cfg.shadeMaxWidth));
+          labelBoxEnd = Math.max(visibleBaseEnd, Math.min(C.TL_W, labelBoxEnd));
+          const shadeW = Math.max(0, labelBoxEnd - visibleBaseEnd);
           if (shadeW > 1){
             shadeRect=document.createElementNS("http://www.w3.org/2000/svg","rect");
-            shadeRect.setAttribute("x", visibleStart); shadeRect.setAttribute("y", y);
+            shadeRect.setAttribute("x", visibleBaseEnd); shadeRect.setAttribute("y", y);
             shadeRect.setAttribute("width", shadeW); shadeRect.setAttribute("height", C.ITEM_H);
             shadeRect.setAttribute("rx", cfg.itemRadius); shadeRect.setAttribute("ry", cfg.itemRadius);
-            shadeRect.setAttribute("fill", fillColor); shadeRect.setAttribute("fill-opacity", "0.35");
+            shadeRect.setAttribute("fill", fillColor); shadeRect.setAttribute("fill-opacity", "0.50");
             shadeRect.setAttribute("class", "ld-item-shade");
             g.appendChild(shadeRect);
           }
@@ -514,7 +488,7 @@
         const rect=document.createElementNS("http://www.w3.org/2000/svg","rect");
         rect.setAttribute("x",x1); rect.setAttribute("y",y); rect.setAttribute("width",blockW); rect.setAttribute("height",C.ITEM_H);
         rect.setAttribute("rx",cfg.itemRadius); rect.setAttribute("ry",cfg.itemRadius);
-        rect.setAttribute("class","ld-item"+(!e.endKnown?" inferred":"")+(e.isFixedTimeZone?" fixed-tz":"")+(state.selectedIds && state.selectedIds.has(e.id)?" selected":""));
+        rect.setAttribute("class","ld-item"+(e.isFixedTimeZone?" fixed-tz":"")+(!e.endKnown?" inferred":"")+(state.selectedIds && state.selectedIds.has(e.id)?" selected":""));
         rect.setAttribute("fill",fillColor); rect.setAttribute("stroke-width",cfg.itemBorderWidth); g.appendChild(rect);
         const visX1=Math.max(0, x1), visX2=Math.min(C.TL_W, Math.max(labelBoxEnd, visibleBaseEnd)), visW=Math.max(0, visX2-visX1);
         if (visW > 1){
@@ -635,8 +609,7 @@
       for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"; cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
       const segs=[];
       visible.forEach(x=>{ if(+x.d<+weekStart || +x.s>=+weekEnd) return; const a=Math.max(0, Math.floor((Math.max(+x.s,+weekStart)-+weekStart)/86400000)); const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000)); segs.push({e:x.e,a,b,s:+x.s}); });
-      const laneRank=Object.create(null); LANES_SPEC.forEach((lane,li)=>(lane.sub||[lane.key]).forEach((sub,si)=>{ laneRank[`${lane.key}::${sub}`]=li*100+si; }));
-      segs.sort((a,b)=>(laneRank[`${a.e.lane}::${a.e.sub}`]??9999)-(laneRank[`${b.e.lane}::${b.e.sub}`]??9999) || a.s-b.s || a.a-b.a);
+      segs.sort((a,b)=>a.a-b.a || a.s-b.s);
       const lanes=[]; segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
       row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
       segs.forEach(seg=>{
@@ -650,13 +623,49 @@
     }
   }
 
+  function updateTabButtons(){
+    document.querySelectorAll('#ld-tabs [data-tab]').forEach(b=>b.classList.toggle('is-active', b.getAttribute('data-tab')===state.activeTab));
+    const controls=document.getElementById('ld-tab-controls');
+    if(controls) controls.style.display = state.activeTab === 'calendar' ? 'flex' : 'none';
+  }
+
+  function setActiveTab(tab){
+    state.activeTab = tab || 'calendar';
+    updateViewMode();
+  }
+
+  function setRangePreset(kind){
+    const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    if(kind === "today"){
+      const start=LDT_Core.beginOfDay(nowD);
+      state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,1);
+    } else if(kind === "month"){
+      const start=LDT_Core.monthStart(nowD);
+      state.rangeStart=+start; state.rangeEnd=+LDT_Core.nextMonthStart(start);
+    } else {
+      const start=LDT_Core.mondayOfWeek(nowD);
+      state.rangeStart=+start; state.rangeEnd=+LDT_Core.addDays(start,7);
+    }
+    updateViewMode();
+  }
+
   function updateViewMode(){
-    applyActiveTabUI();
-    if(state.activeTab !== "calendar") return;
-    if(window.ND_Info) window.ND_Info.hide();
+    updateTabButtons();
     const svg=document.getElementById(SVG_ID);
     const mg=document.getElementById("ld-monthgrid");
-    const ext=document.getElementById("ld-extenders"); if(ext) ext.style.display="block";
+    const left=document.getElementById('ld-left');
+    const wrap=document.getElementById(WRAP_ID);
+    if(wrap) wrap.classList.toggle('nd-info-active', state.activeTab !== 'calendar');
+    if (state.activeTab !== 'calendar'){
+      if(left) left.style.display='none';
+      if(svg) svg.style.display='none';
+      if(mg) mg.style.display='none';
+      tooltip.hide();
+      if(window.ND_Info) window.ND_Info.show(state.activeTab);
+      return;
+    }
+    if(window.ND_Info) window.ND_Info.hide();
+    if(left) left.style.display='block';
     if (state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); }
     else { renderMonthGrid(); }
   }
@@ -874,20 +883,19 @@
     const sel=document.getElementById("ld-lang-select"); if (sel) sel.value=lang; updateTimeZoneSelect(); if(window.ND_Info) window.ND_Info.refreshLabels();
     const settingsModal=document.getElementById("ld-settings-modal");
     if(settingsModal && settingsModal.style.display==="block") buildSettingsModal();
-    if (state.events && state.events.length && state.activeTab==="calendar") updateViewMode(); else if(window.ND_Info && state.activeTab!=="calendar") window.ND_Info.refreshLabels();
+    if (state.events && state.events.length) updateViewMode();
   }
 
   function attachControls(){
     const controls=document.getElementById("ld-topbar"); if (!controls || controls.__ldtControlsBound) return;
     controls.__ldtControlsBound = true;
     controls.addEventListener("click", async (e)=>{
-      const tabBtn=e.target.closest("[data-main-tab]");
-      if(tabBtn){ e.preventDefault(); setActiveTab(tabBtn.getAttribute("data-main-tab")); return; }
+      const tabBtn=e.target.closest("[data-tab]"); if(tabBtn){ e.preventDefault(); setActiveTab(tabBtn.getAttribute("data-tab")); return; }
       const b=e.target.closest(".btn"); if (!b) return;
       const act=b.getAttribute("data-act");
       if (act==="settings"){ buildSettingsModal(); }
       if (act==="colors"){ buildColorsModal(); }
-      if (act==="today"){ setTodayRange(true); }
+      if (act==="today"){ setRangePreset("today"); }
       if (act==="open-standalone"){
         // Open immediately while the click is still a user gesture; then save.
         // Waiting for chrome.storage first can make Chrome treat this as a blocked popup.
@@ -909,9 +917,10 @@
         const url = URL.createObjectURL(new Blob([text],{type:"text/csv"}));
         const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
       }
-      if (act==="toggle-calendar-view"){ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); }
-      if (act==="reset-week"){ setWeekRange(true); }
-      if (act==="reset-month"){ setMonthRange(true); }
+      if (act==="switch-linear"){ state.viewMode="linear"; updateViewMode(); }
+      if (act==="switch-monthgrid"){ state.viewMode="month"; updateViewMode(); }
+      if (act==="reset-week"){ setRangePreset("week"); }
+      if (act==="reset-month"){ setRangePreset("month"); }
     });
     const mask=document.getElementById("ld-mask");
     mask.addEventListener("click",()=>{ Array.from(document.querySelectorAll(".ld-modal")).forEach(m=>m.style.display="none"); mask.style.display="none"; });
@@ -966,13 +975,31 @@
     } else {
       state.events = [];
     }
-    // Default range: this week in linear timeline. Full-history fitting was ambitious, which is how UI gets lost in time.
-    setWeekRange(false);
+    // default range
+    const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    if (state.events.length){
+      const has = state.events.filter(e=>e.start && (e.endKnown||e.endInferred));
+      if (has.length){
+        const starts=has.map(e=>eventDisplayStart(e)).filter(Boolean).map(d=>+d);
+        const ends=has.map(e=>eventDisplayEnd(e)).filter(Boolean).map(d=>+d);
+        const min = Math.min.apply(null, starts);
+        const max = Math.max.apply(null, ends);
+        state.rangeStart = +LDT_Core.addDays(min, -2);
+        state.rangeEnd   = +LDT_Core.addDays(max, 5);
+      }else{
+        state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5);
+      }
+    } else {
+      state.rangeStart=+LDT_Core.addDays(now,-2); state.rangeEnd=+LDT_Core.addDays(now,5);
+    }
 
+    const defaultNowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
+    const defaultWeekStart=LDT_Core.mondayOfWeek(defaultNowD);
+    state.rangeStart=+defaultWeekStart; state.rangeEnd=+LDT_Core.addDays(defaultWeekStart,7);
     attachControls();
     attachTimelineInteractions();
-    state.viewMode = "linear"; state.activeTab = "calendar";
-    applyActiveTabUI();
+    state.viewMode = "linear";
+    state.activeTab = "calendar";
     updateViewMode();
 
     // GitHub data is preferred. Page scraping now runs only when the Data Update button is clicked.

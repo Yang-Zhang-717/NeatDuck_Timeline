@@ -14,9 +14,9 @@
     "isFixedTimeZone": "",
     "uid": "20a4923d445059a2",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:07Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:52Z",
     "status": "active"
   },
   {
@@ -25,7 +25,7 @@
     "category": "Update",
     "lane": "community",
     "sub": "Community Day",
-    "start": "2026-05-31T01:00:00Z",
+    "start": "2026-05-31T01:00:00",
     "endKnown": "2026-06-01T01:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/community-day-voting-august-2026",
@@ -34,9 +34,9 @@
     "isFixedTimeZone": "1",
     "uid": "1c6b5c3edecef88d",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:40Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:27Z",
     "status": "active"
   },
   {
@@ -45,8 +45,8 @@
     "category": "Pokémon GO Fest",
     "lane": "theme",
     "sub": "Theme Main",
-    "start": "2026-05-29T01:00:00Z",
-    "endKnown": "2026-06-01T11:00:00Z",
+    "start": "2026-05-29T01:00:00",
+    "endKnown": "2026-06-01T11:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/pokemon-go-fest-2026-tokyo",
     "timeZone": "Asia/Tokyo",
@@ -54,9 +54,9 @@
     "isFixedTimeZone": "1",
     "uid": "712863bca2c380a5",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:41Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:28Z",
     "status": "active"
   },
   {
@@ -74,9 +74,9 @@
     "isFixedTimeZone": "",
     "uid": "9a923b0d64abf17b",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:41Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:28Z",
     "status": "active"
   },
   {
@@ -94,9 +94,9 @@
     "isFixedTimeZone": "",
     "uid": "f83fe27ad883966d",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:59Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:43Z",
     "status": "active"
   },
   {
@@ -116,7 +116,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-05-30T06:39:42Z",
+    "lastScrapedAt": "2026-05-30T06:40:29Z",
     "status": "active"
   },
   {
@@ -134,9 +134,9 @@
     "isFixedTimeZone": "",
     "uid": "ec90e50a72b3051a",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:42Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:29Z",
     "status": "active"
   },
   {
@@ -145,8 +145,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-05-26T20:00:00Z",
-    "endKnown": "2026-06-02T20:00:00Z",
+    "start": "2026-05-26T20:00:00",
+    "endKnown": "2026-06-02T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-memories-in-motion_great-league_ultra-league_master-league-split-4",
     "timeZone": "America/Los_Angeles",
@@ -156,7 +156,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-05-30T06:39:42Z",
+    "lastScrapedAt": "2026-05-30T06:40:29Z",
     "status": "active"
   },
   {
@@ -174,9 +174,9 @@
     "isFixedTimeZone": "",
     "uid": "2b22c40b564423f9",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:43Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:29Z",
     "status": "active"
   },
   {
@@ -194,9 +194,9 @@
     "isFixedTimeZone": "",
     "uid": "0a31067443f1ebe5",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:43Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:29Z",
     "status": "active"
   },
   {
@@ -216,7 +216,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-05-30T06:39:43Z",
+    "lastScrapedAt": "2026-05-30T06:40:30Z",
     "status": "active"
   },
   {
@@ -234,9 +234,9 @@
     "isFixedTimeZone": "",
     "uid": "75e409abaedd8be0",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:01Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:45Z",
     "status": "active"
   },
   {
@@ -254,9 +254,9 @@
     "isFixedTimeZone": "",
     "uid": "0ee70c432f192bbb",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:44Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:30Z",
     "status": "active"
   },
   {
@@ -274,9 +274,9 @@
     "isFixedTimeZone": "",
     "uid": "9a979535753142a4",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:59Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:43Z",
     "status": "active"
   },
   {
@@ -294,9 +294,9 @@
     "isFixedTimeZone": "",
     "uid": "5ff154fdb2ddaaaa",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:01Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:45Z",
     "status": "active"
   },
   {
@@ -305,8 +305,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-02T20:00:00Z",
-    "endKnown": "2026-06-09T20:00:00Z",
+    "start": "2026-06-02T20:00:00",
+    "endKnown": "2026-06-09T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_pokemon-north-america-international-championships-2026-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -314,9 +314,9 @@
     "isFixedTimeZone": "1",
     "uid": "891dfd454cebf0c5",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:45Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:31Z",
     "status": "active"
   },
   {
@@ -334,9 +334,9 @@
     "isFixedTimeZone": "",
     "uid": "0a9631cef2bfefce",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:00Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:45Z",
     "status": "active"
   },
   {
@@ -354,9 +354,9 @@
     "isFixedTimeZone": "",
     "uid": "33c8cfdb0cb8900b",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:00Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:45Z",
     "status": "active"
   },
   {
@@ -374,9 +374,9 @@
     "isFixedTimeZone": "",
     "uid": "71c7d2e51cb42fe3",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:02Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:46Z",
     "status": "active"
   },
   {
@@ -394,9 +394,9 @@
     "isFixedTimeZone": "1",
     "uid": "215544bc0943dabb",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:46Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:33Z",
     "status": "active"
   },
   {
@@ -414,9 +414,9 @@
     "isFixedTimeZone": "",
     "uid": "ac20539a0bbc09c7",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:01Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:46Z",
     "status": "active"
   },
   {
@@ -434,9 +434,9 @@
     "isFixedTimeZone": "",
     "uid": "0790235a7e0539b5",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:02Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:47Z",
     "status": "active"
   },
   {
@@ -445,8 +445,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-09T20:00:00Z",
-    "endKnown": "2026-06-16T20:00:00Z",
+    "start": "2026-06-09T20:00:00",
+    "endKnown": "2026-06-16T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_ultra-league_pokemon-north-america-international-championships-2026-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -454,9 +454,9 @@
     "isFixedTimeZone": "1",
     "uid": "7d5e9e75824997bd",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:47Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:33Z",
     "status": "active"
   },
   {
@@ -474,9 +474,9 @@
     "isFixedTimeZone": "",
     "uid": "04e8bbecda1e4b4c",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:02Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:46Z",
     "status": "active"
   },
   {
@@ -494,9 +494,9 @@
     "isFixedTimeZone": "",
     "uid": "f5e095eed3abdae7",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:01Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:46Z",
     "status": "active"
   },
   {
@@ -514,9 +514,9 @@
     "isFixedTimeZone": "",
     "uid": "be9b5b8276989843",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:03Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:47Z",
     "status": "active"
   },
   {
@@ -534,9 +534,9 @@
     "isFixedTimeZone": "",
     "uid": "4e56df671a6baa04",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:03Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:48Z",
     "status": "active"
   },
   {
@@ -554,9 +554,9 @@
     "isFixedTimeZone": "",
     "uid": "251541211140ad47",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:04Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:48Z",
     "status": "active"
   },
   {
@@ -565,8 +565,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-16T20:00:00Z",
-    "endKnown": "2026-06-23T20:00:00Z",
+    "start": "2026-06-16T20:00:00",
+    "endKnown": "2026-06-23T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_master-league-mega-edition_sunshine-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -574,9 +574,9 @@
     "isFixedTimeZone": "1",
     "uid": "b96a1779ec68ede3",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:49Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:35Z",
     "status": "active"
   },
   {
@@ -594,9 +594,9 @@
     "isFixedTimeZone": "",
     "uid": "a0c9f4336ad1cf86",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:03Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:47Z",
     "status": "active"
   },
   {
@@ -614,9 +614,9 @@
     "isFixedTimeZone": "",
     "uid": "cfb5f7e9a8a11480",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:02Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:47Z",
     "status": "active"
   },
   {
@@ -634,9 +634,9 @@
     "isFixedTimeZone": "",
     "uid": "3004cc9c4aafbd32",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:05Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:49Z",
     "status": "active"
   },
   {
@@ -654,9 +654,9 @@
     "isFixedTimeZone": "",
     "uid": "ce9142908c1cc958",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:05Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:49Z",
     "status": "active"
   },
   {
@@ -674,9 +674,9 @@
     "isFixedTimeZone": "",
     "uid": "3e5bd4d95895340d",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:04Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:48Z",
     "status": "active"
   },
   {
@@ -694,9 +694,9 @@
     "isFixedTimeZone": "",
     "uid": "4628a45d2ecf0d82",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:05Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:49Z",
     "status": "active"
   },
   {
@@ -714,9 +714,9 @@
     "isFixedTimeZone": "",
     "uid": "bd4a2625927ea74b",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:05Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:50Z",
     "status": "active"
   },
   {
@@ -725,8 +725,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-23T20:00:00Z",
-    "endKnown": "2026-06-30T20:00:00Z",
+    "start": "2026-06-23T20:00:00",
+    "endKnown": "2026-06-30T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-split-1",
     "timeZone": "America/Los_Angeles",
@@ -734,9 +734,9 @@
     "isFixedTimeZone": "1",
     "uid": "c86ff0d4d9caa215",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:51Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:37Z",
     "status": "active"
   },
   {
@@ -754,9 +754,9 @@
     "isFixedTimeZone": "",
     "uid": "f2ab33585a9ea8f8",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:59Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:43Z",
     "status": "active"
   },
   {
@@ -774,9 +774,9 @@
     "isFixedTimeZone": "",
     "uid": "f529e3c6117cbffc",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:04Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:48Z",
     "status": "active"
   },
   {
@@ -794,9 +794,9 @@
     "isFixedTimeZone": "",
     "uid": "b11918fd4d7b20c0",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:04Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:49Z",
     "status": "active"
   },
   {
@@ -814,9 +814,9 @@
     "isFixedTimeZone": "",
     "uid": "f03b2c748a8872bb",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:06Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:50Z",
     "status": "active"
   },
   {
@@ -836,7 +836,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-05-30T06:40:00Z",
+    "lastScrapedAt": "2026-05-30T06:40:44Z",
     "status": "active"
   },
   {
@@ -845,8 +845,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-30T20:00:00Z",
-    "endKnown": "2026-07-07T20:00:00Z",
+    "start": "2026-06-30T20:00:00",
+    "endKnown": "2026-07-07T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_summer-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -854,9 +854,9 @@
     "isFixedTimeZone": "1",
     "uid": "b2f84fc05dffffcf",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:53Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:38Z",
     "status": "active"
   },
   {
@@ -876,7 +876,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-05-30T06:40:06Z",
+    "lastScrapedAt": "2026-05-30T06:40:50Z",
     "status": "active"
   },
   {
@@ -885,8 +885,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-07T20:00:00Z",
-    "endKnown": "2026-07-14T20:00:00Z",
+    "start": "2026-07-07T20:00:00",
+    "endKnown": "2026-07-14T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_ultra-league_fantasy-cup-ultra-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -894,9 +894,9 @@
     "isFixedTimeZone": "1",
     "uid": "f2e1753f297d8561",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:54Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:39Z",
     "status": "active"
   },
   {
@@ -914,9 +914,9 @@
     "isFixedTimeZone": "",
     "uid": "c10e578f89aff1d0",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:06Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:50Z",
     "status": "active"
   },
   {
@@ -925,8 +925,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-14T20:00:00Z",
-    "endKnown": "2026-07-21T20:00:00Z",
+    "start": "2026-07-14T20:00:00",
+    "endKnown": "2026-07-21T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_master-league_retro-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -934,9 +934,9 @@
     "isFixedTimeZone": "1",
     "uid": "3c1ded4d30f86157",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:55Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:39Z",
     "status": "active"
   },
   {
@@ -945,8 +945,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-21T20:00:00Z",
-    "endKnown": "2026-07-28T20:00:00Z",
+    "start": "2026-07-21T20:00:00",
+    "endKnown": "2026-07-28T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-split-2",
     "timeZone": "America/Los_Angeles",
@@ -954,9 +954,9 @@
     "isFixedTimeZone": "1",
     "uid": "c160c4678b8f905a",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:55Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:40Z",
     "status": "active"
   },
   {
@@ -965,8 +965,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-28T20:00:00Z",
-    "endKnown": "2026-08-04T20:00:00Z",
+    "start": "2026-07-28T20:00:00",
+    "endKnown": "2026-08-04T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_master-premier",
     "timeZone": "America/Los_Angeles",
@@ -974,9 +974,9 @@
     "isFixedTimeZone": "1",
     "uid": "ed835b6291fd0c10",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:55Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:40Z",
     "status": "active"
   },
   {
@@ -994,9 +994,9 @@
     "isFixedTimeZone": "",
     "uid": "4dfdd53b61416d32",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:06Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:51Z",
     "status": "active"
   },
   {
@@ -1005,8 +1005,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-04T20:00:00Z",
-    "endKnown": "2026-08-11T20:00:00Z",
+    "start": "2026-08-04T20:00:00",
+    "endKnown": "2026-08-11T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_ultra-league_weather-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -1014,9 +1014,9 @@
     "isFixedTimeZone": "1",
     "uid": "a2a784b25de5a4a4",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:56Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:40Z",
     "status": "active"
   },
   {
@@ -1034,9 +1034,9 @@
     "isFixedTimeZone": "",
     "uid": "f4ff4ab2d29e239f",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:07Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:51Z",
     "status": "active"
   },
   {
@@ -1045,8 +1045,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-11T20:00:00Z",
-    "endKnown": "2026-08-18T20:00:00Z",
+    "start": "2026-08-11T20:00:00",
+    "endKnown": "2026-08-18T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_master-league_evolution-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -1054,9 +1054,9 @@
     "isFixedTimeZone": "1",
     "uid": "e8d206feaa00b8f7",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:57Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:41Z",
     "status": "active"
   },
   {
@@ -1074,9 +1074,9 @@
     "isFixedTimeZone": "",
     "uid": "47fb0039a0d29d1b",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:07Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:51Z",
     "status": "active"
   },
   {
@@ -1085,8 +1085,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-18T20:00:00Z",
-    "endKnown": "2026-08-25T20:00:00Z",
+    "start": "2026-08-18T20:00:00",
+    "endKnown": "2026-08-25T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_scroll-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -1094,9 +1094,9 @@
     "isFixedTimeZone": "1",
     "uid": "42dafa5a0278b073",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:57Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:41Z",
     "status": "active"
   },
   {
@@ -1105,8 +1105,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-25T20:00:00Z",
-    "endKnown": "2026-09-01T20:00:00Z",
+    "start": "2026-08-25T20:00:00",
+    "endKnown": "2026-09-01T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-split-3",
     "timeZone": "America/Los_Angeles",
@@ -1114,9 +1114,9 @@
     "isFixedTimeZone": "1",
     "uid": "2566819a3b61d8ed",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:57Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:41Z",
     "status": "active"
   },
   {
@@ -1134,9 +1134,9 @@
     "isFixedTimeZone": "",
     "uid": "073014daf06be6ce",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:40:00Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:44Z",
     "status": "active"
   },
   {
@@ -1145,8 +1145,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-09-01T20:00:00Z",
-    "endKnown": "2026-09-08T20:00:00Z",
+    "start": "2026-09-01T20:00:00",
+    "endKnown": "2026-09-08T20:00:00",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-mega-edition",
     "timeZone": "America/Los_Angeles",
@@ -1154,9 +1154,9 @@
     "isFixedTimeZone": "1",
     "uid": "aa22fe2054ec87c5",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:58Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:42Z",
     "status": "active"
   },
   {
@@ -1174,9 +1174,9 @@
     "isFixedTimeZone": "",
     "uid": "7e05259143c79f3c",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:58Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:42Z",
     "status": "active"
   },
   {
@@ -1194,9 +1194,9 @@
     "isFixedTimeZone": "",
     "uid": "ca0647626c7ecd96",
     "source": "leekduck",
-    "firstSeenAt": "2026-05-30T06:40:07Z",
-    "lastSeenAt": "2026-05-30T06:40:07Z",
-    "lastScrapedAt": "2026-05-30T06:39:59Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-05-30T06:40:42Z",
     "status": "active"
   }
 ]

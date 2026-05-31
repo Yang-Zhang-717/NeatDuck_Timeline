@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NeatDuck Timeline",
-  "version": "1.1.0",
-  "description": "Pokémon GO event calendar, type chart, Pokédex, and CP calculator.",
+  "name": "NeatDuck_Timeline v1.0",
+  "version": "1.0.7",
+  "description": "A compact three-tab Pokémon GO event calendar, type chart, Pokédex, and CP calculator for LeekDuck with Excel exports.",
   "icons": {
     "128": "icon128.png"
   },

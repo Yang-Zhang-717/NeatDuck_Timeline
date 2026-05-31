@@ -3,39 +3,52 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>NeatDuck_Timeline v1.1.0</title>
+  <title>NeatDuck_Timeline v1.0.7</title>
   <meta name="viewport" content="width=1320, initial-scale=1">
   <link rel="stylesheet" href="timeline.css">
 </head>
 <body style="background:#f6f8fa; margin:20px; font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;">
   <div id="ld-timeline-wrapper">
     <div id="ld-topbar">
-      <div class="row nd-main-tabs">
-        <button class="btn nd-tab-active" data-act="calendar-tab">📅 <span data-i18n="eventCalendar">event calendar</span></button>
-        <button class="btn" data-info-mode="types">🧬 属性克制</button>
-        <button class="btn" data-info-mode="pokedex">📖 宝可梦图鉴</button>
-        <span class="nd-public-controls"></span>
-        <select class="btn" id="ld-lang-select" title="Language"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option></select>
-        <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">设置</span></button>
-        <button class="btn" data-act="theme-toggle">🌓 深浅色</button>
-        <button class="btn" data-act="goto-leekduck">🦆 LeekDuck</button>
+      <div class="ld-header-row">
+        <div class="row ld-tabs" id="ld-tab-buttons">
+          <button class="btn nd-tab active" data-tab="calendar">📆 <span data-i18n="tabCalendar">活动日历</span></button>
+          <button class="btn nd-tab" data-tab="types">🧬 <span data-i18n="tabTypes">属性克制</span></button>
+          <button class="btn nd-tab" data-tab="pokedex">📖 <span data-i18n="tabPokedex">宝可梦图鉴</span></button>
+        </div>
+        <div class="row ld-common-controls">
+          <select class="btn" id="ld-lang-select" title="Language">
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁體中文</option>
+            <option value="en">English</option>
+          </select>
+          <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">设置</span></button>
+          <a class="btn nd-link-btn" href="https://leekduck.com/events/" target="_blank" rel="noopener">LeekDuck</a>
+        </div>
       </div>
-      <div class="row nd-tab-tools nd-calendar-tools">
-        <button class="btn" data-act="today">🎯 <span data-i18n="today">今天</span></button>
-        <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">本周</span></button>
-        <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">本月</span></button>
-        <button class="btn" data-act="switch-mode">↔️ 模式</button>
-        <label class="nd-tz-inline">🌐 <select class="btn" id="ld-tz-select"></select></label>
-        <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">云端更新</span></button>
-        <button class="btn" data-act="export-events-tsv">📤 导出活动TSV</button>
-        <button class="btn" data-act="email-log">📨 导出日志文件</button>
-        <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">清除选择</span></button>
+      <div class="ld-action-zone">
+        <div class="row ld-tab-actions" data-actions="calendar">
+          <button class="btn" data-act="today">🎯 <span data-i18n="today">今天</span></button>
+          <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">本周</span></button>
+          <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">本月</span></button>
+          <button class="btn" data-act="toggle-mode">↔️ <span data-i18n="switchLinear">模式</span></button>
+          <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">时区</span> <select class="btn" id="ld-tz-select"></select></label>
+          <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">云端更新</span></button>
+          <button class="btn" data-act="export-events-xlsx">📤 <span data-i18n="exportCSVEvents">导出活动Excel</span></button>
+          <button class="btn" data-act="export-log">🧾 <span data-i18n="emailLog">导出日志</span></button>
+          <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">清除选择</span></button>
+        </div>
+        <div class="row ld-tab-actions" data-actions="types" style="display:none">
+          <button class="btn" data-act="export-types-xlsx">📤 <span data-i18n="exportCSV">导出 Excel</span></button>
+        </div>
+        <div class="row ld-tab-actions" data-actions="pokedex" style="display:none">
+          <button class="btn" data-act="export-pokedex-xlsx">📤 <span data-i18n="exportCSV">导出 Excel</span></button>
+        </div>
       </div>
-      <div class="row nd-tab-spacer" aria-hidden="true"></div>
     </div>
-    <div id="ld-left"><svg id="ld-legend-svg" viewBox="0 0 240 642" preserveAspectRatio="xMinYMin"></svg></div>
+    <div id="ld-left"><svg id="ld-legend-svg" viewBox="0 0 240 608" preserveAspectRatio="xMinYMin"></svg></div>
     <div id="ld-right">
-      <svg id="ld-timeline-svg" viewBox="0 0 1040 642" preserveAspectRatio="xMinYMin">
+      <svg id="ld-timeline-svg" viewBox="0 0 1040 608" preserveAspectRatio="xMinYMin">
         <g id="ld-month-bgs"></g>
         <g id="ld-weekend-bgs"></g>
         <g id="ld-period-blocks"></g>
@@ -43,13 +56,12 @@
         <g id="ld-ruler-bottom" class="ld-ruler"></g>
         <g id="ld-lane-seps"></g>
         <g id="ld-items"></g>
-        <g id="ld-now"><line class="ld-now" y1="0" y2="642"/></g>
+        <g id="ld-now"><line class="ld-now" y1="0" y2="608"/></g>
       </svg>
       <div id="ld-extenders"></div>
       <div id="ld-monthgrid" style="display:none;"></div>
     </div>
     <div class="ld-modal-mask" id="ld-mask"></div>
-    <div class="ld-modal" id="ld-colors-modal"><h3 data-i18n="colors">颜色</h3><div id="ld-colors-rows"></div><div class="footer"><button class="btn" data-close="colors"><span data-i18n="ok">确定</span></button></div></div>
     <div class="ld-modal" id="ld-settings-modal"><h3 data-i18n="settings">设置</h3><div id="ld-settings-body"></div><div class="footer"><button class="btn" data-save="settings"><span data-i18n="apply">应用</span></button><button class="btn" data-close="settings"><span data-i18n="ok">确定</span></button></div></div>
     <div class="ld-modal" id="ld-updates-modal"><h3 data-i18n="updates">检测到更新</h3><div id="ld-updates-body"></div><div class="footer"><button class="btn" data-apply="updates"><span data-i18n="apply">应用</span></button><button class="btn" data-close="updates"><span data-i18n="ignore">忽略</span></button></div></div>
   </div>

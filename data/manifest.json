@@ -1,6 +1,21 @@
 {
-  "format": "tsv",
-  "generatedAt": "2026-05-30T20:09:41.142928+00:00",
-  "eventRows": 15,
-  "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv"
+  "name": "NeatDuck_Timeline public event library",
+  "source": "https://leekduck.com/events/",
+  "updatedAt": "2026-05-31T06:39:03Z",
+  "totalEvents": 60,
+  "activeEvents": 60,
+  "schema": "events.csv/v1.8-timezone-excel-compatible",
+  "coreColumns": [
+    "title",
+    "shortTitle",
+    "category",
+    "lane",
+    "sub",
+    "start",
+    "endKnown",
+    "endInferred",
+    "href"
+  ],
+  "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
+  "excelUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.xlsx"
 }

@@ -1,4 +1,4 @@
-const DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv";
+const DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv";
 const ALARM_NAME = "nd_remote_events_refresh";
 
 function getLocal(keys){
@@ -12,7 +12,7 @@ function validRemoteUrl(input){
     const raw = String(input || DEFAULT_REMOTE_URL).trim();
     const u = new URL(raw || DEFAULT_REMOTE_URL);
     if (u.protocol !== "https:") return DEFAULT_REMOTE_URL;
-    if (u.hostname === "yang-zhang-717.github.io" && /\/NeatDuck_Timeline\/data\/events\.(?:csv|tsv)$/i.test(u.pathname)) return DEFAULT_REMOTE_URL;
+    if (u.hostname === "yang-zhang-717.github.io" && /\/NeatDuck_Timeline\/data\/events\.csv$/i.test(u.pathname)) return DEFAULT_REMOTE_URL;
     const allowed = ["raw.githubusercontent.com", "yang-zhang-717.github.io"];
     if (!allowed.includes(u.hostname)) return DEFAULT_REMOTE_URL;
     return u.toString();
@@ -27,8 +27,10 @@ async function refreshRemoteEvents(){
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
     if (text.length > 2_000_000) throw new Error("remote data is too large");
-    const firstLine = (text.split(/\r?\n/)[0] || "").toLowerCase();
-    if (!firstLine.includes("title") || !firstLine.includes("start")) throw new Error("remote TSV header is not recognized");
+    const lines = text.split(/\r?\n/).filter(line => line.trim());
+    const firstLine = (lines[0] || "").toLowerCase();
+    if (!firstLine.includes("title") || !firstLine.includes("start")) throw new Error("remote CSV header is not recognized");
+    if (lines.length <= 1) throw new Error("remote data has only a header; keeping local history instead");
     await setLocal({
       ld_remote_url: url,
       ld_remote_events_csv_text: text,
@@ -44,8 +46,8 @@ async function refreshRemoteEvents(){
 function ensureAlarm(){
   chrome.alarms.create(ALARM_NAME, { delayInMinutes: 1, periodInMinutes: 720 });
 }
-chrome.runtime.onInstalled.addListener(()=>{ ensureAlarm(); refreshRemoteEvents().catch(console.warn); });
-chrome.runtime.onStartup.addListener(()=>{ ensureAlarm(); refreshRemoteEvents().catch(console.warn); });
+chrome.runtime.onInstalled.addListener(ensureAlarm);
+chrome.runtime.onStartup.addListener(ensureAlarm);
 chrome.alarms.onAlarm.addListener(alarm => { if (alarm && alarm.name === ALARM_NAME) refreshRemoteEvents(); });
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || message.type !== "nd_refresh_remote_events") return false;

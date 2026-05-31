@@ -43,9 +43,9 @@ jobs:
           if [[ -n "$(git status --porcelain data/ scripts/ requirements.txt .github/workflows/update-data.yml)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/events.csv data/manifest.json data/snapshot-latest.json data/detail_cache.json
+            git add data/events.csv data/events.xlsx data/manifest.json data/snapshot-latest.json data/detail_cache.json
             git commit -m "Update public event data"
             git push
           else
-            echo "No data changes. The ducks remain orderly. Suspicious, but acceptable."
+            echo "No data changes."
           fi

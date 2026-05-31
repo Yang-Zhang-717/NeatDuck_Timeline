@@ -19,6 +19,7 @@ import os
 import re
 import sys
 import time
+import zipfile
 from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -33,8 +34,9 @@ from dateutil import tz
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 CACHE_PATH = DATA_DIR / "detail_cache.json"
-EVENTS_PATH = DATA_DIR / "events.tsv"
-MANUAL_PATH = DATA_DIR / "events.manual.tsv"
+EVENTS_PATH = DATA_DIR / "events.csv"
+EVENTS_XLSX_PATH = DATA_DIR / "events.xlsx"
+MANUAL_PATH = DATA_DIR / "events.manual.csv"
 MANIFEST_PATH = DATA_DIR / "manifest.json"
 SNAPSHOT_PATH = DATA_DIR / "snapshot-latest.json"
 
@@ -43,7 +45,7 @@ REQUEST_TIMEOUT = int(os.environ.get("REQUEST_TIMEOUT", "20"))
 MAX_DETAIL_PAGES = int(os.environ.get("MAX_DETAIL_PAGES", "140"))
 DETAIL_SLEEP_SECONDS = float(os.environ.get("DETAIL_SLEEP_SECONDS", "0.20"))
 
-TSV_COLUMNS = [
+CSV_COLUMNS = [
     "uid",
     "title", "shortTitle", "category", "lane", "sub",
     "start", "endKnown", "endInferred", "href",
@@ -53,7 +55,7 @@ TSV_COLUMNS = [
 CORE_COLUMNS = ["title", "shortTitle", "category", "lane", "sub", "start", "endKnown", "endInferred", "href"]
 
 UA = (
-    "NeatDuck_Timeline/1.1 (+https://github.com/Yang-Zhang-717/NeatDuck_Timeline; "
+    "NeatDuck_Timeline/1.0 (+https://github.com/Yang-Zhang-717/NeatDuck_Timeline; "
     "public schedule updater; contact via GitHub issues)"
 )
 
@@ -250,7 +252,7 @@ def infer_end(title: str, category: str, sub: str, start_iso: str) -> str:
 
 def choose_lane_sub(title: str, category: str) -> Tuple[str, str]:
     hay = f"{category} {title}".lower()
-    if "max monday" in hay or "dynamax" in hay or "gigantamax" in hay:
+    if "max monday" in hay:
         return "weekly", "Max Mondays"
     if "spotlight" in hay:
         return "weekly", "Pokémon Spotlight Hour"
@@ -284,7 +286,7 @@ def pokemonish_title_part(title: str) -> str:
     patterns = [
         r"(.+?)\s+in\s+(?:Mega|5-star|5-Star|Shadow)\s+Raids?",
         r"(.+?)\s+in\s+5-star\s+Raid\s+Battles?",
-        r"(?:Featured)\s+(.+?)\s+during\s+Monday",
+        r"(?:Dynamax|Gigantamax)\s+(.+?)\s+during\s+Max\s+Monday",
         r"(.+?)\s+Raid\s+Hour",
         r"(.+?)\s+Spotlight\s+Hour",
         r"(.+?)\s+Community\s+Day",
@@ -304,6 +306,9 @@ def short_title(title: str, category: str, sub: str) -> str:
         return name if name.lower().startswith("max ") else f"Max {name}"
     if "mega raid" in sub_l:
         name = pokemonish_title_part(title)
+        generic = re.compile(r"^(?:mega\s+)?raid\s+(?:day|weekend)\b\s*:?(?:\s*(?:tbd|to be announced|unknown|未定))?$", re.I)
+        if generic.match(name) or re.match(r"^(?:tbd|to be announced|unknown|未定)$", name, re.I):
+            return title.replace("Mega Mega", "Mega").strip()
         return name if re.match(r"^(Mega|超级|超級)\b", name, re.I) else f"Mega {name}"
     if "raid" in sub_l:
         return pokemonish_title_part(title)
@@ -625,9 +630,9 @@ def read_events(path: Path) -> List[EventRecord]:
         return []
     rows: List[EventRecord] = []
     with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = tsv.DictReader(f)
+        reader = csv.DictReader(f)
         for row in reader:
-            data = {k: (row.get(k) or "") for k in TSV_COLUMNS}
+            data = {k: (row.get(k) or "") for k in CSV_COLUMNS}
             for k in CORE_COLUMNS:
                 data[k] = row.get(k, data.get(k, "")) or ""
             rec = EventRecord(**data)
@@ -713,11 +718,49 @@ def merge_library(existing: List[EventRecord], manual: List[EventRecord], fresh:
 def write_events(path: Path, events: List[EventRecord]) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=TSV_COLUMNS, delimiter="\t", lineterminator="\n")
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS, lineterminator="\n")
         writer.writeheader()
         for e in events:
             row = asdict(e)
-            writer.writerow({k: row.get(k, "") for k in TSV_COLUMNS})
+            writer.writerow({k: row.get(k, "") for k in CSV_COLUMNS})
+
+
+
+
+def _xml_cell(v: object) -> str:
+    return html.escape(str(v or ""), quote=True)
+
+def _col_name(idx: int) -> str:
+    idx += 1
+    out = ""
+    while idx:
+        idx, rem = divmod(idx - 1, 26)
+        out = chr(65 + rem) + out
+    return out
+
+def write_events_xlsx(path: Path, events: List[EventRecord]) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    rows = [CSV_COLUMNS] + [[asdict(e).get(k, "") for k in CSV_COLUMNS] for e in events]
+    sheet_rows = []
+    for r_idx, row in enumerate(rows, 1):
+        cells = []
+        for c_idx, value in enumerate(row):
+            ref = f"{_col_name(c_idx)}{r_idx}"
+            cells.append(f'<c r="{ref}" t="inlineStr"><is><t>{_xml_cell(value)}</t></is></c>')
+        sheet_rows.append(f'<row r="{r_idx}">{"".join(cells)}</row>')
+    sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + \
+        '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' + \
+        '<sheetData>' + ''.join(sheet_rows) + '</sheetData></worksheet>'
+    files = {
+        '[Content_Types].xml': '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>',
+        '_rels/.rels': '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>',
+        'xl/workbook.xml': '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="events" sheetId="1" r:id="rId1"/></sheets></workbook>',
+        'xl/_rels/workbook.xml.rels': '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>',
+        'xl/worksheets/sheet1.xml': sheet,
+    }
+    with zipfile.ZipFile(path, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+        for name, data in files.items():
+            zf.writestr(name, data.encode('utf-8'))
 
 
 def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
@@ -728,9 +771,10 @@ def write_manifest(events: List[EventRecord], fresh: List[EventRecord]) -> None:
         "updatedAt": latest,
         "totalEvents": len(events),
         "activeEvents": len(fresh),
-        "schema": "events.tsv/v1.7-timezone-compatible",
+        "schema": "events.csv/v1.8-timezone-excel-compatible",
         "coreColumns": CORE_COLUMNS,
-        "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv",
+        "extensionDefaultUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv",
+        "excelUrl": "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.xlsx",
     }
     MANIFEST_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     SNAPSHOT_PATH.write_text(json.dumps([asdict(e) for e in fresh], ensure_ascii=False, indent=2), encoding="utf-8")
@@ -743,6 +787,7 @@ def main() -> int:
     manual = read_events(MANUAL_PATH)
     merged = merge_library(existing, manual, fresh)
     write_events(EVENTS_PATH, merged)
+    write_events_xlsx(EVENTS_XLSX_PATH, merged)
     write_manifest(merged, fresh)
     print(f"Fresh events: {len(fresh)}")
     print(f"Historical library total: {len(merged)}")

@@ -12,16 +12,24 @@
     MIN_SHORT_EVENT_W: 10
   };
 
-  Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv";
+  Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.csv";
   Core.DEFAULT_DISPLAY_TIME_ZONE = "local";
-  Core.TIME_ZONE_OPTIONS = [
-    {value:"local", label:"Browser / Local"},
-    {value:"UTC", label:"UTC"},
-    {value:"America/Los_Angeles", label:"PT / America/Los_Angeles"},
-    {value:"Asia/Tokyo", label:"JST / Asia/Tokyo"},
-    {value:"Europe/Copenhagen", label:"CET/CEST / Europe/Copenhagen"},
-    {value:"Europe/London", label:"GMT/BST / Europe/London"}
-  ];
+  Core._tzCities = {
+    "-12":"Baker Island / Howland Island / Enderbury", "-11":"Pago Pago / Niue / Midway", "-10":"Honolulu / Papeete / Rarotonga",
+    "-09":"Anchorage / Juneau / Gambier", "-08":"Los Angeles / Vancouver / Tijuana", "-07":"Denver / Phoenix / Calgary",
+    "-06":"Chicago / Mexico City / Winnipeg", "-05":"New York / Toronto / Lima", "-04":"Santiago / La Paz / Halifax",
+    "-03":"Buenos Aires / São Paulo / Montevideo", "-02":"South Georgia / Fernando de Noronha / Nuuk", "-01":"Azores / Cape Verde / Ittoqqortoormiit",
+    "+00":"London / Reykjavik / Accra", "+01":"Paris / Berlin / Lagos", "+02":"Athens / Cairo / Johannesburg",
+    "+03":"Moscow / Nairobi / Riyadh", "+04":"Dubai / Baku / Tbilisi", "+05":"Karachi / Tashkent / Maldives",
+    "+06":"Dhaka / Almaty / Thimphu", "+07":"Bangkok / Jakarta / Hanoi", "+08":"Beijing / Singapore / Perth",
+    "+09":"Tokyo / Seoul / Osaka", "+10":"Sydney / Guam / Port Moresby", "+11":"Nouméa / Solomon Islands / Magadan",
+    "+12":"Auckland / Fiji / Kamchatka", "+13":"Apia / Nukualofa / Tokelau", "+14":"Kiritimati / Line Islands / Samoa DST"
+  };
+  Core.TIME_ZONE_OPTIONS = [{value:"local", label:"Browser / Local"}].concat(Array.from({length:27}, (_,i)=>i-12).map(n=>{
+    const sign = n>=0 ? "+" : "-"; const hh = String(Math.abs(n)).padStart(2,"0"); const key = sign + hh;
+    const value = `UTC${sign}${hh}:00`;
+    return {value, label:`${value} · ${Core._tzCities[key] || ""}`};
+  }));
   Core.namedZoneToIANA = function(z){
     const t=String(z||"").toUpperCase();
     if(t==="JST") return "Asia/Tokyo";
@@ -32,9 +40,18 @@
     if(/^[-+]?\d/.test(t)) return "UTC";
     return "";
   };
+  Core.fixedOffsetMinutes = function(value){
+    const m=String(value||"").trim().match(/^UTC([+-])(\d{1,2})(?::?(\d{2}))?$/i);
+    if(!m) return null;
+    const mins=(Number(m[2])*60 + Number(m[3]||0)) * (m[1]==="-" ? -1 : 1);
+    return (mins < -12*60 || mins > 14*60) ? null : mins;
+  };
   Core.normalizeDisplayTimeZone = function(value){
     const v=String(value||Core.DEFAULT_DISPLAY_TIME_ZONE).trim();
     if(!v || v==="local") return "local";
+    const fixed=Core.fixedOffsetMinutes(v);
+    if(fixed != null){ const sign=fixed>=0?"+":"-"; const hh=String(Math.floor(Math.abs(fixed)/60)).padStart(2,"0"); const mm=String(Math.abs(fixed)%60).padStart(2,"0"); return `UTC${sign}${hh}:${mm}`; }
+    if(v==="UTC") return "UTC+00:00";
     if(Core.TIME_ZONE_OPTIONS.some(x=>x.value===v)) return v;
     try{ new Intl.DateTimeFormat("en-US", {timeZone:v}).format(new Date()); return v; }
     catch(_){ return "local"; }
@@ -50,6 +67,11 @@
     const d=Core.parseLocalDateString(date); if(!d) return null;
     const tz=Core.normalizeDisplayTimeZone(timeZone);
     if(tz==="local") return {year:d.getFullYear(), month:d.getMonth()+1, day:d.getDate(), hour:d.getHours(), minute:d.getMinutes(), second:d.getSeconds()};
+    const fixed=Core.fixedOffsetMinutes(tz);
+    if(fixed != null){
+      const shifted = new Date(d.getTime() + fixed*60000);
+      return {year:shifted.getUTCFullYear(), month:shifted.getUTCMonth()+1, day:shifted.getUTCDate(), hour:shifted.getUTCHours(), minute:shifted.getUTCMinutes(), second:shifted.getUTCSeconds()};
+    }
     const fmt=new Intl.DateTimeFormat("en-CA", {timeZone:tz, year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hourCycle:"h23"});
     const out={};
     fmt.formatToParts(d).forEach(p=>{ if(p.type!=="literal") out[p.type]=Number(p.value); });
@@ -89,7 +111,7 @@
     labelPaddingX: 6,
     itemBorderWidth: 1,
     itemRadius: 4,
-    hoverPersistMs: 600,
+    hoverPersistMs: 400,
     fontSize: 11,
     fontWeight: 600,
     labelOutline: true,
@@ -135,21 +157,21 @@
 
   /* i18n */
   Core.I18N = {
-    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export TSV","switchLinear":"Timeline","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import TSV","exportCSVEvents":"Export Events TSV","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Email Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
-    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出TSV","switchLinear":"直线时间轴","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入TSV","exportCSVEvents":"导出活动TSV","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"邮件日志","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
-    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出TSV","switchLinear":"時間軸","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入TSV","exportCSVEvents":"匯出活動TSV","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"郵件日誌","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
+    "en": {"week":"This week","month":"This month","colors":"Colors","language":"Language","legend":"Legend","close":"Close","resetWeek":"This Week","resetMonth":"This Month","editingColors":"Editing category colors","unknownCategory":"Unknown category","addColor":"Pick a color for","saved":"Saved","openStandalone":"Open standalone","exportCSV":"Export Excel","switchLinear":"Mode","switchMonthGrid":"Month View","home":"Home","today":"Today","names":"Names","importCSV":"Import data","exportCSVEvents":"Export Events Excel","dataUpdate":"Data Update","updates":"Updates detected","apply":"Apply","ignore":"Ignore","settings":"Settings","remoteUpdate":"Cloud Update","exportICS":"Export ICS","emailLog":"Export Log","clearSelection":"Clear Selection","timeZone":"Time Zone","browserLocal":"Browser local"},
+    "zh-CN":{"week":"本周","month":"本月","colors":"颜色","language":"语言","legend":"图例","close":"关闭","resetWeek":"本周","resetMonth":"本月","editingColors":"编辑类别颜色","unknownCategory":"未知类别","addColor":"请选择颜色：","saved":"已保存","openStandalone":"打开独立页","exportCSV":"导出Excel","switchLinear":"模式","switchMonthGrid":"月视图","home":"首页","today":"今天","names":"名称","importCSV":"导入数据","exportCSVEvents":"导出活动Excel","dataUpdate":"数据更新","updates":"检测到更新","apply":"应用","ignore":"忽略","settings":"设置","remoteUpdate":"云端更新","exportICS":"导出日历ICS","emailLog":"导出日志文件","clearSelection":"清除选择","timeZone":"时区","browserLocal":"浏览器本地"},
+    "zh-TW":{"week":"本週","month":"本月","colors":"顏色","language":"語言","legend":"圖例","close":"關閉","resetWeek":"本週","resetMonth":"本月","editingColors":"編輯類別顏色","unknownCategory":"未知類別","addColor":"請選擇顏色：","saved":"已儲存","openStandalone":"打開獨立頁","exportCSV":"匯出Excel","switchLinear":"模式","switchMonthGrid":"月視圖","home":"首頁","today":"今天","names":"名稱","importCSV":"匯入資料","exportCSVEvents":"匯出活動Excel","dataUpdate":"資料更新","updates":"偵測到更新","apply":"套用","ignore":"忽略","settings":"設定","remoteUpdate":"雲端更新","exportICS":"匯出日曆ICS","emailLog":"匯出日誌檔","clearSelection":"清除選取","timeZone":"時區","browserLocal":"瀏覽器本地"}
   };
   Core.DEFAULT_LANG = "zh-CN";
 
 
   Object.assign(Core.I18N.en, {
-    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote TSV URL", settingsHint:"Click event blocks to select them. Export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK"
+    settingsOuterMarginX:"Outer page margin (px)", settingsLabelPaddingX:"Text horizontal padding (px)", settingsItemBorderWidth:"Block border width (px)", settingsItemRadius:"Block corner radius (px)", settingsHoverPersistMs:"Tooltip delay (ms)", settingsFontSize:"Font size (px)", settingsFontWeight:"Font weight", settingsMinShortEventWidth:"Short block minimum width (px)", settingsShadeMaxWidth:"Shading max extension (px)", settingsShadeGap:"Gap before next event (px)", settingsLabelOutline:"White text outline", settingsEnable:"Enable", settingsRemoteUrl:"Remote data URL", settingsHint:"Click event blocks to select them. Excel/log export uses selected events; if nothing is selected it uses the visible timeline range.", noEventsExport:"No events to export. Select some events or move the timeline to a range with events.", noEmailEvents:"No event log to send. Select some events first.", noCachedEvents:"No cached event data yet. Open leekduck.com/events and wait for scanning, or run Cloud Update.", remoteSuccess:"Cloud data updated.", remoteFail:"Cloud update failed: ", ok:"OK", tabCalendar:"Event Calendar", tabTypes:"Type Chart", tabPokedex:"Pokédex"
   });
   Object.assign(Core.I18N["zh-CN"], {
-    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程 TSV URL", settingsHint:"点击活动块可选择，再导出 ICS 或邮件日志。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定"
+    settingsOuterMarginX:"左右页边距 px", settingsLabelPaddingX:"文字左右内边距 px", settingsItemBorderWidth:"边框大小 px", settingsItemRadius:"圆角 px", settingsHoverPersistMs:"悬停消失延迟 ms", settingsFontSize:"字体大小 px", settingsFontWeight:"字体粗细", settingsMinShortEventWidth:"短活动最小宽度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 与下个活动间距 px", settingsLabelOutline:"文字白色描边", settingsEnable:"启用", settingsRemoteUrl:"远程数据 URL", settingsHint:"点击活动块可选择，再导出 Excel 或日志文件。未选择时默认使用当前时间轴可见范围。", noEventsExport:"没有可导出的活动。先选几个，或者把时间轴移动到有活动的范围。", noEmailEvents:"没有可发送的活动日志。先选几个活动。", noCachedEvents:"没有缓存活动数据：请先打开 leekduck.com/events 等待扫描，或点击云端更新。", remoteSuccess:"云端数据已更新。", remoteFail:"云端更新失败：", ok:"确定", tabCalendar:"活动日历", tabTypes:"属性克制", tabPokedex:"宝可梦图鉴"
   });
   Object.assign(Core.I18N["zh-TW"], {
-    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端 TSV URL", settingsHint:"點擊活動區塊可選取，再匯出 ICS 或郵件日誌。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定"
+    settingsOuterMarginX:"左右頁邊距 px", settingsLabelPaddingX:"文字左右內邊距 px", settingsItemBorderWidth:"邊框大小 px", settingsItemRadius:"圓角 px", settingsHoverPersistMs:"懸停消失延遲 ms", settingsFontSize:"字體大小 px", settingsFontWeight:"字體粗細", settingsMinShortEventWidth:"短活動最小寬度 px", settingsShadeMaxWidth:"shading 最大延伸 px", settingsShadeGap:"shading 與下個活動間距 px", settingsLabelOutline:"文字白色描邊", settingsEnable:"啟用", settingsRemoteUrl:"遠端資料 URL", settingsHint:"點擊活動區塊可選取，再匯出 Excel 或日誌檔。未選取時預設使用目前時間軸可見範圍。", noEventsExport:"沒有可匯出的活動。先選幾個，或把時間軸移到有活動的範圍。", noEmailEvents:"沒有可寄送的活動日誌。先選幾個活動。", noCachedEvents:"沒有快取活動資料：請先開啟 leekduck.com/events 等待掃描，或點擊雲端更新。", remoteSuccess:"雲端資料已更新。", remoteFail:"雲端更新失敗：", ok:"確定", tabCalendar:"活動日曆", tabTypes:"屬性克制", tabPokedex:"寶可夢圖鑑"
   });
   Core.t = function(lang, key){ const dict = Core.I18N[lang] || Core.I18N.en; return dict[key] || Core.I18N.en[key] || key; };
 
@@ -165,6 +187,7 @@
     "Mega Raid Battles": "#f97316",
     "Raid Day": "#ef6c00",
     "Raid Weekend": "#6f1e51",
+    "Max Mondays": "#690342",
     "Shadow Raid Battles": "#4b235f",
     "Pokémon Spotlight Hour": "#e58e26",
     "Raid Hour": "#c0392b",
@@ -180,7 +203,7 @@
     { key: "season",  title: "赛季 / Season", sub: ["Season"] },
     { key: "gbl",     title: "GO对战联盟 / GO Battle League", sub: ["GO Battle League"] },
     { key: "raids",  title: "团体战 / Raids", sub: ["Shadow Raid Battles","Mega Raid Battles","5-Star Raid Battles"], overlays: ["Raid Day","Raid Weekend"] },
-    { key: "weekly", title: "每周活动 / Weekly", sub: ["Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"] },
+    { key: "weekly", title: "每周活动 / Weekly", sub: ["Max Mondays","Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"] },
     { key: "community", title: "社群日 / Community Day", sub: ["Community Day"] },
     { key: "city", title: "城市探险 / City Safari", sub: ["City Safari"] }
   ];
@@ -291,8 +314,7 @@
 
   Core.shortenWeekly = function(raw){
     let s = Core.cleanTitle(raw||"");
-    // Former Max Monday wording parser (kept only for old cache migration)
-    s = s.replace(/(.+?)\s+during\s+Max\s+Monday(?:s)?/i, "$1");
+    s = s.replace(/(?:Dynamax|Gigantamax)\s+(.+?)\s+during\s+Max\s+Monday(?:s)?/i, "$1");
     // Spotlight Hour / Raid Hour / Showcase
     s = s.replace(/(.+?)\s+Spotlight\s+Hour/i, "$1");
     s = s.replace(/(.+?)\s+Raid\s+Hour/i, "$1");
@@ -305,14 +327,17 @@
 
   Core.shortenRaids = function(raw){
     let s = Core.cleanTitle(raw||"");
-    // "Mega XXX in Mega Raids" -> "Mega XXX"
     s = s.replace(/\s+in\s+Mega\s+Raids?/i, "");
     s = s.replace(/\s+in\s+Shadow\s+(?:Raids?|Raid\s+Battles?)/i, "");
-    // "... in 5-Star Raid Battles" -> "..."
     s = s.replace(/\s+in\s+5-?\s*Star\s+Raid\s+Battles/i, "");
-    // Mega Raid Day/Weekend suffixes
-    s = s.replace(/\s*Mega\s+Raid\s+(Day|Weekend)\s*:?\s*(.*)$/i, "Mega $2".trim());
-    return s.trim();
+    const generic = /^(?:mega\s+)?raid\s+(?:day|weekend)\s*:?(?:\s*(?:tbd|to be announced|unknown|未定))?$/i;
+    if (generic.test(s)) return s.replace(/^Mega\s+Mega/i, "Mega").trim();
+    s = s.replace(/^Mega\s+Raid\s+(Day|Weekend)\s*:?\s*(.+)$/i, (m, kind, name)=>{
+      const n=String(name||"").trim();
+      if(!n || /^(?:tbd|to be announced|unknown|未定)$/i.test(n)) return `Mega Raid ${kind}`;
+      return /^Mega\s+/i.test(n) ? n : `Mega ${n}`;
+    });
+    return s.replace(/^Mega\s+Mega/i, "Mega").trim();
   };
 
   Core.shortenGBL = function(raw){
@@ -323,6 +348,7 @@
     const text = (e.rawText||"") + " " + (e.title||"") + " " + (e.category||"");
     // Weekly
     const wk=[
+      {sub:"Max Mondays",re:/(max\s*monday|max\s*mondays)/i},
       {sub:"Pokémon Spotlight Hour",re:/(spotlight\s*hour|聚焦時刻)/i},
       {sub:"Raid Hour",re:/(raid\s*hour|團體戰時刻)/i},
       {sub:"PokéStop Showcase",re:/(pok[eé]stop\s*showcase|補給站展示)/i}
@@ -357,7 +383,7 @@
     else if (sub === "Season") out.lane = "season";
     else if (sub === "GO Battle League") out.lane = "gbl";
     else if (["Shadow Raid Battles","Mega Raid Battles","5-Star Raid Battles"].includes(sub)) out.lane = "raids";
-    else if (["Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"].includes(sub)) out.lane = "weekly";
+    else if (["Max Mondays","Raid Hour","Pokémon Spotlight Hour","PokéStop Showcase"].includes(sub)) out.lane = "weekly";
     else if (sub === "Community Day") out.lane = "community";
     else if (sub === "City Safari") out.lane = "city";
     return out;
@@ -457,7 +483,7 @@
     s.labelPaddingX = Math.max(0, Math.min(24, s.labelPaddingX));
     s.itemBorderWidth = Math.max(0, Math.min(6, s.itemBorderWidth));
     s.itemRadius = Math.max(0, Math.min(16, s.itemRadius));
-    s.hoverPersistMs = Math.max(300, Math.min(12000, s.hoverPersistMs));
+    s.hoverPersistMs = Math.max(100, Math.min(12000, s.hoverPersistMs));
     s.fontSize = Math.max(8, Math.min(20, s.fontSize));
     s.fontWeight = Math.max(300, Math.min(900, s.fontWeight));
     s.minShortEventWidth = Math.max(4, Math.min(120, s.minShortEventWidth));
@@ -541,6 +567,7 @@
     let keyName = original;
     if (/^Shadow\s+/i.test(keyName)) { prefix = (lang==="zh-TW"?"暗影":(lang==="zh-CN"?"暗影":"Shadow ")); keyName = keyName.replace(/^Shadow\s+/i, ""); }
     if (/^Mega\s+/i.test(keyName)) { prefix += (lang==="zh-TW"?"超級·":(lang==="zh-CN"?"超级·":"Mega ")); keyName = keyName.replace(/^Mega\s+/i, ""); }
+    keyName = keyName.replace(/^(?:Dynamax|Gigantamax)\s+/i, "");
     const key = Core._pokemonKey(keyName);
     const manual = Core._pokemonManual[key];
     if (manual && manual[lang]) return prefix + manual[lang];
@@ -578,6 +605,7 @@
     s = s.replace(/\s+during\s+Max\s+Monday(?:s)?\b.*$/i, "");
     s = s.replace(/\s+(?:Spotlight\s+Hour|Raid\s+Hour|Raid\s+Day|Raid\s+Weekend|Pok[eé]Stop\s+Showcases?).*$/i, "");
     s = s.replace(/\s+Battles?$/i, "");
+    s = s.replace(/^(?:Dynamax|Gigantamax)\s+/i, "");
     return s.trim();
   };
 
@@ -589,8 +617,8 @@
     const isPokemonOnly = /^(5-Star Raid Battles|Mega Raid Battles|Shadow Raid Battles|Max Mondays|Pokémon Spotlight Hour|Raid Hour|PokéStop Showcase)$/i.test(sub);
     if (isPokemonOnly){
       let pokemon = Core.extractPokemonName(e.title || raw);
-      if (sub === "Mega Raid Battles" && !/^Mega\s+/i.test(pokemon)) pokemon = "Mega " + pokemon;
-      const local = (l === "en") ? pokemon : (Core.translatePokemonName(pokemon, l, pokemonDB) || pokemon);
+      if (sub === "Mega Raid Battles" && !/^(?:Mega\s+)?Raid\s+(?:Day|Weekend)/i.test(pokemon) && !/^(?:tbd|to be announced|unknown|未定)$/i.test(pokemon) && !/^Mega\s+/i.test(pokemon)) pokemon = "Mega " + pokemon;
+      const local = (l === "en") ? pokemon.replace(/^(?:Dynamax|Gigantamax)\s+/i, "") : (Core.translatePokemonName(pokemon, l, pokemonDB) || pokemon);
       if (sub === "Max Mondays") return /^Max\b/i.test(local) ? local : "Max " + local;
       if (sub === "Pokémon Spotlight Hour") return l === "en" ? `${local} Spotlight Hour` : local + (l==="zh-TW"?"聚焦時刻":"聚焦时刻");
       if (sub === "Raid Hour") return l === "en" ? `${local} Raid Hour` : local + (l==="zh-TW"?"團體戰時刻":"团体战时刻");
@@ -745,7 +773,7 @@
     }catch(_){ return { start:null, end:null }; }
   };
 
-  /* Legacy CSV reader + v1.1 TSV writer */
+  /* CSV <-> events */
   Core.eventsToCSV = function(events){
     const header = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone"].join(",");
     const rows = (events || []).map(e => [
@@ -795,7 +823,7 @@
     header.forEach((h,i)=> idx[h] = i);
     const required = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href"];
     if (!required.every(k => Object.prototype.hasOwnProperty.call(idx,k))){
-      console.warn("LDT: legacy CSV header not recognized; ignoring imported cache.");
+      console.warn("LDT: CSV header not recognized; ignoring imported cache.");
       return [];
     }
     const parseDateField = (cols,key)=>{
@@ -825,7 +853,7 @@
         const normalized = Core.normalizeLegacyEvent(e);
         if (normalized) events.push(normalized);
       }catch(err){
-        console.warn("LDT: skipped bad legacy row", i+1, err);
+        console.warn("LDT: skipped bad CSV row", i+1, err);
       }
     }
     return events;
@@ -965,7 +993,10 @@
       isLocal: n.isLocal !== false,
       firstSeenAt: n.firstSeenAt || null,
       lastSeenAt: n.lastSeenAt || null,
-      status: n.status || "saved"
+      status: n.status || "saved",
+      timeZone: n.timeZone || "local",
+      timeZoneLabel: n.timeZoneLabel || "Local Time",
+      isFixedTimeZone: !!n.isFixedTimeZone
     };
   };
 
@@ -973,13 +1004,14 @@
     if (!prev) return next;
     if (!next) return prev;
     const out = {...prev};
-    for (const k of ["title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status"]){
+    for (const k of ["title","shortTitle","category","lane","sub","overlay","overlayTargetSub","rawText","href","status","timeZone","timeZoneLabel"]){
       if (next[k] != null && next[k] !== "") out[k] = next[k];
     }
     for (const k of ["start","endKnown","endInferred"]){
       if (next[k]) out[k] = next[k];
     }
     out.isLocal = next.isLocal !== false;
+    out.isFixedTimeZone = !!(next.isFixedTimeZone || out.isFixedTimeZone);
     out.firstSeenAt = prev.firstSeenAt || next.firstSeenAt || null;
     out.lastSeenAt = next.lastSeenAt || prev.lastSeenAt || null;
     out.id = Core.makeEventId(out) || next.id || prev.id;
@@ -1192,6 +1224,7 @@
     if (!e.start) return { known: null, inferred: null };
     const sub = e.sub || "";
     if (sub === "Raid Hour" || sub === "Pokémon Spotlight Hour") return { known:null, inferred: Core.addHours(e.start, 1) };
+    if (sub === "Max Mondays") return { known:null, inferred: Core.addHours(e.start, 15) }; // LeekDuck details: Mondays 6 AM → 9 PM local time.
     if (/weekend/.test(titleLower)){
       const start = new Date(e.start);
       const dow=start.getDay();
@@ -1215,121 +1248,54 @@
   };
 
 
-
-  // ===== NeatDuck v1.1.0 compatibility + TSV layer =====
-  Core.VERSION = "1.1.0";
-  Core.DEFAULT_REMOTE_URL = "https://raw.githubusercontent.com/Yang-Zhang-717/NeatDuck_Timeline/main/data/events.tsv";
-  Core.DEFAULT_SETTINGS.hoverPersistMs = 600;
-
-  Core.TIME_ZONE_OPTIONS = [
-    {value:"local", label:"Browser / Local"},
-    {value:"UTC", label:"UTC ±00: London / Reykjavik / Accra"},
-    {value:"Etc/GMT+12", label:"UTC-12: Baker Island / Howland / AoE"},
-    {value:"Pacific/Pago_Pago", label:"UTC-11: Pago Pago / Niue / Midway"},
-    {value:"Pacific/Honolulu", label:"UTC-10: Honolulu / Tahiti / Rarotonga"},
-    {value:"America/Anchorage", label:"UTC-09: Anchorage / Juneau / Fairbanks"},
-    {value:"America/Los_Angeles", label:"UTC-08/-07: Los Angeles / Vancouver / Seattle"},
-    {value:"America/Denver", label:"UTC-07/-06: Denver / Calgary / Phoenix"},
-    {value:"America/Chicago", label:"UTC-06/-05: Chicago / Mexico City / Winnipeg"},
-    {value:"America/New_York", label:"UTC-05/-04: New York / Toronto / Lima"},
-    {value:"America/Halifax", label:"UTC-04/-03: Halifax / Santiago / La Paz"},
-    {value:"America/Sao_Paulo", label:"UTC-03: São Paulo / Buenos Aires / Montevideo"},
-    {value:"Atlantic/South_Georgia", label:"UTC-02: South Georgia / Noronha / Grytviken"},
-    {value:"Atlantic/Azores", label:"UTC-01: Azores / Praia / Scoresbysund"},
-    {value:"Europe/London", label:"UTC+00/+01: London / Dublin / Lisbon"},
-    {value:"Europe/Paris", label:"UTC+01/+02: Paris / Berlin / Rome"},
-    {value:"Europe/Copenhagen", label:"UTC+01/+02: Copenhagen / Oslo / Stockholm"},
-    {value:"Europe/Athens", label:"UTC+02/+03: Athens / Cairo / Helsinki"},
-    {value:"Europe/Moscow", label:"UTC+03: Moscow / Istanbul / Nairobi"},
-    {value:"Asia/Dubai", label:"UTC+04: Dubai / Abu Dhabi / Muscat"},
-    {value:"Asia/Karachi", label:"UTC+05: Karachi / Tashkent / Maldives"},
-    {value:"Asia/Dhaka", label:"UTC+06: Dhaka / Almaty / Thimphu"},
-    {value:"Asia/Bangkok", label:"UTC+07: Bangkok / Jakarta / Hanoi"},
-    {value:"Asia/Shanghai", label:"UTC+08: Beijing / Singapore / Taipei"},
-    {value:"Asia/Tokyo", label:"UTC+09: Tokyo / Seoul / Osaka"},
-    {value:"Australia/Sydney", label:"UTC+10/+11: Sydney / Melbourne / Guam"},
-    {value:"Pacific/Noumea", label:"UTC+11: Nouméa / Honiara / Magadan"},
-    {value:"Pacific/Auckland", label:"UTC+12/+13: Auckland / Fiji / Wellington"},
-    {value:"Pacific/Tongatapu", label:"UTC+13: Tonga / Samoa / Tokelau"},
-    {value:"Pacific/Kiritimati", label:"UTC+14: Kiritimati / Line Islands / Samoa DST"}
-  ];
-
-  Core.TABLE_COLUMNS = ["title","shortTitle","category","lane","sub","start","endKnown","endInferred","href","timeZone","timeZoneLabel","isFixedTimeZone","status","source"];
-  Core._tsvEscape = function(v){
-    if (v instanceof Date) v = v.toISOString();
-    v = String(v == null ? "" : v);
-    return v.replace(/\t/g," ").replace(/\r?\n/g," ").trim();
+  /* Minimal XLSX writer (stored ZIP, inline strings). Used so extension exports real Excel files, not CSV-with-a-fake-mustache. */
+  Core._crc32Table = null;
+  Core._crc32 = function(bytes){
+    if(!Core._crc32Table){ Core._crc32Table = Array.from({length:256}, (_,n)=>{ let c=n; for(let k=0;k<8;k++) c = (c&1) ? (0xEDB88320 ^ (c>>>1)) : (c>>>1); return c>>>0; }); }
+    let c = 0xFFFFFFFF; for(const b of bytes) c = Core._crc32Table[(c ^ b) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0;
   };
-  Core.eventsToTSV = function(events){
-    const cols = Core.TABLE_COLUMNS;
-    const rows = (events || []).map(e => cols.map(k => {
-      let v = e && e[k];
-      if ((k === "start" || k === "endKnown" || k === "endInferred") && v) v = new Date(v).toISOString();
-      if (k === "isFixedTimeZone") v = e && e.isFixedTimeZone ? "1" : "";
-      return Core._tsvEscape(v);
-    }).join("\t"));
-    return [cols.join("\t")].concat(rows).join("\n");
+  Core._u16 = function(n){ return [n&255,(n>>>8)&255]; };
+  Core._u32 = function(n){ return [n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]; };
+  Core._utf8 = function(s){ return new TextEncoder().encode(String(s||"")); };
+  Core._xml = function(v){ return String(v==null?"":v).replace(/[&<>"]/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch])); };
+  Core._colName = function(n){ let s=""; n++; while(n){ const m=(n-1)%26; s=String.fromCharCode(65+m)+s; n=Math.floor((n-1)/26); } return s; };
+  Core._sheetXml = function(rows){
+    rows = rows || [];
+    const body = rows.map((row,r)=>`<row r="${r+1}">${(row||[]).map((v,c)=>{ const ref=Core._colName(c)+(r+1); if(typeof v==="number" && isFinite(v)) return `<c r="${ref}"><v>${v}</v></c>`; return `<c r="${ref}" t="inlineStr"><is><t>${Core._xml(v)}</t></is></c>`; }).join("")}</row>`).join("");
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${body}</sheetData></worksheet>`;
   };
-  Core.tsvToEvents = function(text){
-    if (!text) return [];
-    const lines = String(text).split(/\r?\n/).filter(x => x.trim().length > 0);
-    if (lines.length <= 1) return [];
-    const header = lines[0].split("\t").map(x => x.trim());
-    const idx = {}; header.forEach((h,i)=>idx[h]=i);
-    if (!("title" in idx) || !("start" in idx)) return [];
-    const events = [];
-    for (let i=1;i<lines.length;i++){
-      const cols = lines[i].split("\t");
-      const get = k => idx[k] == null ? "" : (cols[idx[k]] || "");
-      const e = {
-        title:get("title"), shortTitle:get("shortTitle"), category:get("category"), lane:get("lane"), sub:get("sub"),
-        start:Core.parseLocalDateString(get("start")), endKnown:Core.parseLocalDateString(get("endKnown")), endInferred:Core.parseLocalDateString(get("endInferred")),
-        href:get("href"), timeZone:get("timeZone") || "local", timeZoneLabel:get("timeZoneLabel") || "Local Time",
-        isFixedTimeZone:/^(1|true|yes)$/i.test(get("isFixedTimeZone")), status:get("status") || "saved", source:get("source") || "tsv"
-      };
-      const normalized = Core.normalizeLegacyEvent(e);
-      if (normalized){ normalized.status=e.status; normalized.source=e.source; events.push(normalized); }
+  Core._zipStore = function(files){
+    const chunks=[], central=[]; let offset=0;
+    const push=(arr)=>{ const u=arr instanceof Uint8Array ? arr : new Uint8Array(arr); chunks.push(u); offset += u.length; };
+    for(const f of files){
+      const name=Core._utf8(f.name), data=Core._utf8(f.text), crc=Core._crc32(data), localOffset=offset;
+      const local=[...Core._u32(0x04034b50),...Core._u16(20),...Core._u16(0),...Core._u16(0),...Core._u16(0),...Core._u16(0),...Core._u32(crc),...Core._u32(data.length),...Core._u32(data.length),...Core._u16(name.length),...Core._u16(0)];
+      push(local); push(name); push(data);
+      const cd=[...Core._u32(0x02014b50),...Core._u16(20),...Core._u16(20),...Core._u16(0),...Core._u16(0),...Core._u16(0),...Core._u16(0),...Core._u32(crc),...Core._u32(data.length),...Core._u32(data.length),...Core._u16(name.length),...Core._u16(0),...Core._u16(0),...Core._u16(0),...Core._u16(0),...Core._u32(0),...Core._u32(localOffset)];
+      central.push({cd:new Uint8Array(cd), name});
     }
-    Core.assignThemeRows(events);
-    return events;
+    const centralStart=offset; for(const c of central){ push(c.cd); push(c.name); }
+    const centralSize=offset-centralStart; const end=[...Core._u32(0x06054b50),...Core._u16(0),...Core._u16(0),...Core._u16(central.length),...Core._u16(central.length),...Core._u32(centralSize),...Core._u32(centralStart),...Core._u16(0)]; push(end);
+    return new Blob(chunks, {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
   };
-  Core._csvToEventsLegacy = Core.csvToEvents;
-  Core.csvToEvents = function(text){
-    const first = String(text || "").split(/\r?\n/)[0] || "";
-    if (first.indexOf("\t") >= 0) return Core.tsvToEvents(text);
-    return Core._csvToEventsLegacy(text);
+  Core.rowsToXLSXBlob = function(rows, sheetName){
+    const files=[
+      {name:"[Content_Types].xml", text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>'},
+      {name:"_rels/.rels", text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+      {name:"xl/workbook.xml", text:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${Core._xml(sheetName||"Sheet1").slice(0,31)}" sheetId="1" r:id="rId1"/></sheets></workbook>`},
+      {name:"xl/_rels/workbook.xml.rels", text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>'},
+      {name:"xl/worksheets/sheet1.xml", text:Core._sheetXml(rows||[])}
+    ];
+    return Core._zipStore(files);
   };
-  Core.eventsToCSV = Core.eventsToTSV; // backward API name, TSV payload by design in v1.1
-
-  Core._oldNormalizeRemoteUrl = Core.normalizeRemoteUrl;
-  Core.normalizeRemoteUrl = function(input){
-    const u = Core._oldNormalizeRemoteUrl(input);
-    return String(u || Core.DEFAULT_REMOTE_URL).replace(/events\.csv(\?|$)/i, "events.tsv$1");
-  };
-
-  Core._oldShortenRaids = Core.shortenRaids;
-  Core.shortenRaids = function(raw){
-    const s = String(raw || "").replace(/\s+/g," ").trim();
-    if (/^Mega\s+Raid\s+Day$/i.test(s)) return "Mega Raid Day";
-    if (/^Mega\s+Raid\s+Weekend$/i.test(s)) return "Mega Raid Weekend";
-    let out = Core._oldShortenRaids ? Core._oldShortenRaids(raw) : s;
-    out = String(out || s).replace(/^Mega\s+Mega\b/i, "Mega").replace(/\s+/g," ").trim();
-    return out || s;
-  };
-
-  Core._oldChooseLaneAndSub = Core.chooseLaneAndSub;
-  Core.chooseLaneAndSub = function(e){
-    const raw = [e && e.title, e && e.category, e && e.rawText, e && e.sub].join(" ");
-    if (/\bMega\s+Raid\s+Day\b/i.test(raw)) return {lane:"weekly", sub:"Raid Day", overlay:true};
-    const out = Core._oldChooseLaneAndSub ? Core._oldChooseLaneAndSub(e) : {lane:"theme", sub:"Theme Event A"};
-    if (out && out.sub === "Max Mondays") return {lane:"theme", sub:"Theme Event A"};
-    return out;
-  };
-
-  Core._oldLabelTitle = Core.labelTitle;
-  Core.labelTitle = function(e, lang, pokemonDB){
-    if (e && /\bMega\s+Raid\s+Day\b/i.test([e.title,e.category,e.rawText].join(" "))) return "Mega Raid Day";
-    return Core._oldLabelTitle ? Core._oldLabelTitle(e, lang, pokemonDB) : (e && (e.shortTitle || e.title)) || "";
+  Core.downloadBlob = function(filename, blob){ const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); };
+  Core.eventsToRows = function(events, lang, pokemonDB, displayTimeZone){
+    const headers=["title","shortTitle","category","lane","sub","start","end","href","timeZone","fixedTimeZone"];
+    const rows=(events||[]).map(e=>[
+      Core.localizeEventTitle(e, lang||Core.DEFAULT_LANG, pokemonDB)||e.title||"", e.shortTitle||"", Core.localizeCategoryLabel(e.sub||e.category||"", lang||Core.DEFAULT_LANG), e.lane||"", e.sub||"",
+      Core.fmtInTimeZone(e.start, displayTimeZone||"local"), Core.fmtInTimeZone(e.endKnown||e.endInferred, displayTimeZone||"local"), e.href||"", e.timeZoneLabel||e.timeZone||"local", e.isFixedTimeZone?"1":""
+    ]);
+    return [headers].concat(rows);
   };
 
   // Public hook so other scripts can use

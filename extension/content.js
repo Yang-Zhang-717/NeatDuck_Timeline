@@ -11,17 +11,14 @@
   const LEGEND_ID= "ld-legend-svg";
 
   let state={ lang:DEFAULT_LANG, colors:{...DEFAULT_COLORS}, settings:LDT_Core.normalizeSettings({}), events:[], rangeStart:null, rangeEnd:null,
-              viewMode:"linear", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, isDragging:false, dragStartX:0, dragStartRangeStart:0, dragStartRangeEnd:0, csvText:"", pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
+              viewMode:"linear", activeTab:"calendar", displayTimeZone:LDT_Core.DEFAULT_DISPLAY_TIME_ZONE, isDragging:false, dragStartX:0, dragStartRangeStart:0, dragStartRangeEnd:0, csvText:"", pokemonDB:null, detailsCache:{}, selectedIds:new Set(), remoteUrl:LDT_Core.DEFAULT_REMOTE_URL };
 
   function timeZoneOptionsHTML(selected){ return LDT_Core.TIME_ZONE_OPTIONS.map(o=>`<option value="${LDT_Core.escapeHTML(o.value)}" ${selected===o.value?"selected":""}>${LDT_Core.escapeHTML(o.label)}</option>`).join(""); }
-  function updateTimeZoneSelect(){ const sel=document.getElementById("ld-tz-select"); if(sel){ if(!sel.options.length) sel.innerHTML=timeZoneOptionsHTML(state.displayTimeZone); sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); } }
+  function updateTimeZoneSelect(){ const sel=document.getElementById("ld-tz-select"); if(sel) sel.value=LDT_Core.normalizeDisplayTimeZone(state.displayTimeZone); }
   async function setDisplayTimeZone(value){ state.displayTimeZone=LDT_Core.normalizeDisplayTimeZone(value); await LDT_Core.saveState({ld_display_timezone:state.displayTimeZone}); updateTimeZoneSelect(); updateViewMode(); }
   function ensureTopbarTimeZoneSelect(){
-    const row=document.querySelector("#ld-topbar .nd-calendar-tools") || document.querySelector("#ld-topbar .row:last-child"); if(!row || document.getElementById("ld-tz-select")) return;
-    const wrap=document.createElement("label"); wrap.className="nd-tz-inline"; wrap.style.fontSize="12px";
-    wrap.innerHTML=`🌐 <span data-i18n="timeZone">${LDT_Core.escapeHTML(LDT_Core.t(state.lang,"timeZone"))}</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select>`;
-    row.insertBefore(wrap, row.firstChild);
-    const sel=wrap.querySelector("select"); sel.addEventListener("change",()=>setDisplayTimeZone(sel.value));
+    const sel=document.getElementById("ld-tz-select");
+    if(sel && !sel.__ndBound){ sel.addEventListener("change",()=>setDisplayTimeZone(sel.value)); sel.__ndBound=true; }
   }
   function eventDisplayStart(e){ return LDT_Core.dateForDisplayZone(e && e.start, e, state.displayTimeZone); }
   function eventDisplayEnd(e){ return LDT_Core.dateForDisplayZone(e && (e.endKnown || e.endInferred), e, state.displayTimeZone); }
@@ -33,33 +30,47 @@
     const wrap=document.createElement("div"); wrap.id=WRAP_ID;
     wrap.innerHTML = `
       <div id="ld-topbar">
-        <div class="row nd-main-tabs">
-          <button class="btn nd-tab-active" data-act="calendar-tab">📅 <span data-i18n="eventCalendar">Event Calendar</span></button>
-          <button class="btn" data-info-mode="types">🧬 <span data-i18n="typeChart">Type Chart</span></button>
-          <button class="btn" data-info-mode="pokedex">📖 <span data-i18n="pokedex">Pokédex</span></button>
-          <span class="nd-public-controls"></span>
-          <select class="btn" id="ld-lang-select" title="Language"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option></select>
-          <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">Settings</span></button>
-          <button class="btn" data-act="theme-toggle">🌓 <span data-i18n="darkMode">Theme</span></button>
-          <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button>
-          <button class="btn" data-act="goto-leekduck">🦆 LeekDuck</button>
+        <div class="ld-header-row">
+          <div class="row ld-tabs" id="ld-tab-buttons">
+            <button class="btn nd-tab active" data-tab="calendar">📆 <span data-i18n="tabCalendar">活动日历</span></button>
+            <button class="btn nd-tab" data-tab="types">🧬 <span data-i18n="tabTypes">属性克制</span></button>
+            <button class="btn nd-tab" data-tab="pokedex">📖 <span data-i18n="tabPokedex">宝可梦图鉴</span></button>
+          </div>
+          <div class="row ld-common-controls">
+            <select class="btn" id="ld-lang-select" title="Language">
+              <option value="zh-CN">简体中文</option>
+              <option value="zh-TW">繁體中文</option>
+              <option value="en">English</option>
+            </select>
+            <button class="btn" data-act="settings">⚙️ <span data-i18n="settings">Settings</span></button>
+            <button class="btn" data-act="open-standalone">🧭 <span data-i18n="openStandalone">Open standalone</span></button>
+            <a class="btn nd-link-btn" href="https://leekduck.com/events/" target="_blank" rel="noopener">LeekDuck</a>
+          </div>
         </div>
-        <div class="row nd-tab-tools nd-calendar-tools">
-          <button class="btn" data-act="today">🎯 <span data-i18n="today">Today</span></button>
-          <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">This Week</span></button>
-          <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">This Month</span></button>
-          <button class="btn" data-act="switch-mode">↔️ <span data-i18n="mode">Mode</span></button>
-          <button class="btn" data-act="rescan">🔄 <span data-i18n="dataUpdate">Page Update</span></button>
-          <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button>
-          <button class="btn" data-act="export-events-tsv">📤 <span data-i18n="exportCSVEvents">Export Events TSV</span></button>
-          <button class="btn" data-act="email-log">📨 <span data-i18n="emailLog">Export Log</span></button>
-          <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button>
+        <div class="ld-action-zone">
+          <div class="row ld-tab-actions" id="ld-calendar-actions" data-actions="calendar">
+            <button class="btn" data-act="today">🎯 <span data-i18n="today">Today</span></button>
+            <button class="btn" data-act="reset-week">📆 <span data-i18n="resetWeek">This Week</span></button>
+            <button class="btn" data-act="reset-month">🗓️ <span data-i18n="resetMonth">This Month</span></button>
+            <button class="btn" data-act="toggle-mode">↔️ <span data-i18n="switchLinear">Mode</span></button>
+            <label class="nd-tz-inline">🌐 <span data-i18n="timeZone">Time Zone</span> <select class="btn" id="ld-tz-select">${timeZoneOptionsHTML(state.displayTimeZone)}</select></label>
+            <button class="btn" data-act="rescan">🔄 <span data-i18n="dataUpdate">Data Update</span></button>
+            <button class="btn" data-act="remote-update">☁️ <span data-i18n="remoteUpdate">Cloud Update</span></button>
+            <button class="btn" data-act="export-events-xlsx">📤 <span data-i18n="exportCSVEvents">Export Events Excel</span></button>
+            <button class="btn" data-act="export-log">🧾 <span data-i18n="emailLog">Export Log</span></button>
+            <button class="btn" data-act="clear-selection">🧹 <span data-i18n="clearSelection">Clear Selection</span></button>
+          </div>
+          <div class="row ld-tab-actions" data-actions="types" style="display:none">
+            <button class="btn" data-act="export-types-xlsx">📤 <span data-i18n="exportCSV">导出 Excel</span></button>
+          </div>
+          <div class="row ld-tab-actions" data-actions="pokedex" style="display:none">
+            <button class="btn" data-act="export-pokedex-xlsx">📤 <span data-i18n="exportCSV">导出 Excel</span></button>
+          </div>
         </div>
-        <div class="row nd-tab-spacer" aria-hidden="true"></div>
       </div>
-      <div id="ld-left"><svg id="${LEGEND_ID}" viewBox="0 0 ${C.LEGEND_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin"></svg></div>
+      <div id="ld-left"><svg id="${LEGEND_ID}" viewBox="0 0 ${C.LEGEND_W} ${C.HEIGHT-112}" preserveAspectRatio="xMinYMin"></svg></div>
       <div id="ld-right">
-        <svg id="${SVG_ID}" viewBox="0 0 ${C.TL_W} ${C.HEIGHT-78}" preserveAspectRatio="xMinYMin">
+        <svg id="${SVG_ID}" viewBox="0 0 ${C.TL_W} ${C.HEIGHT-112}" preserveAspectRatio="xMinYMin">
           <g id="ld-month-bgs"></g>
           <g id="ld-weekend-bgs"></g>
           <g id="ld-period-blocks"></g>
@@ -67,7 +78,7 @@
           <g id="ld-ruler-bottom" class="ld-ruler"></g>
           <g id="ld-lane-seps"></g>
           <g id="ld-items"></g>
-          <g id="ld-now"><line class="ld-now" y1="0" y2="${C.HEIGHT-78}"/></g>
+          <g id="ld-now"><line class="ld-now" y1="0" y2="${C.HEIGHT-112}"/></g>
         </svg>
         <div id="ld-extenders"></div>
         <div id="ld-monthgrid" style="display:none;"></div>
@@ -80,6 +91,18 @@
     h.insertAdjacentElement("afterend", wrap);
     return wrap;
   }
+
+  function setActiveTab(tab){
+    state.activeTab = tab || "calendar";
+    document.querySelectorAll("#ld-tab-buttons [data-tab]").forEach(b=>b.classList.toggle("active", b.getAttribute("data-tab")===state.activeTab));
+    document.querySelectorAll("[data-actions]").forEach(row=>{ row.style.display = row.getAttribute("data-actions")===state.activeTab ? "flex" : "none"; });
+    if(state.activeTab === "calendar") updateViewMode();
+    else if(window.ND_Info) window.ND_Info.show(state.activeTab);
+  }
+
+  function setDayRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const s=LDT_Core.beginOfDay(now); state.rangeStart=+s; state.rangeEnd=+LDT_Core.addDays(s,1); updateViewMode(); }
+  function setWeekRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const s=LDT_Core.mondayOfWeek(now); state.rangeStart=+s; state.rangeEnd=+LDT_Core.addDays(s,7); updateViewMode(); }
+  function setMonthRange(){ const now=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); const s=LDT_Core.monthStart(now); state.rangeStart=+s; state.rangeEnd=+LDT_Core.nextMonthStart(s); updateViewMode(); }
 
   function laneLayout(){
     let y=C.TIMELINE_TOP_PAD || 58; const map={}, laneTops={};
@@ -189,9 +212,10 @@
     }
     function scheduleHide(){
       clearTimeout(hideTimer);
-      hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 600);
+      hideTimer = setTimeout(()=>{ if(el) el.style.display="none"; }, (state.settings && state.settings.hoverPersistMs) || 400);
     }
-    function hide(){ if(el) el.style.display="none"; }
+    function hide(){ clearTimeout(hideTimer); if(el) el.style.display="none"; }
+    if(!document.__ndTooltipWheelBound){ document.addEventListener("wheel", hide, {capture:true, passive:true}); document.__ndTooltipWheelBound=true; }
     return { show, scheduleHide, hide };
   })();
 
@@ -279,7 +303,7 @@
         const x=xScale(+t); const w=xScale(+next)-x;
         if (isFinite(x) && isFinite(w)){
           const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
-          r.setAttribute("x", x); r.setAttribute("y", 0); r.setAttribute("width", w); r.setAttribute("height", (C.HEIGHT-78));
+          r.setAttribute("x", x); r.setAttribute("y", 0); r.setAttribute("width", w); r.setAttribute("height", (C.HEIGHT-112));
           r.setAttribute("class","ld-month-bg");
           r.setAttribute("fill-opacity", isOdd ? "0.18" : "0.045");
           monthBg.appendChild(r);
@@ -294,7 +318,7 @@
           const x=xScale(Math.max(+t, rangeStart)); const w=xScale(Math.min(+dayEnd, rangeEnd)) - x;
           if (isFinite(x) && isFinite(w)){
             const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
-            r.setAttribute("x", x); r.setAttribute("y", 0); r.setAttribute("width", w); r.setAttribute("height", (C.HEIGHT-78));
+            r.setAttribute("x", x); r.setAttribute("y", 0); r.setAttribute("width", w); r.setAttribute("height", (C.HEIGHT-112));
             r.setAttribute("class","ld-weekend-bg");
             r.setAttribute("fill-opacity","0.075");
             weekendBg.appendChild(r);
@@ -340,11 +364,14 @@
   }
 
   function emailSelectedLog(){
+    exportSelectedLog();
+  }
+
+  function exportSelectedLog(){
     const list = selectedOrVisibleEvents();
     if(!list.length){ alert(LDT_Core.t(state.lang, "noEmailEvents")); return; }
     const body = LDT_Core.eventsToTextLog(list, state.lang, state.pokemonDB);
-    const url = "mailto:?subject=" + encodeURIComponent("NeatDuck_Timeline Event Log") + "&body=" + encodeURIComponent(body);
-    window.open(url, "_blank");
+    saveBlob("neatduck-event-log.txt", body, "text/plain;charset=utf-8");
   }
 
   function refreshRemoteData(showAlert){
@@ -465,10 +492,10 @@
           labelBoxEnd = Math.min(nextLimit, visibleStart + Math.min(desiredW, (visibleBaseEnd - visibleStart) + cfg.shadeMaxWidth));
           if (labelBoxEnd > visibleBaseEnd + 1){
             shadeRect=document.createElementNS("http://www.w3.org/2000/svg","rect");
-            shadeRect.setAttribute("x", visibleBaseEnd); shadeRect.setAttribute("y", y);
-            shadeRect.setAttribute("width", labelBoxEnd - visibleBaseEnd); shadeRect.setAttribute("height", C.ITEM_H);
+            shadeRect.setAttribute("x", visibleStart); shadeRect.setAttribute("y", y);
+            shadeRect.setAttribute("width", labelBoxEnd - visibleStart); shadeRect.setAttribute("height", C.ITEM_H);
             shadeRect.setAttribute("rx", cfg.itemRadius); shadeRect.setAttribute("ry", cfg.itemRadius);
-            shadeRect.setAttribute("fill", fillColor); shadeRect.setAttribute("fill-opacity", "0.50");
+            shadeRect.setAttribute("fill", fillColor); shadeRect.setAttribute("fill-opacity", "0.24");
             shadeRect.setAttribute("class", "ld-item-shade");
             g.appendChild(shadeRect);
           }
@@ -547,7 +574,7 @@
         const x=xScale(+d);
         if (!isFinite(x)) return;
         const l=document.createElementNS("http://www.w3.org/2000/svg","line");
-        l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",y); l.setAttribute("y2",(C.HEIGHT - 78) - C.BOTTOM_RULER_H); gGrid.appendChild(l);
+        l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",y); l.setAttribute("y2",(C.HEIGHT - 112) - C.BOTTOM_RULER_H); gGrid.appendChild(l);
         const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",y-6); t.textContent=fmtTick(rule,d); group.appendChild(t);
       });
     };
@@ -557,8 +584,8 @@
       const x=xScale(+d);
       if (!isFinite(x)) return;
       const l=document.createElementNS("http://www.w3.org/2000/svg","line");
-      l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",C.TIMELINE_TOP_PAD || 0); l.setAttribute("y2",(C.HEIGHT - 78) - C.BOTTOM_RULER_H); gGrid.appendChild(l);
-      const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",(C.HEIGHT - 78)-6); t.textContent=fmtTick(rule,d); bottom.appendChild(t);
+      l.setAttribute("x1",x); l.setAttribute("x2",x); l.setAttribute("y1",C.TIMELINE_TOP_PAD || 0); l.setAttribute("y2",(C.HEIGHT - 112) - C.BOTTOM_RULER_H); gGrid.appendChild(l);
+      const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",x+3); t.setAttribute("y",(C.HEIGHT - 112)-6); t.textContent=fmtTick(rule,d); bottom.appendChild(t);
     });
   }
 
@@ -586,18 +613,19 @@
     const svg = document.getElementById(SVG_ID);
     const mg  = document.getElementById("ld-monthgrid");
     svg.style.display = "none"; mg.style.display = "block"; mg.innerHTML = "";
-    const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    const days=(state.lang==="en")?["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]:["一","二","三","四","五","六","日"];
     const head=document.createElement("div"); head.className="nd-month-head"; head.innerHTML=days.map(d=>`<div>${d}</div>`).join(""); mg.appendChild(head);
     const rangeStart=new Date(state.rangeStart), rangeEnd=new Date(state.rangeEnd);
     let wk=LDT_Core.mondayOfWeek(rangeStart); const last=LDT_Core.addDays(LDT_Core.mondayOfWeek(rangeEnd),7);
-    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e)})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd);
+    const laneRank={}; LDT_Core.LANES_SPEC.forEach((lane,li)=>(lane.sub||[lane.key]).forEach((sub,si)=>{ laneRank[`${lane.key}::${sub}`]=li*100+si; }));
+    const visible=(state.events||[]).map(e=>({e,s:eventDisplayStart(e),d:eventDisplayEnd(e),rank:laneRank[`${e.lane}::${e.sub}`]??9999})).filter(x=>x.s&&x.d&&+x.d>=state.rangeStart&&+x.s<=state.rangeEnd);
     while(+wk<+last){
       const weekStart=new Date(wk), weekEnd=LDT_Core.addDays(weekStart,7);
       const row=document.createElement("div"); row.className="nd-week-row";
-      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); cell.className="nd-day-cell"; cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
+      for(let i=0;i<7;i++){ const day=LDT_Core.addDays(weekStart,i); const cell=document.createElement("div"); const nowDay=LDT_Core.beginOfDay(LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone)); cell.className="nd-day-cell"+(+LDT_Core.beginOfDay(day)===+nowDay?" today":""); cell.innerHTML=`<div class="nd-day-num">${day.getMonth()+1}/${day.getDate()}</div>`; row.appendChild(cell); }
       const segs=[];
-      visible.forEach(x=>{ if(+x.d<+weekStart || +x.s>=+weekEnd) return; const a=Math.max(0, Math.floor((Math.max(+x.s,+weekStart)-+weekStart)/86400000)); const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000)); segs.push({e:x.e,a,b,s:+x.s}); });
-      segs.sort((a,b)=>a.a-b.a || a.s-b.s);
+      visible.forEach(x=>{ if(+x.d<+weekStart || +x.s>=+weekEnd) return; const a=Math.max(0, Math.floor((Math.max(+x.s,+weekStart)-+weekStart)/86400000)); const b=Math.min(6, Math.floor((Math.min(+x.d,+weekEnd-1)-+weekStart)/86400000)); segs.push({e:x.e,a,b,s:+x.s,rank:x.rank}); });
+      segs.sort((a,b)=>a.rank-b.rank || a.a-b.a || a.s-b.s);
       const lanes=[]; segs.forEach(seg=>{ let lane=0; for(;lane<lanes.length;lane++){ if(seg.a>lanes[lane]) break; } lanes[lane]=seg.b; seg.lane=lane; });
       row.style.minHeight=Math.max(132, 34+lanes.length*24)+"px";
       segs.forEach(seg=>{
@@ -612,7 +640,8 @@
   }
 
   function updateViewMode(){
-    if(window.ND_Info && window.ND_Info.mode){ return; }
+    if(state.activeTab && state.activeTab !== "calendar"){ if(window.ND_Info) window.ND_Info.show(state.activeTab); return; }
+    if(window.ND_Info) window.ND_Info.hide();
     const svg=document.getElementById(SVG_ID);
     const mg=document.getElementById("ld-monthgrid");
     if (state.viewMode==="linear"){ svg.style.display="block"; mg.style.display="none"; renderLinear(); }
@@ -644,8 +673,6 @@
       panByPixels(dx);
     });
     stage.addEventListener("wheel", (ev)=>{
-      if(window.ND_Info && window.ND_Info.mode) return;
-      tooltip.hide();
       if(state.viewMode!=="linear") return;
       ev.preventDefault();
       const rect=stage.getBoundingClientRect();
@@ -710,7 +737,7 @@
       // merge updates into csv
       const saved = await LDT_Core.saveEventsToHistory(updated, { force:true, detailsCache: state.detailsCache });
       const merged = (saved && saved.events) ? saved.events : LDT_Core.dedupeEvents((state.events || []).concat(updated));
-      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToTSV(merged);
+      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToCSV(merged);
       state.events = merged; closeModal("updates"); updateViewMode();
     };
     modal.querySelector("[data-close='updates']").onclick = ()=> closeModal("updates");
@@ -840,22 +867,12 @@
     const controls=document.getElementById("ld-topbar"); if (!controls || controls.__ldtControlsBound) return;
     controls.__ldtControlsBound = true;
     controls.addEventListener("click", async (e)=>{
+      const tabBtn=e.target.closest("[data-tab]"); if(tabBtn){ e.preventDefault(); e.stopPropagation(); setActiveTab(tabBtn.getAttribute("data-tab")); return; }
       const b=e.target.closest(".btn"); if (!b) return;
       const act=b.getAttribute("data-act");
       if (act==="settings"){ buildSettingsModal(); }
       if (act==="colors"){ buildColorsModal(); }
-      if (act==="today"){
-        const span = state.rangeEnd - state.rangeStart;
-        if (isFinite(span) && span > 0){
-          const nowD=LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart = +nowD - span * 0.25;
-          state.rangeEnd = state.rangeStart + span;
-          updateViewMode();
-        }
-      }
-      if (act==="calendar-tab"){ if(window.ND_Info) window.ND_Info.hide(); state.viewMode = state.viewMode || "linear"; updateViewMode(); }
-      if (act==="goto-leekduck"){ window.location.href="https://leekduck.com/events/"; }
-      if (act==="theme-toggle"){ document.getElementById(WRAP_ID)?.classList.toggle("nd-dark"); }
-      if (act==="switch-mode"){ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); }
+      if (act==="today"){ setDayRange(); }
       if (act==="open-standalone"){
         // Open immediately while the click is still a user gesture; then save.
         // Waiting for chrome.storage first can make Chrome treat this as a blocked popup.
@@ -864,23 +881,25 @@
         if (!opened){ alert("Chrome blocked the standalone page. Please allow popups for this site or click the extension icon."); return; }
         try{
           const saved = await LDT_Core.saveEventsToHistory(state.events || [], { detailsCache: state.detailsCache });
-          if (saved && saved.events) { state.events = saved.events; state.csvText = saved.csv || LDT_Core.eventsToTSV(saved.events); }
+          if (saved && saved.events) { state.events = saved.events; state.csvText = saved.csv || LDT_Core.eventsToCSV(saved.events); }
         }catch(err){ console.error("LDT: failed to save cache before opening standalone", err); }
       }
       if (act==="rescan"){ scheduleRescan(0); }
-      if (act==="remote-update"){ const resp=await refreshRemoteData(true); if(resp && resp.ok){ const st=await LDT_Core.loadState(); state.events=LDT_Core.dedupeEvents(st.events || state.events); state.csvText=st.eventsCsv || LDT_Core.eventsToTSV(state.events); LDT_Core.assignThemeRows(state.events); updateViewMode(); } }
+      if (act==="remote-update"){ const resp=await refreshRemoteData(true); if(resp && resp.ok){ const st=await LDT_Core.loadState(); state.events=LDT_Core.dedupeEvents(st.events || state.events); state.csvText=st.eventsCsv || LDT_Core.eventsToCSV(state.events); LDT_Core.assignThemeRows(state.events); updateViewMode(); } }
       if (act==="export-ics"){ exportSelectedICS(); }
-      if (act==="email-log"){ emailSelectedLog(); }
+      if (act==="email-log" || act==="export-log"){ exportSelectedLog(); }
       if (act==="clear-selection"){ state.selectedIds.clear(); updateViewMode(); }
-      if (act==="export-events-tsv"){
-        const text = LDT_Core.eventsToTSV(exportEventsForUser());
-        const url = URL.createObjectURL(new Blob([text],{type:"text/tab-separated-values"}));
-        const a=document.createElement("a"); a.href=url; a.download="neatduck-timeline-events.tsv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      if (act==="export-events-csv" || act==="export-events-xlsx"){
+        const rows = LDT_Core.eventsToRows(state.events, state.lang, state.pokemonDB, state.displayTimeZone);
+        LDT_Core.downloadBlob("neatduck-events.xlsx", LDT_Core.rowsToXLSXBlob(rows, "events"));
       }
+      if (act==="export-types-xlsx" && window.ND_Info){ window.ND_Info.exportTypes(); }
+      if (act==="export-pokedex-xlsx" && window.ND_Info){ window.ND_Info.exportPokedex(); }
       if (act==="switch-linear"){ state.viewMode="linear"; updateViewMode(); }
       if (act==="switch-monthgrid"){ state.viewMode="month"; updateViewMode(); }
-      if (act==="reset-week"){ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7); updateViewMode(); }
-      if (act==="reset-month"){ const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone); state.rangeStart=+LDT_Core.addDays(now,-7); state.rangeEnd=+LDT_Core.addDays(now,21); updateViewMode(); }
+      if (act==="toggle-mode"){ state.viewMode = state.viewMode === "linear" ? "month" : "linear"; updateViewMode(); }
+      if (act==="reset-week"){ setWeekRange(); }
+      if (act==="reset-month"){ setMonthRange(); }
     });
     const mask=document.getElementById("ld-mask");
     mask.addEventListener("click",()=>{ Array.from(document.querySelectorAll(".ld-modal")).forEach(m=>m.style.display="none"); mask.style.display="none"; });
@@ -904,7 +923,7 @@
       }
       const saved = await LDT_Core.saveEventsToHistory(fresh, { detailsCache: state.detailsCache });
       state.events = (saved && saved.events) ? saved.events : LDT_Core.dedupeEvents((state.events || []).concat(fresh));
-      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToTSV(state.events);
+      state.csvText = (saved && saved.csv) ? saved.csv : LDT_Core.eventsToCSV(state.events);
       LDT_Core.assignThemeRows(state.events);
       updateViewMode();
     }, delay);
@@ -927,35 +946,21 @@
     // Storage-first: use the normalized long-term history if present, CSV as fallback.
     if (st.events && st.events.length){
       state.events = LDT_Core.dedupeEvents(st.events);
-      state.csvText = LDT_Core.eventsToTSV(state.events);
+      state.csvText = LDT_Core.eventsToCSV(state.events);
       LDT_Core.assignThemeRows(state.events);
     } else if (state.csvText){
-      state.events = LDT_Core.dedupeEvents(LDT_Core.tsvToEvents(state.csvText));
+      state.events = LDT_Core.dedupeEvents(LDT_Core.csvToEvents(state.csvText));
       LDT_Core.assignThemeRows(state.events);
     } else {
       state.events = [];
     }
-    // default range
-    const now=+LDT_Core.dateForDisplayZone(new Date(), {isFixedTimeZone:true, timeZone:state.displayTimeZone}, state.displayTimeZone);
-    if (state.events.length){
-      const has = state.events.filter(e=>e.start && (e.endKnown||e.endInferred));
-      if (has.length){
-        const starts=has.map(e=>eventDisplayStart(e)).filter(Boolean).map(d=>+d);
-        const ends=has.map(e=>eventDisplayEnd(e)).filter(Boolean).map(d=>+d);
-        const min = Math.min.apply(null, starts);
-        const max = Math.max.apply(null, ends);
-        state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7);
-      }else{
-        state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7);
-      }
-    } else {
-      state.rangeStart=+LDT_Core.mondayOfWeek(new Date(now)); state.rangeEnd=+LDT_Core.addDays(state.rangeStart,7);
-    }
+    // default range: current week in linear timeline.
+    setWeekRange();
 
     attachControls();
     attachTimelineInteractions();
     state.viewMode = "linear";
-    updateViewMode();
+    setActiveTab("calendar");
 
     // GitHub data is preferred. Page scraping now runs only when the Data Update button is clicked.
   }

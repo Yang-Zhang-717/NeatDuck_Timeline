@@ -16,47 +16,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:25Z",
-    "status": "active"
-  },
-  {
-    "title": "Community Day Vote for August",
-    "shortTitle": "Community Day Vote for August",
-    "category": "Update",
-    "lane": "community",
-    "sub": "Community Day",
-    "start": "2026-05-31T01:00:00",
-    "endKnown": "2026-06-01T01:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/community-day-voting-august-2026",
-    "timeZone": "America/Los_Angeles",
-    "timeZoneLabel": "PDT",
-    "isFixedTimeZone": "1",
-    "uid": "1c6b5c3edecef88d",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:03Z",
-    "status": "active"
-  },
-  {
-    "title": "2026: Tokyo",
-    "shortTitle": "2026: Tokyo",
-    "category": "Pokémon GO Fest",
-    "lane": "theme",
-    "sub": "Theme Main",
-    "start": "2026-05-29T01:00:00",
-    "endKnown": "2026-06-01T11:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/pokemon-go-fest-2026-tokyo",
-    "timeZone": "Asia/Tokyo",
-    "timeZoneLabel": "JST",
-    "isFixedTimeZone": "1",
-    "uid": "712863bca2c380a5",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:03Z",
+    "lastScrapedAt": "2026-06-01T17:31:50Z",
     "status": "active"
   },
   {
@@ -76,7 +36,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:03Z",
+    "lastScrapedAt": "2026-06-01T17:31:28Z",
     "status": "active"
   },
   {
@@ -96,87 +56,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:17Z",
-    "status": "active"
-  },
-  {
-    "title": "Memories in Motion",
-    "shortTitle": "Memories in Motion",
-    "category": "Season",
-    "lane": "season",
-    "sub": "Season",
-    "start": "",
-    "endKnown": "2026-06-02T10:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/season-22-memories-in-motion",
-    "timeZone": "local",
-    "timeZoneLabel": "Local Time",
-    "isFixedTimeZone": "",
-    "uid": "b2d19879c3bcaea6",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:04Z",
-    "status": "active"
-  },
-  {
-    "title": "GO Pass: May",
-    "shortTitle": "GO Pass: May",
-    "category": "GO Pass",
-    "lane": "go-pass",
-    "sub": "GO Pass",
-    "start": "2026-05-05T10:00:00",
-    "endKnown": "2026-06-02T10:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/go-pass-may-2026",
-    "timeZone": "local",
-    "timeZoneLabel": "Local Time",
-    "isFixedTimeZone": "",
-    "uid": "ec90e50a72b3051a",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:04Z",
-    "status": "active"
-  },
-  {
-    "title": "Great League, Ultra League, and Master League | Memories in Motion",
-    "shortTitle": "Great League, Ultra League, and Master League | Memories in Motion",
-    "category": "GO Battle League",
-    "lane": "gbl",
-    "sub": "GO Battle League",
-    "start": "2026-05-26T20:00:00",
-    "endKnown": "2026-06-02T20:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/gbl-memories-in-motion_great-league_ultra-league_master-league-split-4",
-    "timeZone": "America/Los_Angeles",
-    "timeZoneLabel": "PT",
-    "isFixedTimeZone": "1",
-    "uid": "8fb1ef8054092141",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:04Z",
-    "status": "active"
-  },
-  {
-    "title": "Tapu Fini in 5-star Raid Battles",
-    "shortTitle": "Tapu Fini",
-    "category": "Raid Battles",
-    "lane": "raids",
-    "sub": "5-Star Raid Battles",
-    "start": "2026-05-27T00:00:00",
-    "endKnown": "2026-06-02T00:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/tapu-fini-in-5-star-raid-battles-may-june-2026",
-    "timeZone": "local",
-    "timeZoneLabel": "Local Time",
-    "isFixedTimeZone": "",
-    "uid": "2b22c40b564423f9",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:05Z",
+    "lastScrapedAt": "2026-06-01T17:31:42Z",
     "status": "active"
   },
   {
@@ -196,7 +76,87 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:05Z",
+    "lastScrapedAt": "2026-06-01T17:31:29Z",
+    "status": "active"
+  },
+  {
+    "title": "Memories in Motion",
+    "shortTitle": "Memories in Motion",
+    "category": "Season",
+    "lane": "season",
+    "sub": "Season",
+    "start": "",
+    "endKnown": "2026-06-02T10:00:00",
+    "endInferred": "",
+    "href": "https://leekduck.com/events/season-22-memories-in-motion",
+    "timeZone": "local",
+    "timeZoneLabel": "Local Time",
+    "isFixedTimeZone": "",
+    "uid": "b2d19879c3bcaea6",
+    "source": "leekduck",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-06-01T17:31:29Z",
+    "status": "active"
+  },
+  {
+    "title": "GO Pass: May",
+    "shortTitle": "GO Pass: May",
+    "category": "GO Pass",
+    "lane": "go-pass",
+    "sub": "GO Pass",
+    "start": "2026-05-05T10:00:00",
+    "endKnown": "2026-06-02T10:00:00",
+    "endInferred": "",
+    "href": "https://leekduck.com/events/go-pass-may-2026",
+    "timeZone": "local",
+    "timeZoneLabel": "Local Time",
+    "isFixedTimeZone": "",
+    "uid": "ec90e50a72b3051a",
+    "source": "leekduck",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-06-01T17:31:30Z",
+    "status": "active"
+  },
+  {
+    "title": "Great League, Ultra League, and Master League | Memories in Motion",
+    "shortTitle": "Great League, Ultra League, and Master League | Memories in Motion",
+    "category": "GO Battle League",
+    "lane": "gbl",
+    "sub": "GO Battle League",
+    "start": "2026-05-26T20:00:00",
+    "endKnown": "2026-06-02T20:00:00",
+    "endInferred": "",
+    "href": "https://leekduck.com/events/gbl-memories-in-motion_great-league_ultra-league_master-league-split-4",
+    "timeZone": "America/Los_Angeles",
+    "timeZoneLabel": "PT",
+    "isFixedTimeZone": "1",
+    "uid": "8fb1ef8054092141",
+    "source": "leekduck",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-06-01T17:31:30Z",
+    "status": "active"
+  },
+  {
+    "title": "Tapu Fini in 5-star Raid Battles",
+    "shortTitle": "Tapu Fini",
+    "category": "Raid Battles",
+    "lane": "raids",
+    "sub": "5-Star Raid Battles",
+    "start": "2026-05-27T00:00:00",
+    "endKnown": "2026-06-02T00:00:00",
+    "endInferred": "",
+    "href": "https://leekduck.com/events/tapu-fini-in-5-star-raid-battles-may-june-2026",
+    "timeZone": "local",
+    "timeZoneLabel": "Local Time",
+    "isFixedTimeZone": "",
+    "uid": "2b22c40b564423f9",
+    "source": "leekduck",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-06-01T17:31:30Z",
     "status": "active"
   },
   {
@@ -216,7 +176,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:05Z",
+    "lastScrapedAt": "2026-06-01T17:31:30Z",
     "status": "active"
   },
   {
@@ -226,7 +186,7 @@
     "lane": "weekly",
     "sub": "Raid Hour",
     "start": "2026-06-03T18:00:00",
-    "endKnown": "",
+    "endKnown": "2026-06-03T19:00:00",
     "endInferred": "2026-06-03T19:00:00",
     "href": "https://leekduck.com/events/raidhour20260603",
     "timeZone": "local",
@@ -236,7 +196,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:19Z",
+    "lastScrapedAt": "2026-06-01T17:31:44Z",
     "status": "active"
   },
   {
@@ -245,9 +205,9 @@
     "category": "Pokémon GO Fest",
     "lane": "theme",
     "sub": "Theme Main",
-    "start": "2026-06-08T01:00:00",
-    "endKnown": "",
-    "endInferred": "2026-06-10T01:00:00",
+    "start": "",
+    "endKnown": "2026-06-08T01:00:00",
+    "endInferred": "",
     "href": "https://leekduck.com/events/pokemon-go-fest-2026-chicago",
     "timeZone": "local",
     "timeZoneLabel": "Local Time",
@@ -256,7 +216,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:06Z",
+    "lastScrapedAt": "2026-06-01T17:31:31Z",
     "status": "active"
   },
   {
@@ -276,7 +236,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:17Z",
+    "lastScrapedAt": "2026-06-01T17:31:42Z",
     "status": "active"
   },
   {
@@ -296,7 +256,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:19Z",
+    "lastScrapedAt": "2026-06-01T17:31:44Z",
     "status": "active"
   },
   {
@@ -316,7 +276,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:06Z",
+    "lastScrapedAt": "2026-06-01T17:31:31Z",
     "status": "active"
   },
   {
@@ -336,7 +296,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:18Z",
+    "lastScrapedAt": "2026-06-01T17:31:43Z",
     "status": "active"
   },
   {
@@ -356,7 +316,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:18Z",
+    "lastScrapedAt": "2026-06-01T17:31:43Z",
     "status": "active"
   },
   {
@@ -376,7 +336,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:20Z",
+    "lastScrapedAt": "2026-06-01T17:31:45Z",
     "status": "active"
   },
   {
@@ -396,7 +356,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:07Z",
+    "lastScrapedAt": "2026-06-01T17:31:32Z",
     "status": "active"
   },
   {
@@ -416,7 +376,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:19Z",
+    "lastScrapedAt": "2026-06-01T17:31:44Z",
     "status": "active"
   },
   {
@@ -426,7 +386,7 @@
     "lane": "weekly",
     "sub": "Max Mondays",
     "start": "2026-06-15T06:00:00",
-    "endKnown": "",
+    "endKnown": "2026-06-15T21:00:00",
     "endInferred": "2026-06-15T21:00:00",
     "href": "https://leekduck.com/events/max-mondays-2026-06-15",
     "timeZone": "local",
@@ -436,7 +396,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:20Z",
+    "lastScrapedAt": "2026-06-01T17:31:45Z",
     "status": "active"
   },
   {
@@ -456,7 +416,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:08Z",
+    "lastScrapedAt": "2026-06-01T17:31:33Z",
     "status": "active"
   },
   {
@@ -476,7 +436,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:19Z",
+    "lastScrapedAt": "2026-06-01T17:31:44Z",
     "status": "active"
   },
   {
@@ -496,7 +456,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:19Z",
+    "lastScrapedAt": "2026-06-01T17:31:44Z",
     "status": "active"
   },
   {
@@ -506,7 +466,7 @@
     "lane": "weekly",
     "sub": "Raid Hour",
     "start": "2026-06-17T18:00:00",
-    "endKnown": "",
+    "endKnown": "2026-06-17T19:00:00",
     "endInferred": "2026-06-17T19:00:00",
     "href": "https://leekduck.com/events/raidhour20260617",
     "timeZone": "local",
@@ -516,7 +476,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:21Z",
+    "lastScrapedAt": "2026-06-01T17:31:46Z",
     "status": "active"
   },
   {
@@ -526,7 +486,7 @@
     "lane": "community",
     "sub": "Community Day",
     "start": "2026-06-20T14:00:00",
-    "endKnown": "",
+    "endKnown": "2026-06-20T17:00:00",
     "endInferred": "2026-06-20T17:00:00",
     "href": "https://leekduck.com/events/june-communityday2026",
     "timeZone": "local",
@@ -536,7 +496,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:21Z",
+    "lastScrapedAt": "2026-06-01T17:31:46Z",
     "status": "active"
   },
   {
@@ -556,7 +516,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:21Z",
+    "lastScrapedAt": "2026-06-01T17:31:46Z",
     "status": "active"
   },
   {
@@ -576,7 +536,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:10Z",
+    "lastScrapedAt": "2026-06-01T17:31:35Z",
     "status": "active"
   },
   {
@@ -596,7 +556,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:20Z",
+    "lastScrapedAt": "2026-06-01T17:31:46Z",
     "status": "active"
   },
   {
@@ -616,7 +576,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:20Z",
+    "lastScrapedAt": "2026-06-01T17:31:45Z",
     "status": "active"
   },
   {
@@ -636,7 +596,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:22Z",
+    "lastScrapedAt": "2026-06-01T17:31:47Z",
     "status": "active"
   },
   {
@@ -656,7 +616,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:23Z",
+    "lastScrapedAt": "2026-06-01T17:31:48Z",
     "status": "active"
   },
   {
@@ -676,7 +636,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:21Z",
+    "lastScrapedAt": "2026-06-01T17:31:47Z",
     "status": "active"
   },
   {
@@ -696,7 +656,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:22Z",
+    "lastScrapedAt": "2026-06-01T17:31:48Z",
     "status": "active"
   },
   {
@@ -716,7 +676,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:23Z",
+    "lastScrapedAt": "2026-06-01T17:31:48Z",
     "status": "active"
   },
   {
@@ -736,7 +696,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:11Z",
+    "lastScrapedAt": "2026-06-01T17:31:37Z",
     "status": "active"
   },
   {
@@ -756,7 +716,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:17Z",
+    "lastScrapedAt": "2026-06-01T17:31:42Z",
     "status": "active"
   },
   {
@@ -776,7 +736,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:22Z",
+    "lastScrapedAt": "2026-06-01T17:31:47Z",
     "status": "active"
   },
   {
@@ -796,7 +756,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:22Z",
+    "lastScrapedAt": "2026-06-01T17:31:47Z",
     "status": "active"
   },
   {
@@ -816,7 +776,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:23Z",
+    "lastScrapedAt": "2026-06-01T17:31:48Z",
     "status": "active"
   },
   {
@@ -836,7 +796,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:18Z",
+    "lastScrapedAt": "2026-06-01T17:31:43Z",
     "status": "active"
   },
   {
@@ -856,7 +816,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:13Z",
+    "lastScrapedAt": "2026-06-01T17:31:38Z",
     "status": "active"
   },
   {
@@ -876,7 +836,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:23Z",
+    "lastScrapedAt": "2026-06-01T17:31:49Z",
     "status": "active"
   },
   {
@@ -896,7 +856,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:13Z",
+    "lastScrapedAt": "2026-06-01T17:31:38Z",
     "status": "active"
   },
   {
@@ -916,7 +876,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:24Z",
+    "lastScrapedAt": "2026-06-01T17:31:49Z",
     "status": "active"
   },
   {
@@ -936,7 +896,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:14Z",
+    "lastScrapedAt": "2026-06-01T17:31:39Z",
     "status": "active"
   },
   {
@@ -956,7 +916,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:14Z",
+    "lastScrapedAt": "2026-06-01T17:31:39Z",
     "status": "active"
   },
   {
@@ -976,7 +936,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:14Z",
+    "lastScrapedAt": "2026-06-01T17:31:39Z",
     "status": "active"
   },
   {
@@ -986,7 +946,7 @@
     "lane": "theme",
     "sub": "Theme Event A",
     "start": "2026-08-08T11:00:00",
-    "endKnown": "",
+    "endKnown": "2026-08-08T17:00:00",
     "endInferred": "2026-08-08T14:00:00",
     "href": "https://leekduck.com/events/hatch-day-august-2026",
     "timeZone": "local",
@@ -996,7 +956,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:24Z",
+    "lastScrapedAt": "2026-06-01T17:31:49Z",
     "status": "active"
   },
   {
@@ -1016,7 +976,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:15Z",
+    "lastScrapedAt": "2026-06-01T17:31:40Z",
     "status": "active"
   },
   {
@@ -1026,7 +986,7 @@
     "lane": "community",
     "sub": "Community Day",
     "start": "2026-08-15T14:00:00",
-    "endKnown": "",
+    "endKnown": "2026-08-15T17:00:00",
     "endInferred": "2026-08-15T17:00:00",
     "href": "https://leekduck.com/events/august-communityday2026",
     "timeZone": "local",
@@ -1036,7 +996,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:24Z",
+    "lastScrapedAt": "2026-06-01T17:31:49Z",
     "status": "active"
   },
   {
@@ -1056,7 +1016,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:15Z",
+    "lastScrapedAt": "2026-06-01T17:31:40Z",
     "status": "active"
   },
   {
@@ -1066,7 +1026,7 @@
     "lane": "raids",
     "sub": "5-Star Raid Battles",
     "start": "2026-08-22T14:00:00",
-    "endKnown": "",
+    "endKnown": "2026-08-22T17:00:00",
     "endInferred": "2026-08-22T17:00:00",
     "href": "https://leekduck.com/events/raid-day-august-2026",
     "timeZone": "local",
@@ -1076,7 +1036,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:24Z",
+    "lastScrapedAt": "2026-06-01T17:31:50Z",
     "status": "active"
   },
   {
@@ -1096,7 +1056,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:15Z",
+    "lastScrapedAt": "2026-06-01T17:31:41Z",
     "status": "active"
   },
   {
@@ -1116,7 +1076,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:16Z",
+    "lastScrapedAt": "2026-06-01T17:31:41Z",
     "status": "active"
   },
   {
@@ -1136,7 +1096,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:18Z",
+    "lastScrapedAt": "2026-06-01T17:31:43Z",
     "status": "active"
   },
   {
@@ -1156,7 +1116,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:16Z",
+    "lastScrapedAt": "2026-06-01T17:31:41Z",
     "status": "active"
   },
   {
@@ -1176,7 +1136,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:16Z",
+    "lastScrapedAt": "2026-06-01T17:31:42Z",
     "status": "active"
   },
   {
@@ -1196,7 +1156,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-01T03:38:17Z",
+    "lastScrapedAt": "2026-06-01T17:31:42Z",
     "status": "active"
   }
 ]

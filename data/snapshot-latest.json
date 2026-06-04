@@ -2,32 +2,12 @@
   {
     "title": "Happening Now",
     "shortTitle": "Happening Now",
-    "category": "Raid Hour",
-    "lane": "weekly",
-    "sub": "Raid Hour",
-    "start": "2026-06-03T19:00:00",
-    "endKnown": "2026-06-03T19:00:00",
-    "endInferred": "2026-06-03T20:00:00",
-    "href": "https://leekduck.com/events/raidhour20260603",
-    "timeZone": "local",
-    "timeZoneLabel": "Local Time",
-    "isFixedTimeZone": "",
-    "uid": "75e409abaedd8be0",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:40Z",
-    "status": "active"
-  },
-  {
-    "title": "2026: Chicago",
-    "shortTitle": "2026: Chicago",
     "category": "Pokémon GO Fest",
     "lane": "theme",
     "sub": "Theme Main",
-    "start": "",
+    "start": "2026-06-08T20:00:00",
     "endKnown": "2026-06-08T01:00:00",
-    "endInferred": "",
+    "endInferred": "2026-06-10T20:00:00",
     "href": "https://leekduck.com/events/pokemon-go-fest-2026-chicago",
     "timeZone": "local",
     "timeZoneLabel": "Local Time",
@@ -36,7 +16,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:23Z",
+    "lastScrapedAt": "2026-06-04T14:51:08Z",
     "status": "active"
   },
   {
@@ -56,7 +36,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:23Z",
+    "lastScrapedAt": "2026-06-04T14:50:50Z",
     "status": "active"
   },
   {
@@ -76,7 +56,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:23Z",
+    "lastScrapedAt": "2026-06-04T14:50:50Z",
     "status": "active"
   },
   {
@@ -96,7 +76,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:34Z",
+    "lastScrapedAt": "2026-06-04T14:51:02Z",
     "status": "active"
   },
   {
@@ -116,7 +96,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:24Z",
+    "lastScrapedAt": "2026-06-04T14:50:50Z",
     "status": "active"
   },
   {
@@ -136,7 +116,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:24Z",
+    "lastScrapedAt": "2026-06-04T14:50:51Z",
     "status": "active"
   },
   {
@@ -156,7 +136,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:24Z",
+    "lastScrapedAt": "2026-06-04T14:50:51Z",
     "status": "active"
   },
   {
@@ -176,7 +156,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:35Z",
+    "lastScrapedAt": "2026-06-04T14:51:02Z",
     "status": "active"
   },
   {
@@ -196,7 +176,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:25Z",
+    "lastScrapedAt": "2026-06-04T14:50:52Z",
     "status": "active"
   },
   {
@@ -216,7 +196,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:35Z",
+    "lastScrapedAt": "2026-06-04T14:51:02Z",
     "status": "active"
   },
   {
@@ -236,7 +216,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:36Z",
+    "lastScrapedAt": "2026-06-04T14:51:03Z",
     "status": "active"
   },
   {
@@ -256,7 +236,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:26Z",
+    "lastScrapedAt": "2026-06-04T14:50:52Z",
     "status": "active"
   },
   {
@@ -276,7 +256,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:35Z",
+    "lastScrapedAt": "2026-06-04T14:51:02Z",
     "status": "active"
   },
   {
@@ -296,7 +276,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:35Z",
+    "lastScrapedAt": "2026-06-04T14:51:02Z",
     "status": "active"
   },
   {
@@ -316,7 +296,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:36Z",
+    "lastScrapedAt": "2026-06-04T14:51:03Z",
     "status": "active"
   },
   {
@@ -336,7 +316,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:37Z",
+    "lastScrapedAt": "2026-06-04T14:51:04Z",
     "status": "active"
   },
   {
@@ -356,7 +336,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:37Z",
+    "lastScrapedAt": "2026-06-04T14:51:04Z",
     "status": "active"
   },
   {
@@ -376,7 +356,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:27Z",
+    "lastScrapedAt": "2026-06-04T14:50:54Z",
     "status": "active"
   },
   {
@@ -396,7 +376,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:36Z",
+    "lastScrapedAt": "2026-06-04T14:51:03Z",
     "status": "active"
   },
   {
@@ -416,7 +396,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:36Z",
+    "lastScrapedAt": "2026-06-04T14:51:03Z",
     "status": "active"
   },
   {
@@ -436,7 +416,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:38Z",
+    "lastScrapedAt": "2026-06-04T14:51:05Z",
     "status": "active"
   },
   {
@@ -456,7 +436,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:38Z",
+    "lastScrapedAt": "2026-06-04T14:51:06Z",
     "status": "active"
   },
   {
@@ -476,7 +456,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:37Z",
+    "lastScrapedAt": "2026-06-04T14:51:04Z",
     "status": "active"
   },
   {
@@ -496,7 +476,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:38Z",
+    "lastScrapedAt": "2026-06-04T14:51:05Z",
     "status": "active"
   },
   {
@@ -516,7 +496,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:38Z",
+    "lastScrapedAt": "2026-06-04T14:51:06Z",
     "status": "active"
   },
   {
@@ -536,7 +516,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:29Z",
+    "lastScrapedAt": "2026-06-04T14:50:56Z",
     "status": "active"
   },
   {
@@ -556,7 +536,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:29Z",
+    "lastScrapedAt": "2026-06-04T14:50:56Z",
     "status": "active"
   },
   {
@@ -576,7 +556,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:37Z",
+    "lastScrapedAt": "2026-06-04T14:51:05Z",
     "status": "active"
   },
   {
@@ -596,7 +576,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:37Z",
+    "lastScrapedAt": "2026-06-04T14:51:05Z",
     "status": "active"
   },
   {
@@ -616,7 +596,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:39Z",
+    "lastScrapedAt": "2026-06-04T14:51:06Z",
     "status": "active"
   },
   {
@@ -636,7 +616,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:30Z",
+    "lastScrapedAt": "2026-06-04T14:50:57Z",
     "status": "active"
   },
   {
@@ -656,7 +636,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:30Z",
+    "lastScrapedAt": "2026-06-04T14:50:57Z",
     "status": "active"
   },
   {
@@ -676,7 +656,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:39Z",
+    "lastScrapedAt": "2026-06-04T14:51:06Z",
     "status": "active"
   },
   {
@@ -696,7 +676,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:31Z",
+    "lastScrapedAt": "2026-06-04T14:50:58Z",
     "status": "active"
   },
   {
@@ -716,7 +696,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:39Z",
+    "lastScrapedAt": "2026-06-04T14:51:07Z",
     "status": "active"
   },
   {
@@ -736,7 +716,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:31Z",
+    "lastScrapedAt": "2026-06-04T14:50:58Z",
     "status": "active"
   },
   {
@@ -756,7 +736,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:31Z",
+    "lastScrapedAt": "2026-06-04T14:50:58Z",
     "status": "active"
   },
   {
@@ -776,7 +756,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:32Z",
+    "lastScrapedAt": "2026-06-04T14:50:59Z",
     "status": "active"
   },
   {
@@ -796,7 +776,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:40Z",
+    "lastScrapedAt": "2026-06-04T14:51:07Z",
     "status": "active"
   },
   {
@@ -816,7 +796,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:32Z",
+    "lastScrapedAt": "2026-06-04T14:50:59Z",
     "status": "active"
   },
   {
@@ -836,7 +816,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:40Z",
+    "lastScrapedAt": "2026-06-04T14:51:07Z",
     "status": "active"
   },
   {
@@ -856,7 +836,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:32Z",
+    "lastScrapedAt": "2026-06-04T14:51:00Z",
     "status": "active"
   },
   {
@@ -876,7 +856,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:40Z",
+    "lastScrapedAt": "2026-06-04T14:51:08Z",
     "status": "active"
   },
   {
@@ -896,7 +876,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:33Z",
+    "lastScrapedAt": "2026-06-04T14:51:00Z",
     "status": "active"
   },
   {
@@ -916,7 +896,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:33Z",
+    "lastScrapedAt": "2026-06-04T14:51:00Z",
     "status": "active"
   },
   {
@@ -936,7 +916,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:33Z",
+    "lastScrapedAt": "2026-06-04T14:51:01Z",
     "status": "active"
   },
   {
@@ -956,7 +936,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:34Z",
+    "lastScrapedAt": "2026-06-04T14:51:01Z",
     "status": "active"
   },
   {
@@ -976,7 +956,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-04T03:37:34Z",
+    "lastScrapedAt": "2026-06-04T14:51:01Z",
     "status": "active"
   }
 ]

@@ -1,8 +1,8 @@
 {
   "name": "NeatDuck_Timeline public event library",
   "source": "https://leekduck.com/events/",
-  "updatedAt": "2026-06-04T14:51:08Z",
-  "totalEvents": 61,
+  "updatedAt": "2026-06-05T02:59:44Z",
+  "totalEvents": 62,
   "activeEvents": 48,
   "schema": "events.csv/v1.8-timezone-excel-compatible",
   "coreColumns": [

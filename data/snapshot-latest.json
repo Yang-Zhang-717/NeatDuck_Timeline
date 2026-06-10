@@ -2,26 +2,6 @@
   {
     "title": "Happening Now",
     "shortTitle": "Happening Now",
-    "category": "GO Battle League",
-    "lane": "gbl",
-    "sub": "GO Battle League",
-    "start": "2026-06-02T20:00:00",
-    "endKnown": "2026-06-09T20:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/gbl-forever-forward_great-league_pokemon-north-america-international-championships-2026-cup-great-league-edition",
-    "timeZone": "America/Los_Angeles",
-    "timeZoneLabel": "PT",
-    "isFixedTimeZone": "1",
-    "uid": "891dfd454cebf0c5",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:39Z",
-    "status": "active"
-  },
-  {
-    "title": "Reshiram in 5-star Raid Battles",
-    "shortTitle": "Reshiram",
     "category": "Raid Battles",
     "lane": "raids",
     "sub": "5-Star Raid Battles",
@@ -36,7 +16,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:22Z",
+    "lastScrapedAt": "2026-06-10T02:58:35Z",
     "status": "active"
   },
   {
@@ -56,7 +36,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:22Z",
+    "lastScrapedAt": "2026-06-10T02:58:19Z",
     "status": "active"
   },
   {
@@ -76,7 +56,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:33Z",
+    "lastScrapedAt": "2026-06-10T02:58:30Z",
     "status": "active"
   },
   {
@@ -96,7 +76,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:23Z",
+    "lastScrapedAt": "2026-06-10T02:58:20Z",
     "status": "active"
   },
   {
@@ -116,7 +96,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:32Z",
+    "lastScrapedAt": "2026-06-10T02:58:20Z",
     "status": "active"
   },
   {
@@ -136,7 +116,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:34Z",
+    "lastScrapedAt": "2026-06-10T02:58:31Z",
     "status": "active"
   },
   {
@@ -156,7 +136,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:23Z",
+    "lastScrapedAt": "2026-06-10T02:58:21Z",
     "status": "active"
   },
   {
@@ -176,7 +156,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:32Z",
+    "lastScrapedAt": "2026-06-10T02:58:30Z",
     "status": "active"
   },
   {
@@ -196,7 +176,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:32Z",
+    "lastScrapedAt": "2026-06-10T02:58:30Z",
     "status": "active"
   },
   {
@@ -216,7 +196,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:35Z",
+    "lastScrapedAt": "2026-06-10T02:58:31Z",
     "status": "active"
   },
   {
@@ -236,7 +216,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:35Z",
+    "lastScrapedAt": "2026-06-10T02:58:32Z",
     "status": "active"
   },
   {
@@ -256,7 +236,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:36Z",
+    "lastScrapedAt": "2026-06-10T02:58:32Z",
     "status": "active"
   },
   {
@@ -276,7 +256,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:25Z",
+    "lastScrapedAt": "2026-06-10T02:58:23Z",
     "status": "active"
   },
   {
@@ -296,7 +276,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:35Z",
+    "lastScrapedAt": "2026-06-10T02:58:31Z",
     "status": "active"
   },
   {
@@ -316,7 +296,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:35Z",
+    "lastScrapedAt": "2026-06-10T02:58:31Z",
     "status": "active"
   },
   {
@@ -336,7 +316,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:36Z",
+    "lastScrapedAt": "2026-06-10T02:58:33Z",
     "status": "active"
   },
   {
@@ -356,12 +336,12 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:37Z",
+    "lastScrapedAt": "2026-06-10T02:58:33Z",
     "status": "active"
   },
   {
-    "title": "Flying Taxi 2026",
-    "shortTitle": "Flying Taxi 2026",
+    "title": "Flying Taxi",
+    "shortTitle": "Flying Taxi",
     "category": "Event",
     "lane": "theme",
     "sub": "Theme Event A",
@@ -376,7 +356,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:36Z",
+    "lastScrapedAt": "2026-06-10T02:58:32Z",
     "status": "active"
   },
   {
@@ -396,7 +376,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:37Z",
+    "lastScrapedAt": "2026-06-10T02:58:33Z",
     "status": "active"
   },
   {
@@ -416,7 +396,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:37Z",
+    "lastScrapedAt": "2026-06-10T02:58:34Z",
     "status": "active"
   },
   {
@@ -436,7 +416,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:27Z",
+    "lastScrapedAt": "2026-06-10T02:58:25Z",
     "status": "active"
   },
   {
@@ -456,7 +436,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:27Z",
+    "lastScrapedAt": "2026-06-10T02:58:25Z",
     "status": "active"
   },
   {
@@ -476,7 +456,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:36Z",
+    "lastScrapedAt": "2026-06-10T02:58:32Z",
     "status": "active"
   },
   {
@@ -496,7 +476,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:36Z",
+    "lastScrapedAt": "2026-06-10T02:58:33Z",
     "status": "active"
   },
   {
@@ -516,7 +496,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:37Z",
+    "lastScrapedAt": "2026-06-10T02:58:34Z",
     "status": "active"
   },
   {
@@ -536,7 +516,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:28Z",
+    "lastScrapedAt": "2026-06-10T02:58:26Z",
     "status": "active"
   },
   {
@@ -556,7 +536,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:28Z",
+    "lastScrapedAt": "2026-06-10T02:58:26Z",
     "status": "active"
   },
   {
@@ -576,7 +556,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:38Z",
+    "lastScrapedAt": "2026-06-10T02:58:34Z",
     "status": "active"
   },
   {
@@ -596,7 +576,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:28Z",
+    "lastScrapedAt": "2026-06-10T02:58:26Z",
     "status": "active"
   },
   {
@@ -616,7 +596,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:38Z",
+    "lastScrapedAt": "2026-06-10T02:58:34Z",
     "status": "active"
   },
   {
@@ -636,7 +616,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:29Z",
+    "lastScrapedAt": "2026-06-10T02:58:27Z",
     "status": "active"
   },
   {
@@ -656,7 +636,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:29Z",
+    "lastScrapedAt": "2026-06-10T02:58:27Z",
     "status": "active"
   },
   {
@@ -676,7 +656,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:29Z",
+    "lastScrapedAt": "2026-06-10T02:58:27Z",
     "status": "active"
   },
   {
@@ -696,7 +676,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:38Z",
+    "lastScrapedAt": "2026-06-10T02:58:35Z",
     "status": "active"
   },
   {
@@ -716,7 +696,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:30Z",
+    "lastScrapedAt": "2026-06-10T02:58:28Z",
     "status": "active"
   },
   {
@@ -736,7 +716,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:39Z",
+    "lastScrapedAt": "2026-06-10T02:58:35Z",
     "status": "active"
   },
   {
@@ -756,7 +736,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:30Z",
+    "lastScrapedAt": "2026-06-10T02:58:28Z",
     "status": "active"
   },
   {
@@ -776,7 +756,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:39Z",
+    "lastScrapedAt": "2026-06-10T02:58:35Z",
     "status": "active"
   },
   {
@@ -796,7 +776,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:31Z",
+    "lastScrapedAt": "2026-06-10T02:58:29Z",
     "status": "active"
   },
   {
@@ -816,7 +796,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:31Z",
+    "lastScrapedAt": "2026-06-10T02:58:29Z",
     "status": "active"
   },
   {
@@ -836,7 +816,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:31Z",
+    "lastScrapedAt": "2026-06-10T02:58:29Z",
     "status": "active"
   },
   {
@@ -856,7 +836,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:31Z",
+    "lastScrapedAt": "2026-06-10T02:58:30Z",
     "status": "active"
   },
   {
@@ -876,7 +856,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-09T14:41:32Z",
+    "lastScrapedAt": "2026-06-10T02:58:30Z",
     "status": "active"
   }
 ]

@@ -16,7 +16,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:35Z",
+    "lastScrapedAt": "2026-06-10T15:24:42Z",
     "status": "active"
   },
   {
@@ -36,7 +36,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:19Z",
+    "lastScrapedAt": "2026-06-10T15:24:23Z",
     "status": "active"
   },
   {
@@ -56,7 +56,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:30Z",
+    "lastScrapedAt": "2026-06-10T15:24:37Z",
     "status": "active"
   },
   {
@@ -76,7 +76,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:20Z",
+    "lastScrapedAt": "2026-06-10T15:24:23Z",
     "status": "active"
   },
   {
@@ -96,7 +96,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:20Z",
+    "lastScrapedAt": "2026-06-10T15:24:24Z",
     "status": "active"
   },
   {
@@ -116,7 +116,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:31Z",
+    "lastScrapedAt": "2026-06-10T15:24:37Z",
     "status": "active"
   },
   {
@@ -125,8 +125,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-09T20:00:00",
-    "endKnown": "2026-06-16T20:00:00",
+    "start": "2026-06-09T20:00:00Z",
+    "endKnown": "2026-06-16T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_ultra-league_pokemon-north-america-international-championships-2026-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -136,7 +136,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:21Z",
+    "lastScrapedAt": "2026-06-10T15:24:24Z",
     "status": "active"
   },
   {
@@ -156,7 +156,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:30Z",
+    "lastScrapedAt": "2026-06-10T15:24:36Z",
     "status": "active"
   },
   {
@@ -176,7 +176,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:30Z",
+    "lastScrapedAt": "2026-06-10T15:24:36Z",
     "status": "active"
   },
   {
@@ -196,7 +196,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:31Z",
+    "lastScrapedAt": "2026-06-10T15:24:38Z",
     "status": "active"
   },
   {
@@ -216,7 +216,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:32Z",
+    "lastScrapedAt": "2026-06-10T15:24:38Z",
     "status": "active"
   },
   {
@@ -236,7 +236,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:32Z",
+    "lastScrapedAt": "2026-06-10T15:24:38Z",
     "status": "active"
   },
   {
@@ -245,8 +245,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-16T20:00:00",
-    "endKnown": "2026-06-23T20:00:00",
+    "start": "2026-06-16T20:00:00Z",
+    "endKnown": "2026-06-23T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_master-league-mega-edition_sunshine-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -256,7 +256,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:23Z",
+    "lastScrapedAt": "2026-06-10T15:24:26Z",
     "status": "active"
   },
   {
@@ -276,7 +276,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:31Z",
+    "lastScrapedAt": "2026-06-10T15:24:37Z",
     "status": "active"
   },
   {
@@ -296,7 +296,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:31Z",
+    "lastScrapedAt": "2026-06-10T15:24:37Z",
     "status": "active"
   },
   {
@@ -316,7 +316,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:33Z",
+    "lastScrapedAt": "2026-06-10T15:24:39Z",
     "status": "active"
   },
   {
@@ -336,7 +336,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:33Z",
+    "lastScrapedAt": "2026-06-10T15:24:39Z",
     "status": "active"
   },
   {
@@ -356,7 +356,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:32Z",
+    "lastScrapedAt": "2026-06-10T15:24:38Z",
     "status": "active"
   },
   {
@@ -376,7 +376,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:33Z",
+    "lastScrapedAt": "2026-06-10T15:24:39Z",
     "status": "active"
   },
   {
@@ -396,7 +396,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:34Z",
+    "lastScrapedAt": "2026-06-10T15:24:40Z",
     "status": "active"
   },
   {
@@ -405,8 +405,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-23T20:00:00",
-    "endKnown": "2026-06-30T20:00:00",
+    "start": "2026-06-23T20:00:00Z",
+    "endKnown": "2026-06-30T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-split-1",
     "timeZone": "America/Los_Angeles",
@@ -416,7 +416,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:25Z",
+    "lastScrapedAt": "2026-06-10T15:24:29Z",
     "status": "active"
   },
   {
@@ -436,7 +436,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:25Z",
+    "lastScrapedAt": "2026-06-10T15:24:29Z",
     "status": "active"
   },
   {
@@ -456,7 +456,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:32Z",
+    "lastScrapedAt": "2026-06-10T15:24:39Z",
     "status": "active"
   },
   {
@@ -476,7 +476,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:33Z",
+    "lastScrapedAt": "2026-06-10T15:24:39Z",
     "status": "active"
   },
   {
@@ -496,7 +496,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:34Z",
+    "lastScrapedAt": "2026-06-10T15:24:40Z",
     "status": "active"
   },
   {
@@ -516,7 +516,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:26Z",
+    "lastScrapedAt": "2026-06-10T15:24:31Z",
     "status": "active"
   },
   {
@@ -525,8 +525,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-06-30T20:00:00",
-    "endKnown": "2026-07-07T20:00:00",
+    "start": "2026-06-30T20:00:00Z",
+    "endKnown": "2026-07-07T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_summer-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -536,7 +536,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:26Z",
+    "lastScrapedAt": "2026-06-10T15:24:31Z",
     "status": "active"
   },
   {
@@ -556,7 +556,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:34Z",
+    "lastScrapedAt": "2026-06-10T15:24:40Z",
     "status": "active"
   },
   {
@@ -565,8 +565,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-07T20:00:00",
-    "endKnown": "2026-07-14T20:00:00",
+    "start": "2026-07-07T20:00:00Z",
+    "endKnown": "2026-07-14T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_ultra-league_fantasy-cup-ultra-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -576,7 +576,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:26Z",
+    "lastScrapedAt": "2026-06-10T15:24:32Z",
     "status": "active"
   },
   {
@@ -596,7 +596,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:34Z",
+    "lastScrapedAt": "2026-06-10T15:24:41Z",
     "status": "active"
   },
   {
@@ -605,8 +605,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-14T20:00:00",
-    "endKnown": "2026-07-21T20:00:00",
+    "start": "2026-07-14T20:00:00Z",
+    "endKnown": "2026-07-21T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_master-league_retro-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -616,7 +616,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:27Z",
+    "lastScrapedAt": "2026-06-10T15:24:32Z",
     "status": "active"
   },
   {
@@ -625,8 +625,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-21T20:00:00",
-    "endKnown": "2026-07-28T20:00:00",
+    "start": "2026-07-21T20:00:00Z",
+    "endKnown": "2026-07-28T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-split-2",
     "timeZone": "America/Los_Angeles",
@@ -636,7 +636,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:27Z",
+    "lastScrapedAt": "2026-06-10T15:24:33Z",
     "status": "active"
   },
   {
@@ -645,8 +645,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-07-28T20:00:00",
-    "endKnown": "2026-08-04T20:00:00",
+    "start": "2026-07-28T20:00:00Z",
+    "endKnown": "2026-08-04T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_master-premier",
     "timeZone": "America/Los_Angeles",
@@ -656,7 +656,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:27Z",
+    "lastScrapedAt": "2026-06-10T15:24:33Z",
     "status": "active"
   },
   {
@@ -676,7 +676,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:35Z",
+    "lastScrapedAt": "2026-06-10T15:24:41Z",
     "status": "active"
   },
   {
@@ -685,8 +685,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-04T20:00:00",
-    "endKnown": "2026-08-11T20:00:00",
+    "start": "2026-08-04T20:00:00Z",
+    "endKnown": "2026-08-11T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_ultra-league_weather-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -696,7 +696,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:28Z",
+    "lastScrapedAt": "2026-06-10T15:24:34Z",
     "status": "active"
   },
   {
@@ -716,7 +716,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:35Z",
+    "lastScrapedAt": "2026-06-10T15:24:41Z",
     "status": "active"
   },
   {
@@ -725,8 +725,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-11T20:00:00",
-    "endKnown": "2026-08-18T20:00:00",
+    "start": "2026-08-11T20:00:00Z",
+    "endKnown": "2026-08-18T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_master-league_evolution-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -736,7 +736,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:28Z",
+    "lastScrapedAt": "2026-06-10T15:24:34Z",
     "status": "active"
   },
   {
@@ -756,7 +756,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:35Z",
+    "lastScrapedAt": "2026-06-10T15:24:41Z",
     "status": "active"
   },
   {
@@ -765,8 +765,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-18T20:00:00",
-    "endKnown": "2026-08-25T20:00:00",
+    "start": "2026-08-18T20:00:00Z",
+    "endKnown": "2026-08-25T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_scroll-cup-great-league-edition",
     "timeZone": "America/Los_Angeles",
@@ -776,7 +776,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:29Z",
+    "lastScrapedAt": "2026-06-10T15:24:35Z",
     "status": "active"
   },
   {
@@ -785,8 +785,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-08-25T20:00:00",
-    "endKnown": "2026-09-01T20:00:00",
+    "start": "2026-08-25T20:00:00Z",
+    "endKnown": "2026-09-01T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-split-3",
     "timeZone": "America/Los_Angeles",
@@ -796,7 +796,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:29Z",
+    "lastScrapedAt": "2026-06-10T15:24:35Z",
     "status": "active"
   },
   {
@@ -816,7 +816,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:29Z",
+    "lastScrapedAt": "2026-06-10T15:24:35Z",
     "status": "active"
   },
   {
@@ -825,8 +825,8 @@
     "category": "GO Battle League",
     "lane": "gbl",
     "sub": "GO Battle League",
-    "start": "2026-09-01T20:00:00",
-    "endKnown": "2026-09-08T20:00:00",
+    "start": "2026-09-01T20:00:00Z",
+    "endKnown": "2026-09-08T20:00:00Z",
     "endInferred": "",
     "href": "https://leekduck.com/events/gbl-forever-forward_great-league_ultra-league_master-league-mega-edition",
     "timeZone": "America/Los_Angeles",
@@ -836,7 +836,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:30Z",
+    "lastScrapedAt": "2026-06-10T15:24:36Z",
     "status": "active"
   },
   {
@@ -856,7 +856,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-10T02:58:30Z",
+    "lastScrapedAt": "2026-06-10T15:24:36Z",
     "status": "active"
   }
 ]

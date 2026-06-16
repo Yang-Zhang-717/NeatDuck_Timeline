@@ -1,53 +1,13 @@
 [
   {
     "title": "Happening Now",
-    "shortTitle": "Happening Now",
-    "category": "Research",
-    "lane": "theme",
-    "sub": "Theme Event A",
-    "start": "2026-06-15T20:00:00",
-    "endKnown": "2026-06-16T02:59:00",
-    "endInferred": "2026-06-16T20:00:00",
-    "href": "https://leekduck.com/events/naic-2026-timed-research-twitch-drops",
-    "timeZone": "America/Los_Angeles",
-    "timeZoneLabel": "PDT",
-    "isFixedTimeZone": "1",
-    "uid": "d018ce0117696315",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:42Z",
-    "status": "active"
-  },
-  {
-    "title": "Candela's Quest for Victory",
-    "shortTitle": "Candela's Quest for Victory",
-    "category": "Event",
-    "lane": "theme",
-    "sub": "Theme Event A",
-    "start": "2026-06-09T10:00:00",
-    "endKnown": "2026-06-15T20:00:00",
-    "endInferred": "",
-    "href": "https://leekduck.com/events/candelas-quest-for-victory",
-    "timeZone": "local",
-    "timeZoneLabel": "Local Time",
-    "isFixedTimeZone": "",
-    "uid": "ac20539a0bbc09c7",
-    "source": "leekduck",
-    "firstSeenAt": "",
-    "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:24Z",
-    "status": "active"
-  },
-  {
-    "title": "Dynamax Roggenrola during Max Monday",
-    "shortTitle": "Max Roggenrola",
+    "shortTitle": "Max Happening Now",
     "category": "Max Mondays",
     "lane": "weekly",
     "sub": "Max Mondays",
-    "start": "",
+    "start": "2026-06-15T21:00:00",
     "endKnown": "2026-06-15T21:00:00",
-    "endInferred": "",
+    "endInferred": "2026-06-16T12:00:00",
     "href": "https://leekduck.com/events/max-mondays-2026-06-15",
     "timeZone": "local",
     "timeZoneLabel": "Local Time",
@@ -56,7 +16,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:24Z",
+    "lastScrapedAt": "2026-06-16T16:43:47Z",
     "status": "active"
   },
   {
@@ -76,7 +36,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:24Z",
+    "lastScrapedAt": "2026-06-16T16:43:26Z",
     "status": "active"
   },
   {
@@ -96,7 +56,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:24Z",
+    "lastScrapedAt": "2026-06-16T16:43:26Z",
     "status": "active"
   },
   {
@@ -116,7 +76,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:25Z",
+    "lastScrapedAt": "2026-06-16T16:43:27Z",
     "status": "active"
   },
   {
@@ -136,7 +96,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:37Z",
+    "lastScrapedAt": "2026-06-16T16:43:41Z",
     "status": "active"
   },
   {
@@ -156,7 +116,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:25Z",
+    "lastScrapedAt": "2026-06-16T16:43:27Z",
     "status": "active"
   },
   {
@@ -176,7 +136,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:37Z",
+    "lastScrapedAt": "2026-06-16T16:43:41Z",
     "status": "active"
   },
   {
@@ -196,7 +156,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:37Z",
+    "lastScrapedAt": "2026-06-16T16:43:40Z",
     "status": "active"
   },
   {
@@ -216,7 +176,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:38Z",
+    "lastScrapedAt": "2026-06-16T16:43:41Z",
     "status": "active"
   },
   {
@@ -236,7 +196,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:26Z",
+    "lastScrapedAt": "2026-06-16T16:43:29Z",
     "status": "active"
   },
   {
@@ -256,7 +216,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:36Z",
+    "lastScrapedAt": "2026-06-16T16:43:40Z",
     "status": "active"
   },
   {
@@ -276,7 +236,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:36Z",
+    "lastScrapedAt": "2026-06-16T16:43:40Z",
     "status": "active"
   },
   {
@@ -296,7 +256,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:39Z",
+    "lastScrapedAt": "2026-06-16T16:43:42Z",
     "status": "active"
   },
   {
@@ -316,7 +276,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:27Z",
+    "lastScrapedAt": "2026-06-16T16:43:30Z",
     "status": "active"
   },
   {
@@ -336,7 +296,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:39Z",
+    "lastScrapedAt": "2026-06-16T16:43:43Z",
     "status": "active"
   },
   {
@@ -356,7 +316,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:38Z",
+    "lastScrapedAt": "2026-06-16T16:43:42Z",
     "status": "active"
   },
   {
@@ -376,7 +336,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:39Z",
+    "lastScrapedAt": "2026-06-16T16:43:42Z",
     "status": "active"
   },
   {
@@ -396,7 +356,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:39Z",
+    "lastScrapedAt": "2026-06-16T16:43:43Z",
     "status": "active"
   },
   {
@@ -416,7 +376,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:29Z",
+    "lastScrapedAt": "2026-06-16T16:43:31Z",
     "status": "active"
   },
   {
@@ -436,7 +396,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:29Z",
+    "lastScrapedAt": "2026-06-16T16:43:31Z",
     "status": "active"
   },
   {
@@ -456,7 +416,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:38Z",
+    "lastScrapedAt": "2026-06-16T16:43:42Z",
     "status": "active"
   },
   {
@@ -476,7 +436,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:38Z",
+    "lastScrapedAt": "2026-06-16T16:43:42Z",
     "status": "active"
   },
   {
@@ -496,7 +456,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:29Z",
+    "lastScrapedAt": "2026-06-16T16:43:32Z",
     "status": "active"
   },
   {
@@ -516,12 +476,12 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:39Z",
+    "lastScrapedAt": "2026-06-16T16:43:43Z",
     "status": "active"
   },
   {
-    "title": "July Community Day",
-    "shortTitle": "July Community Day",
+    "title": "Sobble Community Day",
+    "shortTitle": "Sobble Community Day",
     "category": "Community Day",
     "lane": "community",
     "sub": "Community Day",
@@ -536,7 +496,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:40Z",
+    "lastScrapedAt": "2026-06-16T16:43:44Z",
     "status": "active"
   },
   {
@@ -556,7 +516,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:40Z",
+    "lastScrapedAt": "2026-06-16T16:43:44Z",
     "status": "active"
   },
   {
@@ -576,7 +536,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:30Z",
+    "lastScrapedAt": "2026-06-16T16:43:33Z",
     "status": "active"
   },
   {
@@ -596,7 +556,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:31Z",
+    "lastScrapedAt": "2026-06-16T16:43:33Z",
     "status": "active"
   },
   {
@@ -616,7 +576,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:40Z",
+    "lastScrapedAt": "2026-06-16T16:43:44Z",
     "status": "active"
   },
   {
@@ -636,7 +596,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:31Z",
+    "lastScrapedAt": "2026-06-16T16:43:34Z",
     "status": "active"
   },
   {
@@ -656,7 +616,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:31Z",
+    "lastScrapedAt": "2026-06-16T16:43:34Z",
     "status": "active"
   },
   {
@@ -674,9 +634,9 @@
     "isFixedTimeZone": "1",
     "uid": "d9dd414f70eb7bdb",
     "source": "leekduck",
-    "firstSeenAt": "2026-06-16T03:40:42Z",
-    "lastSeenAt": "2026-06-16T03:40:42Z",
-    "lastScrapedAt": "2026-06-16T03:40:41Z",
+    "firstSeenAt": "",
+    "lastSeenAt": "",
+    "lastScrapedAt": "2026-06-16T16:43:45Z",
     "status": "active"
   },
   {
@@ -696,7 +656,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:40Z",
+    "lastScrapedAt": "2026-06-16T16:43:44Z",
     "status": "active"
   },
   {
@@ -716,7 +676,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:32Z",
+    "lastScrapedAt": "2026-06-16T16:43:35Z",
     "status": "active"
   },
   {
@@ -736,7 +696,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:32Z",
+    "lastScrapedAt": "2026-06-16T16:43:35Z",
     "status": "active"
   },
   {
@@ -756,7 +716,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:33Z",
+    "lastScrapedAt": "2026-06-16T16:43:35Z",
     "status": "active"
   },
   {
@@ -776,7 +736,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:33Z",
+    "lastScrapedAt": "2026-06-16T16:43:36Z",
     "status": "active"
   },
   {
@@ -796,7 +756,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:41Z",
+    "lastScrapedAt": "2026-06-16T16:43:45Z",
     "status": "active"
   },
   {
@@ -816,7 +776,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:33Z",
+    "lastScrapedAt": "2026-06-16T16:43:36Z",
     "status": "active"
   },
   {
@@ -836,7 +796,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:41Z",
+    "lastScrapedAt": "2026-06-16T16:43:45Z",
     "status": "active"
   },
   {
@@ -856,7 +816,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:34Z",
+    "lastScrapedAt": "2026-06-16T16:43:37Z",
     "status": "active"
   },
   {
@@ -876,7 +836,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:42Z",
+    "lastScrapedAt": "2026-06-16T16:43:46Z",
     "status": "active"
   },
   {
@@ -896,7 +856,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:41Z",
+    "lastScrapedAt": "2026-06-16T16:43:46Z",
     "status": "active"
   },
   {
@@ -916,7 +876,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:34Z",
+    "lastScrapedAt": "2026-06-16T16:43:38Z",
     "status": "active"
   },
   {
@@ -936,7 +896,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:42Z",
+    "lastScrapedAt": "2026-06-16T16:43:46Z",
     "status": "active"
   },
   {
@@ -956,7 +916,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:35Z",
+    "lastScrapedAt": "2026-06-16T16:43:38Z",
     "status": "active"
   },
   {
@@ -976,7 +936,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:35Z",
+    "lastScrapedAt": "2026-06-16T16:43:39Z",
     "status": "active"
   },
   {
@@ -996,7 +956,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:35Z",
+    "lastScrapedAt": "2026-06-16T16:43:39Z",
     "status": "active"
   },
   {
@@ -1016,7 +976,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:36Z",
+    "lastScrapedAt": "2026-06-16T16:43:39Z",
     "status": "active"
   },
   {
@@ -1036,7 +996,7 @@
     "source": "leekduck",
     "firstSeenAt": "",
     "lastSeenAt": "",
-    "lastScrapedAt": "2026-06-16T03:40:36Z",
+    "lastScrapedAt": "2026-06-16T16:43:40Z",
     "status": "active"
   }
 ]
